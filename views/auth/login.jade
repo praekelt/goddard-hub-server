@@ -1,0 +1,23 @@
+extends ../layout
+
+block content
+	.row
+		.col-md-6.col-md-offset-3
+			br
+			br
+			br
+			br
+			-if(locals.error)
+				.alert.alert-danger(role="alert") #{locals.error}
+			form(action="/login",method="post")
+				.form-group
+					label(for="username") Username
+					input.form-control(name="username",type="text")
+				.form-group
+					label(for="password") Password
+					input.form-control(name="password",type="password")
+				button.btn.btn-default(type="submit") Login
+			br
+			br
+			br
+			br

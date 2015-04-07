@@ -1,0 +1,22 @@
+extends ../layout
+
+block content
+	.row
+		.col-md-12
+			table.table
+				thead
+					tr
+						th Node
+						th Description
+						th Group
+						th Country
+						th Status
+						th Last Report
+				tbody
+					-each item_obj in items
+						tr
+							td #{item_obj.id}
+							td #{item_obj.id}
+							td #{item_obj.id}
+							td #{item_obj.id}
+							td #{item_obj.id}
