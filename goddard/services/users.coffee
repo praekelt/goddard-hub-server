@@ -7,6 +7,11 @@ module.exports = exports = (app) ->
 	# start the users service
 	Users = {}
 
+	# runs everytime the user connects
+	Users.loggedin = (user_obj, fn) ->
+
+		# 
+
 	# returns the user if the username / password are correct
 	Users.login = (username_str, password_str, fn) ->
 

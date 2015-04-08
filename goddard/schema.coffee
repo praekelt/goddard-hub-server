@@ -99,7 +99,9 @@ module.exports = exports = (app) ->
 		uid: { type: Sequelize.STRING(128), field: 'uid' },
 		name: { type: Sequelize.STRING(255), field: 'name' },
 		email: { type: Sequelize.STRING(255), field: 'email' },
-		lastlogin: { type: Sequelize.DATE, field: 'lastlogin' }
+		avatar: { type: Sequelize.STRING(255), field: 'avatar' },
+		enabled: { type: Sequelize.BOOLEAN, field: 'enabled' },
+		lastLogin: { type: Sequelize.DATE, field: 'lastLogin' }
 
 	})
 
