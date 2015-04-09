@@ -1,0 +1,25 @@
+extends ../layout
+
+block content
+	.row
+		.col-md-6.col-md-offset-3
+			br
+			br
+			br
+			br
+			form.form(action="/apps/" + item_obj.id,method="post")
+				.form-group
+					label(for="") Name
+					input.form-control(name="name",type="text",value=post_params.name || item_obj.name)
+				.form-group
+					label(for="") Image
+					input.form-control(name="image",type="text",value=post_params.image || item_obj.image)
+				.form-group
+					label(for="") Description
+					textarea.form-control(name="description") #{post_params.description || item_obj.description}
+
+				button.btn.btn-primary.btn-lg UPDATE
+			br
+			br
+			br
+			br

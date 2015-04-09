@@ -7,3 +7,5 @@ module.exports = exports = (app) ->
 	require('./auth')(app)
 	require('./users')(app)
 	require('./nodes')(app)
+	require('./groups')(app)
+	require('./apps')(app)

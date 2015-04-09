@@ -1,0 +1,65 @@
+extends ../layout
+
+block content
+	.row
+		.col-md-6.col-md-offset-3
+			br
+			br
+			br
+			br
+			form.form(action="/groups/create",method="post")
+				.form-group
+					label(for="") Name
+					input.form-control(name="name",type="text")
+				.form-group
+					label(for="") Description
+					textarea.form-control(name="description")
+				.form-group
+					table.table
+						tbody
+							tr
+								td
+									.checkbox
+										.pull-right
+											a(href="/apps/1") View
+										label
+											input(name="applications",value="11",type="checkbox")
+											| MAMA
+							tr
+								td
+									.checkbox
+										.pull-right
+											a(href="/apps/1") View
+										label
+											input(name="applications",value="1",type="checkbox")
+											| MAMA
+							tr
+								td
+									.checkbox
+										.pull-right
+											a(href="/apps/1") View
+										label
+											input(name="applications",value="2",type="checkbox")
+											| MAMA
+							tr
+								td
+									.checkbox
+										.pull-right
+											a(href="/apps/1") View
+										label
+											input(name="applications",value="3",type="checkbox")
+											| MAMA
+							tr
+								td
+									.checkbox
+										.pull-right
+											a(href="/apps/1") View
+										label
+											input(name="applications",value="4",type="checkbox")
+											| MAMA
+
+				button.btn.btn-primary.btn-lg CREATE
+			br
+			br
+			br
+			br
