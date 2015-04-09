@@ -10,15 +10,15 @@ module.exports = exports = (app) ->
 		# was the search given ?
 		if req.query.q
 			search_param = req.query.q
-			filter_params.title = app.get('sequelize').or(
+			filter_params = app.get('sequelize').or(
 				{
 
-					email: { like: '%' + search_param + '%' }
+					name: { like: '%' + search_param + '%' }
 
 				},
 				{
 
-					name: { like: '%' + search_param + '%' }
+					email: { like: '%' + search_param + '%' }
 
 				})
 
