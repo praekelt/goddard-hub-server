@@ -1,8 +1,15 @@
 # acts as the homepage for the dashboard
 module.exports = exports = (app) ->
 
+	# local params
+	_ = require('underscore')
+
 	# setup our locals for all the views
 	app.use (req, res, next) ->
+
+		# set the send params
+		res.locals.post_params = _.extend({}, req.body)
+		res.locals.post_params = _.extend( res.locals.post_params, req.query )
 
 		# set our locals to use
 		res.locals.logged_in_user_id = req.session.logged_in_user_id

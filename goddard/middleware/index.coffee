@@ -7,3 +7,4 @@ module.exports = exports = (app) ->
 	# load in our modules
 	require('./locals')(app)
 	require('./auth')(app)
+	require('./pagination')(app)

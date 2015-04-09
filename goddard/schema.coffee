@@ -101,6 +101,7 @@ module.exports = exports = (app) ->
 		email: { type: Sequelize.STRING(255), field: 'email' },
 		avatar: { type: Sequelize.STRING(255), field: 'avatar' },
 		enabled: { type: Sequelize.BOOLEAN, field: 'enabled' },
+		admin: { type: Sequelize.BOOLEAN, field: 'admin' },
 		lastLogin: { type: Sequelize.DATE, field: 'lastLogin' }
 
 	})
@@ -110,3 +111,4 @@ module.exports = exports = (app) ->
 
 	# create our schema 
 	app.set('models', Models)
+	app.set('sequelize', Sequelize)
