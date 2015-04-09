@@ -34,9 +34,9 @@ block content
 					ul.pagination
 						-if(current_page > 1)
 							li
-								a(href="/users?q=" + (post_params.q ? post_params.q : '') + "&limit=" + limit + "&page=" + (current_page-1))
+								a(href="/nodes?q=" + (post_params.q ? post_params.q : '') + "&limit=" + limit + "&page=" + (current_page-1))
 									span Back
 						-if(current_page < pages)
 							li
-								a(href="/users?q=" + (post_params.q ? post_params.q : '') + "&limit=" + limit + "&page=" + (current_page+1))
+								a(href="/nodes?q=" + (post_params.q ? post_params.q : '') + "&limit=" + limit + "&page=" + (current_page+1))
 									span Next

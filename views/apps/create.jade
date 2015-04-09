@@ -1,0 +1,25 @@
+extends ../layout
+
+block content
+	.row
+		.col-md-6.col-md-offset-3
+			br
+			br
+			br
+			br
+			form.form(action="/apps/create",method="post")
+				.form-group
+					label(for="") Name
+					input.form-control(name="name",type="text")
+				.form-group
+					label(for="") Image
+					input.form-control(name="image",type="text")
+				.form-group
+					label(for="") Description
+					textarea.form-control(name="description")
+
+				button.btn.btn-primary.btn-lg CREATE
+			br
+			br
+			br
+			br

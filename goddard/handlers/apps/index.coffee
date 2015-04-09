@@ -4,5 +4,5 @@ module.exports = exports = (app) ->
 	# load in our modules
 	require('./list')(app)
 	require('./create')(app)
-	require('./edit')(app)
+	require('./view')(app)
 	require('./delete')(app)
