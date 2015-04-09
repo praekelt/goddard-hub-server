@@ -5,4 +5,5 @@ module.exports = exports = (app) ->
 	require('./home')(app)
 	require('./handshake')(app)
 	require('./auth')(app)
+	require('./users')(app)
 	require('./nodes')(app)

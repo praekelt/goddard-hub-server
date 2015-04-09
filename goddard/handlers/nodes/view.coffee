@@ -2,8 +2,20 @@
 module.exports = exports = (app) ->
 
 	# the homepage for load balancer
-	app.get '/nodes/:appid', (req, res) -> 
+	app.get '/nodes/:nodeid', app.get('middleware').checkLoggedIn, (req, res) -> 
 
-		app.get('models').nodes.findAll().then((objs) ->
-			res.json objs
+		# check for the id
+		if not req.params.nodeid
+			res.redirect('/nodes')
+			return
+
+		# find by the given id
+		app.get('models').nodes.find(1 * req.params.nodeid).then((obj) ->
+
+			# was it found ?
+			if not obj
+				res.redirect('/nodes')
+				return
+			else
+				res.json obj
 		)

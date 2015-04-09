@@ -6,17 +6,16 @@ block content
 			table.table
 				thead
 					tr
-						th Node
-						th Description
-						th Group
-						th Country
-						th Status
-						th Last Report
+						th &nbsp;
+						th(style="width:40%;") &nbsp;
 				tbody
 					-each item_obj in items
 						tr
-							td #{item_obj.id}
-							td #{item_obj.id}
-							td #{item_obj.id}
-							td #{item_obj.id}
-							td #{item_obj.id}
+							td 
+								p(style="float: left;font-size: 26px;margin-right: 20px;min-width:40px;") OK
+								p(style="margin:0;margin-bottom:5px;font-size: 16px;") <a href="/groups/#{item_obj.groupid}">Group Name</a> / <a href="/nodes/#{item_obj.id}">#{item_obj.description} (&nbsp;<strong>#{item_obj.serial}</strong>&nbsp;)</a>
+								p(style="margin:0;font-size: 11px;") <strong>Kenya</strong> - Last Activity: #{item_obj.lastping}
+							td
+								.pull-right
+									a.btn.btn-default(style="margin-left: 10px;",href="/nodes/#{item_obj.id}") Manage
+								.clearfix
