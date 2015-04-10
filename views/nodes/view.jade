@@ -1,0 +1,202 @@
+extends ../layout
+
+block content
+	.row
+		.col-md-12
+
+			.row
+				.col-md-6
+					table.table
+						tbody
+							tr
+								td(style="text-align:left;border-top:0;")
+									strong Number (Serial)
+								td(style="border-top:0;text-align:right;vertical-align:middle;width:30%;") #{item_obj.serial}
+							tr
+								td(style="text-align:left;",colspan="2")
+									strong Description
+									p #{item_obj.Description}
+							tr
+								td(style="text-align:left;",colspan="2")
+									strong Location
+									p Address Here
+							tr
+								td(style="text-align:left;")
+									strong Group
+								td(style="text-align:right;vertical-align:middle;width:30%;")
+									a(href="#") TEST
+							tr
+								td(style="text-align:left;")
+									strong Country
+								td(style="text-align:right;vertical-align:middle;width:30%;") Kenya
+							tr
+								td(style="text-align:left;",colspan="2")
+									strong Last Report
+									p #{item_obj.lastping}
+							tr
+								td(style="text-align:left;",colspan="2")
+									strong Provisioned
+									p #{item_obj.createdAt}
+							tr
+								td(style="text-align:left;")
+									strong BGAN Temp
+								td(style="text-align:right;vertical-align:middle;width:30%;") 31C
+							tr
+								td(style="text-align:left;")
+									strong Free Disk Space
+								td(style="text-align:right;vertical-align:middle;width:30%;") 98GB
+							tr
+								td(style="text-align:left;")
+									strong Total Disk Space
+								td(style="text-align:right;vertical-align:middle;width:30%;") 110GB
+							tr
+								td(style="text-align:left;")
+									strong Free Memory
+								td(style="text-align:right;vertical-align:middle;width:30%;") 1,5GB
+							tr
+								td(style="text-align:left;")
+									strong Total Memory
+								td(style="text-align:right;vertical-align:middle;width:30%;") 8GB
+							tr
+								td(style="text-align:left;")
+									strong Load
+								td(style="text-align:right;vertical-align:middle;width:30%;")
+									span.label.label-warning(style="margin-right:5px;") 0.5
+									span.label.label-warning(style="margin-right:5px;") 0.3
+									span.label.label-warning 0.2
+							tr
+								td(style="text-align:left;")
+									strong RAID Status
+								td(style="text-align:right;vertical-align:middle;width:30%;")
+									span.label.label-success(style="margin-right:5px;") UP
+									span.label.label-warning DOWN
+							tr
+								td(style="text-align:left;")
+									strong Status
+								td(style="text-align:right;vertical-align:middle;width:30%;")
+									span.label.label-success Active
+				.col-md-6
+					h4 Location:
+					center
+						img(src="https://maps.googleapis.com/maps/api/staticmap?center=-15.800513,-47.91378&zoom=11&size=600x600",style="width: 100%;")
+						p(style="margin-top: 10px;margin-bottom:10px;")
+							span(style="margin-right: 15px;") Latitude: <strong>33,1987</strong>
+							span Longitude: <strong>18.1881</strong>
+
+					h4 Notes:
+					p Notes of the Node HERE
+
+			.row
+				.col-md-12
+					.page-header
+						h1
+							| Wifi Clients
+							small &nbsp;(Unique MACs)
+
+			.row
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") 134
+									h3(style="margin-top:0;") 24 Hours
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") 324
+									h3(style="margin-top:0;") 48 Hours
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") 1099
+									h3(style="margin-top:0;") 7 Days
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") 4032
+									h3(style="margin-top:0;") 31 Days
+
+			.row
+				.col-md-12
+					.page-header
+						h1
+							| Returning Wifi Clients
+							small &nbsp;(Unique MACs)
+
+			.row
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") 75
+									h3(style="margin-top:0;") 24 Hours
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") 104
+									h3(style="margin-top:0;") 48 Hours
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") 502
+									h3(style="margin-top:0;") 7 Days
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") 743
+									h3(style="margin-top:0;") 31 Days
+
+			.row
+				.col-md-12
+					.page-header
+						h1
+							| Pages Served
+
+			.row
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") 939
+									h3(style="margin-top:0;") 24 Hours
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") 2322
+									h3(style="margin-top:0;") 48 Hours
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") 10939
+									h3(style="margin-top:0;") 7 Days
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") 83482
+									h3(style="margin-top:0;") 31 Days
+
+			br
+			br
+			br
+			br

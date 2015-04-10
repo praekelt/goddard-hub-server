@@ -17,5 +17,9 @@ module.exports = exports = (app) ->
 				res.redirect('/nodes')
 				return
 			else
-				res.json obj
+				item_obj = obj.get()
+				res.render 'nodes/view', {
+					title: 'Node #' + item_obj.serial,
+					item_obj: item_obj
+				}
 		)

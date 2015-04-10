@@ -53,25 +53,35 @@ module.exports = exports = (app) ->
 					}).then((returned_values) ->
 
 						# get a local obj to work with
-						node_obj = returned_values[0].dataValues
+						node_obj = returned_values[0]
 						created = returned_values[1] == true
 
-						# output
-						res.json {
+						# update
+						if not node_obj.serial
+							node_obj.serial = S(node_obj.id).padLeft(3, '0').s
 
-							'name': node_obj.name,
-							'serial': S( node_obj.id ).padLeft(5, '0').s,
-							'port': {
+						# save it
+						node_obj.save().then ->
 
-								'tunnel': node_obj.port,
-								'monitor': node_obj.mport
+							# get the node
+							node_obj = node_obj.get()
 
-							},
-							'uid': node_obj.id,
-							'server': node_obj.server,
-							'publickey': key_str.toString()
+							# output
+							res.json {
 
-						}
+								'name': node_obj.name,
+								'serial': S( node_obj.id ).padLeft(5, '0').s,
+								'port': {
+
+									'tunnel': node_obj.port,
+									'monitor': node_obj.mport
+
+								},
+								'uid': node_obj.id,
+								'server': node_obj.server,
+								'publickey': key_str.toString()
+
+							}
 				)
 
 			)

@@ -7,6 +7,11 @@ block content
 				form(action="/nodes",method="get")
 					input(type="text",name="q",placeholder="Search by name / email",value=post_params.q)
 					button Search
+			select
+				option(value="all") All Groups
+				option(value="none") Unassigned
+				-each group_obj in group_objs
+					option(value=group_obj.id) #{group_obj.name}
 			.clearfix
 	.row
 		.col-md-12
@@ -20,8 +25,21 @@ block content
 						tr
 							td 
 								p(style="float: left;font-size: 26px;margin-right: 20px;min-width:40px;") OK
-								p(style="margin:0;margin-bottom:5px;font-size: 16px;") <a href="/groups/#{item_obj.groupid}">Group Name</a> / <a href="/nodes/#{item_obj.id}">#{item_obj.description} (&nbsp;<strong>#{item_obj.serial}</strong>&nbsp;)</a>
-								p(style="margin:0;font-size: 11px;") <strong>Kenya</strong> - Last Activity: #{item_obj.lastping}
+								p(style="margin:0;margin-bottom:5px;font-size: 16px;")
+									-if(item_obj.group)
+										a(href="/groups/" + item_obj.group.id) #{item_obj.group.name}
+										| &nbsp;/&nbsp;
+									a(href="/nodes/" + item_obj.id)
+										-if(item_obj.description)
+											#{item_obj.description}
+										-else
+											#{item_obj.serial}
+										| &nbsp;(&nbsp;<strong>#{item_obj.serial}</strong>&nbsp;)
+								p(style="margin:0;font-size: 11px;") 
+									-if(item_obj.country)
+										strong= item_obj.country
+										| &nbsp;-&nbsp;
+									| Last Activity: #{item_obj.lastping}
 							td
 								.pull-right
 									a.btn.btn-default(style="margin-left: 10px;",href="/nodes/#{item_obj.id}") Manage

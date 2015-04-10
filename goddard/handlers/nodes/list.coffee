@@ -27,19 +27,24 @@ module.exports = exports = (app) ->
 
 				offset: req.requesting_pagination_offset,
 				limit: req.requesting_pagination_limit,
-				where: filter_params
+				where: filter_params,
+				include: app.get('models').groups
 
 			).then (result) ->
 
-				# render them out
-				res.render 'nodes/list', {
+				# get all the groups
+				app.get('models').groups.findAll().then (group_objs) ->
 
-					title: 'Nodes',
-					items: result.rows,
-					limit: req.requesting_pagination_limit,
-					offset: req.requesting_pagination_offset,
-					total_count: result.count,
-					current_page: req.requesting_pagination_page,
-					pages: Math.ceil( result.count / req.requesting_pagination_limit ),
+					# render them out
+					res.render 'nodes/list', {
 
-			}
+						title: 'Nodes',
+						group_objs: group_objs,
+						items: result.rows,
+						limit: req.requesting_pagination_limit,
+						offset: req.requesting_pagination_offset,
+						total_count: result.count,
+						current_page: req.requesting_pagination_page,
+						pages: Math.ceil( result.count / req.requesting_pagination_limit ),
+
+					}

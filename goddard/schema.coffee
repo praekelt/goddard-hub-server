@@ -30,19 +30,14 @@ module.exports = exports = (app) ->
 
 	})
 
-	# set the models
-	Models.installs = sequelize.define('installs', {
-
-		groupid: { type: Sequelize.INTEGER, field: 'groupid' },
-		appid: { type: Sequelize.INTEGER, field: 'appid' },
-
-	})
+	# setup the apps
+	Models.apps.hasMany(Models.groups, {as: 'Groups', through: 'installs'})
+	Models.groups.hasMany(Models.apps, {as: 'Apps',through: 'installs'})
 
 	# set the models
 	Models.nodes = sequelize.define('nodes', {
 
 		serial: { type: Sequelize.STRING(255), field: 'serial' }
-		group: { type: Sequelize.INTEGER , field: 'group' }
 		server: { type: Sequelize.STRING(255), field: 'server' }
 		country: { type: Sequelize.STRING(255), field: 'country' }
 		region: { type: Sequelize.STRING(255), field: 'region' }
@@ -60,6 +55,14 @@ module.exports = exports = (app) ->
 		lastping: { type: Sequelize.DATE, field: 'lastping' }
 
 	})
+
+	# setup the apps
+	Models.nodes.belongsTo(Models.groups)
+	Models.groups.hasMany(Models.nodes, {as: 'Nodes'})
+
+	# setup joins
+	# Models.nodes.hasOne(Models.groups, { as: 'group' })
+	Models.groups.hasMany(Models.nodes, {as: 'Nodes'})
 
 	# set the models
 	Models.systeminfo = sequelize.define('systeminfo', {
@@ -107,7 +110,7 @@ module.exports = exports = (app) ->
 	})
 
 	# sync all the tables
-	# sequelize.sync()
+	# sequelize.sync({ force: true })
 
 	# create our schema 
 	app.set('models', Models)

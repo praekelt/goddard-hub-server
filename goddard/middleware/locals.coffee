@@ -11,32 +11,37 @@ module.exports = exports = (app) ->
 		res.locals.post_params = _.extend({}, req.body)
 		res.locals.post_params = _.extend( res.locals.post_params, req.query )
 
-		# set our locals to use
-		res.locals.logged_in_user_id = req.session.logged_in_user_id
+		# check type
+		if req.url != '/logout'
 
-		# get the user
-		if req.session.logged_in_user_id
+			# set our locals to use
+			res.locals.logged_in_user_id = req.session.logged_in_user_id
 
-			# get the user obj
-			app.get('models').users.find( req.session.logged_in_user_id ).then (user_response_obj) ->
+			# get the user
+			if req.session.logged_in_user_id
 
-				# did we find it ???
-				if user_response_obj
+				# get the user obj
+				app.get('models').users.find( req.session.logged_in_user_id ).then (user_response_obj) ->
 
-					# set the requesting user
-					req.requesting_user_obj = user_response_obj.get()
+					# did we find it ???
+					if user_response_obj
 
-					console.dir req.requesting_user_obj
+						# set the requesting user
+						req.requesting_user_obj = user_response_obj.get()
 
-					# set as a local
-					res.locals.user_obj = req.requesting_user_obj
+						console.dir req.requesting_user_obj
 
-					# continue
-					next()
+						# set as a local
+						res.locals.user_obj = req.requesting_user_obj
 
-				else
+						# continue
+						next()
 
-					# logout then ...
-					res.redirect '/logout?notfound=1'
+					else
+
+						# logout then ...
+						res.redirect '/logout?notfound=1'
+
+			else next()
 
 		else next()

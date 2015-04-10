@@ -17,46 +17,15 @@ block content
 				.form-group
 					table.table
 						tbody
-							tr
-								td
-									.checkbox
-										.pull-right
-											a(href="/apps/1") View
-										label
-											input(name="applications",value="11",type="checkbox")
-											| MAMA
-							tr
-								td
-									.checkbox
-										.pull-right
-											a(href="/apps/1") View
-										label
-											input(name="applications",value="1",type="checkbox")
-											| MAMA
-							tr
-								td
-									.checkbox
-										.pull-right
-											a(href="/apps/1") View
-										label
-											input(name="applications",value="2",type="checkbox")
-											| MAMA
-							tr
-								td
-									.checkbox
-										.pull-right
-											a(href="/apps/1") View
-										label
-											input(name="applications",value="3",type="checkbox")
-											| MAMA
-							tr
-								td
-									.checkbox
-										.pull-right
-											a(href="/apps/1") View
-										label
-											input(name="applications",value="4",type="checkbox")
-											| MAMA
+							-each app_obj in app_objs
+								tr
+									td
+										.checkbox
+											.pull-right
+												a(href="/apps/" + app_obj.id) View
+											label
+												input(name="applications",checked=registered_app_ids.indexOf(app_obj.id) !== -1,value=app_obj.id,type="checkbox")
+												| #{app_obj.name}
 
 				button.btn.btn-primary.btn-lg UPDATE
 			br

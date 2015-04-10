@@ -7,12 +7,16 @@ module.exports = exports = (app) ->
 	# the homepage for load balancer
 	app.get '/groups/create', (req, res) -> 
 
-		# render the create page 
-		res.render 'groups/create', {
+		# get all the groups
+		app.get('models').apps.findAll().then (app_objs) ->
 
-			title: 'Create a Group'
+			# render the create page 
+			res.render 'groups/create', {
 
-		}
+				title: 'Create a Group',
+				app_objs: app_objs
+
+			}
 
 	# the homepage for load balancer
 	app.post '/groups/create', (req, res) -> 
@@ -30,22 +34,27 @@ module.exports = exports = (app) ->
 
 			})
 
-		# run it
-		group_obj.save().then ->
+		# handles the actual saving of the application
+		handleSavingApp = (app_id_str, cb) ->
 
-			# handles the actual saving of the application
-			handleSavingApp = (app_id_str, cb) ->
+			# get that app
+			app.get('models').apps.find( 1 * app_id_str ).then (app_obj) ->
+
+				console.dir group_obj.addInstall
+				console.dir group_obj.addApp
+				console.dir group_obj.addApps
 
 				# create and save it
-				app.get('models').installs.build({
+				group_obj.addApp(app_obj)
 
-					appid: 1 * app_id_str,
-					groupid: group_obj.id
+				# done
+				cb(null)
 
-				}).save().then(cb).catch(cb)
+		# loop and save
+		async.each param_application_strs or [], handleSavingApp, (err) ->
 
-			# loop and save
-			async.each param_application_strs, handleSavingApp, (err) ->
+			# run it
+			group_obj.save().then ->
 
 				# done
 				res.redirect '/groups'
