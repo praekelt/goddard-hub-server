@@ -43,6 +43,7 @@ module.exports = exports = (app) ->
 		region: { type: Sequelize.STRING(255), field: 'region' }
 		city: { type: Sequelize.STRING(255), field: 'city' }
 		address: { type: Sequelize.STRING(255), field: 'address' }
+		name: { type: Sequelize.STRING(255), field: 'name' }
 		description: { type: Sequelize.STRING(255), field: 'description' }
 		status: { type: Sequelize.STRING(32), field: 'status' }
 		comments: { type: Sequelize.TEXT, field: 'comments' }
@@ -53,6 +54,7 @@ module.exports = exports = (app) ->
 		lat: { type: Sequelize.FLOAT, field: 'lat' }
 		lng: { type: Sequelize.FLOAT, field: 'lng' }
 		lastping: { type: Sequelize.DATE, field: 'lastping' }
+		enabled: { type: Sequelize.BOOLEAN, field: 'enabled' },
 
 	})
 

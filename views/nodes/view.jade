@@ -3,7 +3,6 @@ extends ../layout
 block content
 	.row
 		.col-md-12
-
 			.row
 				.col-md-6
 					table.table
@@ -14,8 +13,8 @@ block content
 								td(style="border-top:0;text-align:right;vertical-align:middle;width:30%;") #{item_obj.serial}
 							tr
 								td(style="text-align:left;",colspan="2")
-									strong Description
-									p #{item_obj.Description}
+									strong Name
+									p #{item_obj.name}
 							tr
 								td(style="text-align:left;",colspan="2")
 									strong Location
@@ -24,7 +23,10 @@ block content
 								td(style="text-align:left;")
 									strong Group
 								td(style="text-align:right;vertical-align:middle;width:30%;")
-									a(href="#") TEST
+									-if(locals.group_obj)
+										a(href="/groups/" + group_obj.id) #{group_obj.name}
+									-else
+										a(href="/nodes/" + item_obj.id + '/edit') None
 							tr
 								td(style="text-align:left;")
 									strong Country
@@ -76,15 +78,20 @@ block content
 								td(style="text-align:right;vertical-align:middle;width:30%;")
 									span.label.label-success Active
 				.col-md-6
+					.pull-right
+						a.btn.btn-primary(href="/nodes/" + item_obj.id + "/edit") Edit
 					h4 Location:
 					center
 						img(src="https://maps.googleapis.com/maps/api/staticmap?center=-15.800513,-47.91378&zoom=11&size=600x600",style="width: 100%;")
 						p(style="margin-top: 10px;margin-bottom:10px;")
+							br
 							span(style="margin-right: 15px;") Latitude: <strong>33,1987</strong>
 							span Longitude: <strong>18.1881</strong>
+							br
 
-					h4 Notes:
-					p Notes of the Node HERE
+					-if(item_obj.description)
+						h4 Notes:
+						p #{item_obj.description}
 
 			.row
 				.col-md-12

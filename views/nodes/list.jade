@@ -1,18 +1,24 @@
 extends ../layout
 
+block scripts
+
+	script.
+		$(document).ready(function(){ $('#select_group').change(function(){ $('#filter_form').submit(); }); });
+
 block content
 	.row
 		.col-md-12
-			.pull-right
-				form(action="/nodes",method="get")
+			form#filter_form(action="/nodes",method="get")
+				.pull-right
+					
 					input(type="text",name="q",placeholder="Search by name / email",value=post_params.q)
 					button Search
-			select
-				option(value="all") All Groups
-				option(value="none") Unassigned
-				-each group_obj in group_objs
-					option(value=group_obj.id) #{group_obj.name}
-			.clearfix
+				select#select_group(name="group")
+					option(value="all") All Groups
+					option(value="none",selected=selected_group_id == 'none') Unassigned
+					-each group_obj in group_objs
+						option(value=group_obj.id,selected=''+selected_group_id == ''+group_obj.id) #{group_obj.name}
+				.clearfix
 	.row
 		.col-md-12
 			table.table
@@ -27,14 +33,14 @@ block content
 								p(style="float: left;font-size: 26px;margin-right: 20px;min-width:40px;") OK
 								p(style="margin:0;margin-bottom:5px;font-size: 16px;")
 									-if(item_obj.group)
-										a(href="/groups/" + item_obj.group.id) #{item_obj.group.name}
+										a(href="/nodes?group=" + item_obj.group.id) #{item_obj.group.name}
 										| &nbsp;/&nbsp;
 									a(href="/nodes/" + item_obj.id)
-										-if(item_obj.description)
-											#{item_obj.description}
+										-if(item_obj.name)
+											| #{item_obj.name}
+											| (&nbsp;<strong>#{item_obj.serial}</strong>&nbsp;)
 										-else
-											#{item_obj.serial}
-										| &nbsp;(&nbsp;<strong>#{item_obj.serial}</strong>&nbsp;)
+											##{item_obj.serial}
 								p(style="margin:0;font-size: 11px;") 
 									-if(item_obj.country)
 										strong= item_obj.country
@@ -52,9 +58,9 @@ block content
 					ul.pagination
 						-if(current_page > 1)
 							li
-								a(href="/nodes?q=" + (post_params.q ? post_params.q : '') + "&limit=" + limit + "&page=" + (current_page-1))
+								a(href="/nodes?q=" + (post_params.q ? post_params.q : '') + '&group=' + selected_group_id + "&limit=" + limit + "&page=" + (current_page-1))
 									span Back
 						-if(current_page < pages)
 							li
-								a(href="/nodes?q=" + (post_params.q ? post_params.q : '') + "&limit=" + limit + "&page=" + (current_page+1))
+								a(href="/nodes?q=" + (post_params.q ? post_params.q : '') + '&group=' + selected_group_id + "&limit=" + limit + "&page=" + (current_page+1))
 									span Next

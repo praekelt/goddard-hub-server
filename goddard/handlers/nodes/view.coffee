@@ -17,9 +17,19 @@ module.exports = exports = (app) ->
 				res.redirect('/nodes')
 				return
 			else
+
+				# get a usable item
 				item_obj = obj.get()
-				res.render 'nodes/view', {
-					title: 'Node #' + item_obj.serial,
-					item_obj: item_obj
-				}
+
+				# get the group
+				app.get('models').groups.find(1 * obj.groupId).then (group_obj) ->
+
+					if group_obj
+						group_obj = group_obj.get()
+
+					res.render 'nodes/view', {
+						title: 'Node #' + item_obj.serial,
+						item_obj: item_obj,
+						group_obj: group_obj
+					}
 		)

@@ -22,6 +22,12 @@ module.exports = exports = (app) ->
 
 				})
 
+		if req.query.group and req.query.group != 'all'
+			if req.query.group == 'none'
+				filter_params.groupId = null
+			else
+				filter_params.groupId = 1 * req.query.group
+
 		# get all the nodes
 		app.get('models').nodes.findAndCountAll(
 
@@ -46,5 +52,6 @@ module.exports = exports = (app) ->
 						total_count: result.count,
 						current_page: req.requesting_pagination_page,
 						pages: Math.ceil( result.count / req.requesting_pagination_limit ),
+						selected_group_id: req.query.group
 
 					}

@@ -16,61 +16,65 @@ module.exports = exports = (app) ->
 				# did we find it ?
 				if node_obj
 
-					# metrics parsed out
-					metric_obj = {}
+					# Update out last ping
+					node_obj.lastping = new Date()
+					node_obj.save().then ->
 
-					# loop all the passed keys of metrics
-					for key_str in _.keys(req.body or {})
+						# metrics parsed out
+						metric_obj = {}
 
-						# if this is not in our reserved list
-						if key_str.toString().toLowerCase() not in [ 'nodeid' ]
+						# loop all the passed keys of metrics
+						for key_str in _.keys(req.body or {})
 
-							# build our metric value ?
-							metric_obj[ (key_str or '').toLowerCase() ] = req.body[ key_str ]
+							# if this is not in our reserved list
+							if key_str.toString().toLowerCase() not in [ 'nodeid' ]
 
-					# save according to our registered params
-					app.get('models').systeminfo.create({
+								# build our metric value ?
+								metric_obj[ (key_str or '').toLowerCase() ] = req.body[ key_str ]
 
-							cpus: metric_obj.node.cpus,
-							load: metric_obj.node.load,
-							uptime: metric_obj.node.uptime,
+						# save according to our registered params
+						app.get('models').systeminfo.create({
 
-							totalmem: metric_obj.node.memory.total,
-							freemem: metric_obj.node.memory.free,
+								cpus: metric_obj.node.cpus,
+								load: metric_obj.node.load,
+								uptime: metric_obj.node.uptime,
 
-							totaldisk: metric_obj.node.disk.total,
-							freedisk: metric_obj.node.disk.free,
-							raid: metric_obj.node.disk.raid,
+								totalmem: metric_obj.node.memory.total,
+								freemem: metric_obj.node.memory.free,
 
-							nodeid: 1 * nodeid
-
-						}).then(->
-
-							# then save the device info
-							app.get('models').deviceinfo.create({
-
-								bgan_temp: metric_obj.bgan.temp,
-								bgan_ping: metric_obj.bgan.ping,
-								bgan_ip: metric_obj.bgan.ip,
-								bgan_uptime: metric_obj.bgan.uptime,
-								bgan_lat: metric_obj.bgan.lat,
-								bgan_lng: metric_obj.bgan.lng,
-
-								router_uptime: metric_obj.router.uptime,
-								wireless_uptime: metric_obj.wireless.uptime,
-
-								relays: metric_obj.relays.join(' ')
+								totaldisk: metric_obj.node.disk.total,
+								freedisk: metric_obj.node.disk.free,
+								raid: metric_obj.node.disk.raid,
 
 								nodeid: 1 * nodeid
 
 							}).then(->
 
-								# the port we came up with
-								res.json { status: 'ok' }
+								# then save the device info
+								app.get('models').deviceinfo.create({
+
+									bgan_temp: metric_obj.bgan.temp,
+									bgan_ping: metric_obj.bgan.ping,
+									bgan_ip: metric_obj.bgan.ip,
+									bgan_uptime: metric_obj.bgan.uptime,
+									bgan_lat: metric_obj.bgan.lat,
+									bgan_lng: metric_obj.bgan.lng,
+
+									router_uptime: metric_obj.router.uptime,
+									wireless_uptime: metric_obj.wireless.uptime,
+
+									relays: metric_obj.relays.join(' ')
+
+									nodeid: 1 * nodeid
+
+								}).then(->
+
+									# the port we came up with
+									res.json { status: 'ok' }
+
+								)
 
 							)
-
-						)
 
 				else 
 					res.json {status: 'error',message: 'No such node with that id was found registered ...'}
