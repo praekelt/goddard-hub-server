@@ -70,13 +70,13 @@ module.exports = exports = (app) ->
 	Models.systeminfo = sequelize.define('systeminfo', {
 
 		nodeid: { type: Sequelize.INTEGER, field: 'nodeid' },
-		load: { type: Sequelize.STRING(32), field: 'load' },
+		load: { type: Sequelize.STRING(64), field: 'load' },
 		cpus: { type: Sequelize.INTEGER, field: 'cpus' },
 		totaldisk: { type: Sequelize.FLOAT, field: 'totaldisk' },
 		freedisk: { type: Sequelize.FLOAT, field: 'freedisk' },
 		totalmem: { type: Sequelize.FLOAT, field: 'totalmem' },
 		freemem: { type: Sequelize.FLOAT, field: 'freemem' },
-		raid: { type: Sequelize.STRING(32), field: 'raid' },
+		raid: { type: Sequelize.STRING(64), field: 'raid' },
 		uptime: { type: Sequelize.FLOAT, field: 'uptime' }
 
 	})

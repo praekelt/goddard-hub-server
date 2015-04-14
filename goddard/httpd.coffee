@@ -8,8 +8,8 @@ RedisStore 		= require('connect-redis')(session);
 app = express()
 
 # middleware
-app.use bodyParser.urlencoded({ extended: true })
 app.use bodyParser.json()
+app.use bodyParser.urlencoded({ extended: true })
 
 # setup our public handler
 app.use express.static('public')

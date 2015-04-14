@@ -7,6 +7,8 @@ module.exports = exports = (app) ->
 	# handle any metric coming our way
 	app.post '/metric.json', (req, res) ->
 
+		console.dir req.body
+
 		# get the passed name / value / nodeid
 		nodeid 		= req.body.nodeid
 
@@ -44,7 +46,7 @@ module.exports = exports = (app) ->
 
 								totaldisk: metric_obj.node.disk.total,
 								freedisk: metric_obj.node.disk.free,
-								raid: metric_obj.node.disk.raid,
+								raid: (metric_obj.node.disk.raid or []).join(' '),
 
 								nodeid: 1 * nodeid
 
