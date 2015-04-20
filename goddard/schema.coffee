@@ -117,3 +117,4 @@ module.exports = exports = (app) ->
 	# create our schema 
 	app.set('models', Models)
 	app.set('sequelize', Sequelize)
+	app.set('sequelize_instance', sequelize)
