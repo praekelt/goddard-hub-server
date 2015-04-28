@@ -27,6 +27,7 @@ module.exports = exports = (app) ->
 		name: { type: Sequelize.STRING(255), field: 'name' }
 		image: { type: Sequelize.STRING(255), field: 'image' }
 		description: { type: Sequelize.STRING(255), field: 'description' }
+		slug: { type: Sequelize.STRING(255), field: 'slug' }
 
 	})
 
