@@ -37,7 +37,7 @@ module.exports = exports = (app) ->
 
 							serial: '',
 							groups: [],
-							server: 'goddard.io.co.za' or process.env.TUNNEL_SERVER,
+							server: process.env.TUNNEL_SERVER or 'goddard.io.co.za',
 							port: (port + 1),
 							mport: (port + 2),
 							macaddr: param_mac_addr,
