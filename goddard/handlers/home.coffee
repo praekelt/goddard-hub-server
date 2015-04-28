@@ -9,5 +9,8 @@ module.exports = exports = (app) ->
 	# the homepage for load balancer
 	app.get '/', app.get('middleware').checkLoggedIn, (req, res) -> 
 
+		# for now redirect to nodes
+		res.redirect '/nodes'
+
 		# renders the homepage
 		res.render 'home'
