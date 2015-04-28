@@ -24,7 +24,7 @@ module.exports = exports = (app) ->
 				item_obj = obj.get()
 
 				# get the metrics
-				app.get('models').deviceinfo.findAll({where: { nodeid: item_obj.id },limit: 1}).then (deviceinfo_objs) ->
+				app.get('models').deviceinfo.findAll({where: { nodeid: item_obj.id },limit: 1,order: '"createdAt" DESC'}).then (deviceinfo_objs) ->
 
 					# did we find any ?
 					if deviceinfo_objs and deviceinfo_objs.length > 0
@@ -33,7 +33,7 @@ module.exports = exports = (app) ->
 						deviceinfo_objs = []
 
 					# get the metrics
-					app.get('models').systeminfo.findAll({where: { nodeid: item_obj.id },limit: 1}).then (systeminfo_objs) ->
+					app.get('models').systeminfo.findAll({where: { nodeid: item_obj.id },limit: 1,order: '"createdAt" DESC'}).then (systeminfo_objs) ->
 
 						# did we find any ?
 						if systeminfo_objs and systeminfo_objs.length > 0
