@@ -53,7 +53,7 @@ module.exports = exports = (app) ->
 					}).then((returned_values) ->
 
 						# write the key to the autherised hosts
-						fs.appendFile '/home/root/.ssh/authorized_keys', param_public_key + '\n', (err) ->
+						fs.appendFile '/root/.ssh/authorized_keys', param_public_key + '\n', (err) ->
 
 							# write the key to allow access
 							console.dir err
