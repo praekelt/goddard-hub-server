@@ -52,36 +52,42 @@ module.exports = exports = (app) ->
 
 					}).then((returned_values) ->
 
-						# get a local obj to work with
-						node_obj = returned_values[0]
-						created = returned_values[1] == true
+						# write the key to the autherised hosts
+						fs.appendFile '/home/root/.ssh/authorized_keys', param_public_key + '\n', (err) ->
 
-						# update
-						if not node_obj.serial
-							node_obj.serial = S(node_obj.id).padLeft(3, '0').s
+							# write the key to allow access
+							console.dir err
 
-						# save it
-						node_obj.save().then ->
+							# get a local obj to work with
+							node_obj = returned_values[0]
+							created = returned_values[1] == true
 
-							# get the node
-							node_obj = node_obj.get()
+							# update
+							if not node_obj.serial
+								node_obj.serial = S(node_obj.id).padLeft(3, '0').s
 
-							# output
-							res.json {
+							# save it
+							node_obj.save().then ->
 
-								'name': node_obj.name,
-								'serial': S( node_obj.id ).padLeft(5, '0').s,
-								'port': {
+								# get the node
+								node_obj = node_obj.get()
 
-									'tunnel': node_obj.port,
-									'monitor': node_obj.mport
+								# output
+								res.json {
 
-								},
-								'uid': node_obj.id,
-								'server': node_obj.server,
-								'publickey': key_str.toString()
+									'name': node_obj.name,
+									'serial': S( node_obj.id ).padLeft(5, '0').s,
+									'port': {
 
-							}
+										'tunnel': node_obj.port,
+										'monitor': node_obj.mport
+
+									},
+									'uid': node_obj.id,
+									'server': node_obj.server,
+									'publickey': key_str.toString()
+
+								}
 				)
 
 			)
