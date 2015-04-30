@@ -53,7 +53,7 @@ module.exports = exports = (app) ->
 					}).then((returned_values) ->
 
 						# write the key to the autherised hosts
-						fs.appendFile '/root/.ssh/authorized_keys', param_public_key + '\n', (err) ->
+						fs.appendFile '/home/node/.ssh/authorized_keys', param_public_key + '\n', (err) ->
 
 							# write the key to allow access
 							console.dir err
@@ -64,7 +64,7 @@ module.exports = exports = (app) ->
 
 							# update
 							if not node_obj.serial
-								node_obj.serial = S(node_obj.id).padLeft(3, '0').s
+								node_obj.serial = S(node_obj.id).padLeft(4, '0').s
 
 							# save it
 							node_obj.save().then ->

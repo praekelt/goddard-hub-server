@@ -10,6 +10,8 @@ stdout.log
 log.txt
 custom_params.json
 
+public.key
+
 pids
 logs
 results
