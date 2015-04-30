@@ -47,3 +47,8 @@ The app accepts a few parameters that allow configuration on a server running th
 * *NODE_ENV* - can be set to "development" or "production"
 * *DB_URL* - the full url to the postgres server including the auth details
 * *PORT* - port that the web interface will start and listen on
+* *GOOGLE_CLIENT_ID* - Google Client ID for Google Login
+* *GOOGLE_SECRET_ID* - Google Client SECRET for Google Login
+* *GOOGLE_OAUTH_CALLBACK_URL* - callback for the node. Would be http://{domain}/connect/callback
+* *TUNNEL_SERVER* - Server nodes will connect to, to open up a tunnel
+* *NODE_PUBLIC_KEY* - public key to load into the node from the server
