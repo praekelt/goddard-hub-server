@@ -12,9 +12,6 @@ module.exports = exports = (app) ->
 		param_mac_addr 		= req.body.mac
 		param_public_key 	= req.body.key
 
-		# read in the public key from environ
-		param_public_key = process.env.NODE_PUBLIC_KEY or ''
-
 		# update the
 
 		# create / find a node

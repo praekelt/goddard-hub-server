@@ -29,6 +29,9 @@ module.exports = exports = (app) ->
 	# returns a nicely formatted response for the handshake client
 	Nodes.formatResponse = (node_obj, fn) ->
 
+		# read in the public key from environ
+		param_public_key = process.env.NODE_PUBLIC_KEY or ''
+
 		# output
 		fn null, {
 
@@ -42,14 +45,12 @@ module.exports = exports = (app) ->
 			},
 			'uid': node_obj.id,
 			'server': node_obj.server,
-			'publickey': node_obj.publickey
+			'publickey': param_public_key
 
 		}
 
 	# loads in the key if the key has changed
 	Nodes.saveKey = (node_obj, param_public_key, fn) ->
-
-		console.log node_obj.publickey + ' != ' + param_public_key
 
 		# check if we match ..
 		if '' + node_obj.publickey != '' + param_public_key
@@ -90,9 +91,6 @@ module.exports = exports = (app) ->
 
 	# Nodess the path to run
 	Nodes.find = (param_mac_addr, param_public_key, fn) ->
-
-		# read in the public key from environ
-		param_public_key = process.env.NODE_PUBLIC_KEY or ''
 
 		# get the next
 		Nodes.getNextTunnelPort (err, port) ->
