@@ -22,6 +22,16 @@ module.exports = exports = (app) ->
 	})
 
 	# set the models
+	Models.builds = sequelize.define('builds', {
+
+		target: { type: Sequelize.STRING(255), field: 'target' }
+		source: { type: Sequelize.STRING(255), field: 'source' }
+		status: { type: Sequelize.INTEGER, field: 'status' }
+		result: { type: Sequelize.INTEGER, field: 'result' }
+
+	})
+
+	# set the models
 	Models.apps = sequelize.define('apps', {
 
 		name: { type: Sequelize.STRING(255), field: 'name' }
@@ -79,6 +89,17 @@ module.exports = exports = (app) ->
 		freemem: { type: Sequelize.FLOAT, field: 'freemem' },
 		raid: { type: Sequelize.STRING(64), field: 'raid' },
 		uptime: { type: Sequelize.FLOAT, field: 'uptime' }
+
+	})
+
+	# set the models
+	Models.deviceinfo = sequelize.define('networkinfo', {
+
+		nodeid: { type: Sequelize.INTEGER, field: 'nodeid' },
+		mac: { type: Sequelize.INTEGER, field: 'mac' },
+		ip: { type: Sequelize.INTEGER, field: 'ip' },
+		useragent: { type: Sequelize.INTEGER, field: 'useragent' },
+		timestamp: { type: Sequelize.INTEGER, field: 'timestamp' }
 
 	})
 

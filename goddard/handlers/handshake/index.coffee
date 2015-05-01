@@ -4,3 +4,4 @@ module.exports = exports = (app) ->
 	# load in our modules
 	require('./setup')(app)
 	require('./metric')(app)
+	require('./build')(app)

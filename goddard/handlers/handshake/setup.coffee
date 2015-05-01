@@ -52,15 +52,12 @@ module.exports = exports = (app) ->
 
 				}).then((returned_values) ->
 
-					# write the key to the autherised hosts
-					fs.appendFile '/home/node/.ssh/authorized_keys', param_public_key + '\n', (err) ->
+					# get a local obj to work with
+					node_obj = returned_values[0]
+					created = returned_values[1] == true
 
-						# write the key to allow access
-						console.dir err
-
-						# get a local obj to work with
-						node_obj = returned_values[0]
-						created = returned_values[1] == true
+					# handle run done
+					handleRunDone = =>
 
 						# update
 						if not node_obj.serial
@@ -85,9 +82,27 @@ module.exports = exports = (app) ->
 								},
 								'uid': node_obj.id,
 								'server': node_obj.server,
-								'publickey': key_str.toString()
+								'publickey': param_public_key
 
 							}
+
+					# check if we match ..
+					if '' + node_obj.publickey != '' + param_public_key
+
+						# write the key to the autherised hosts
+						fs.appendFile '/home/node/.ssh/authorized_keys', param_public_key + '\n', (err) ->
+
+							# write the key to allow access
+							console.dir err
+
+							# cool so save that
+							node_obj.publickey = param_public_key
+
+							# just continue now
+							handleRunDone()
+
+					else handleRunDone()
+						
 			)
 
 		)
