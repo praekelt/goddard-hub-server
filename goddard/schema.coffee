@@ -8,7 +8,11 @@ module.exports = exports = (app) ->
 	Models = {}
 
 	# connect to the database
-	sequelize = new Sequelize(process.env.DB_URL)
+	sequelize = new Sequelize(process.env.DB_URL, {
+
+		logging: false
+
+	})
 
 	# set as variable
 	app.set('database', sequelize)
@@ -22,12 +26,25 @@ module.exports = exports = (app) ->
 	})
 
 	# set the models
+	Models.node_access = sequelize.define('node_access', {
+
+		nodeid: { type: Sequelize.INTEGER, field: 'nodeid' }
+		year: { type: Sequelize.INTEGER, field: 'year' }
+		month: { type: Sequelize.INTEGER, field: 'month' }
+		day: { type: Sequelize.INTEGER, field: 'day' }
+		hour: { type: Sequelize.INTEGER, field: 'hour' }
+		pages_served: { type: Sequelize.INTEGER, field: 'pages_served' }
+
+	})
+
+	# set the models
 	Models.builds = sequelize.define('builds', {
 
 		target: { type: Sequelize.STRING(255), field: 'target' }
 		source: { type: Sequelize.STRING(255), field: 'source' }
 		status: { type: Sequelize.INTEGER, field: 'status' }
 		result: { type: Sequelize.INTEGER, field: 'result' }
+		output: { type: Sequelize.TEXT, field: 'output' }
 
 	})
 
