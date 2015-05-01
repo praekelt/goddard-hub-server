@@ -32,8 +32,8 @@ module.exports = exports = (app) ->
 							console.log('exec error: ' + error)
 
 						# update it
-						build_pub_obj.status = 2
-						build_pub_obj.save().then ->
+						build_obj.status = 2
+						build_obj.save().then ->
 							# done !
 							console.log 'done'
 
