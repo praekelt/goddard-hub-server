@@ -66,7 +66,7 @@ module.exports = exports = (app) ->
 				else
 
 					# cool so save that
-					node_obj.publickey = param_public_key
+					# node_obj.publickey = param_public_key
 
 					# just continue now
 					fn()
