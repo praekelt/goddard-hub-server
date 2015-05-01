@@ -5,11 +5,12 @@ import re
 import pprint
 from datetime import datetime
 import argparse
+import os
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--log_file', help='The full path/filename of the log file to parse.', required=True)
 parser.add_argument('--node_id', help='The id of the Node.', required=True)
-parser.add_argument('--log_type', help="The type of log file being parsed. Options are 'nginx' or 'clients'.", required=True)
+parser.add_argument('--log_type', help="The type of log file being parsed. Options are 'nginx' or 'captiveportal'.", required=True)
 args = parser.parse_args()
 
 #################################
@@ -32,9 +33,9 @@ regex = ''.join(
 
 
 def db_connect():
-	conn_string = "host='localhost' dbname='goddard' user='jonathan' password=''"
-	conn = psycopg2.connect(conn_string)
-	return conn, conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    conn_string = os.environ['DB_URL']
+    conn = psycopg2.connect(conn_string)
+    return conn, conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     
 
 def process(log_file):
@@ -67,7 +68,6 @@ def sub_process(ld):
                 counter[date.year][date.month][date.day][date.hour] = 0
                 
             counter[date.year][date.month][date.day][date.hour] = counter[date.year][date.month][date.day][date.hour] + 1
-            
                 
     
 if __name__ == '__main__':
@@ -76,7 +76,7 @@ if __name__ == '__main__':
     log_file = open(args.log_file, 'r')
     
     if args.log_type == 'nginx':
-        print 'Parsing nginx log \'%s\' for Node %s' % (args.log_file, args.node_id, ) 
+        print 'Parsing nginx log \'%s\' for Node %s.' % (args.log_file, args.node_id, ) 
         process(log_file)
     
         for k_year, v_year in counter.items():
@@ -84,14 +84,14 @@ if __name__ == '__main__':
                 for k_day, v_day in v_month.items():
                     for k_hour, v_hour in v_day.items():
                         
-                        cursor.execute("SELECT * FROM node_access WHERE node_id=%s AND year=%s AND month=%s AND day=%s AND hour=%s", 
+                        cursor.execute("SELECT * FROM node_access WHERE nodeid=%s AND year=%s AND month=%s AND day=%s AND hour=%s", 
                             (NODE_ID, k_year, k_month, k_day, k_hour,))
                         
                         record = cursor.fetchone()
 
                         if record is None:
                             # INSERT A NEW RECORD
-                            cursor.execute("INSERT INTO node_access (node_id, year, month, day, hour, pages_served) VALUES (%s, %s, %s, %s, %s, %s)", 
+                            cursor.execute("INSERT INTO node_access (nodeid, year, month, day, hour, pages_served) VALUES (%s, %s, %s, %s, %s, %s)", 
                                 ( NODE_ID, k_year, k_month, k_day, k_hour, v_hour,))
                         
                         else:
@@ -99,13 +99,14 @@ if __name__ == '__main__':
                             cursor.execute("UPDATE node_access set pages_served = %s WHERE ID=%s", 
                                 (record['pages_served'] + v_hour, record['id']))
                         
-    elif args.log_type == 'clients':
-        raise Exception('Clients Parsing is not yet implemented')
+    elif args.log_type == 'captiveportal':
+        raise Exception('Captive Portal log parsing is not yet implemented')
         
     else:
         raise Exception('Unknown log_type specified.')
         
     conn.commit()
+    print 'Parsing complete.'  
     
 
 #REGEX RESULT FOR NGINX PARSING
@@ -124,7 +125,7 @@ if __name__ == '__main__':
 '''
 CREATE TABLE node_access (
     id          serial PRIMARY KEY,
-    node_id     integer NOT NULL,
+    nodeid      integer NOT NULL,
     year        integer NOT NULL,
     month       integer NOT NULL,
     day         integer NOT NULL,
