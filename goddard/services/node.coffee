@@ -4,6 +4,7 @@ module.exports = exports = (app) ->
 	# pull in required modules
 	S 				= require('string')
 	exec 			= require('child_process').exec
+	fs 				= require('fs')
 
 	# start the Nodes service
 	Nodes = {}
