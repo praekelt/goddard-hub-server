@@ -25,7 +25,7 @@ module.exports = exports = (app) ->
 
 					# try to find the app they are refereing to ...
 					exec = require('child_process').exec;
-					exec 'cd ' + process.env.PLAYBOOK_DIR + ' && ansible-playbook -i inventory.py -l ' + param_target_str + ' node.yml >> /var/log/goddard.build.log', (error, stdout, stderr) ->
+					exec 'cd ' + process.env.PLAYBOOK_DIR + ' && ansible-playbook -i inventory.py -l ' + param_target_str + ' node.yml', (error, stdout, stderr) ->
 						console.log('stdout: ' + stdout)
 						console.log('stderr: ' + stderr)
 						if error != null
