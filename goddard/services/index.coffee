@@ -4,6 +4,8 @@ module.exports = exports = (app) ->
 	# load in our modules
 	app.set('services', {
 
-			users: require('./users')(app)
+			build: require('./build')(app),
+			node: require('./node')(app),
+			metric: require('./metric')(app)
 
 		})

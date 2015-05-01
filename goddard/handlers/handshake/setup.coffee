@@ -15,94 +15,36 @@ module.exports = exports = (app) ->
 		# read in the public key from environ
 		param_public_key = process.env.NODE_PUBLIC_KEY or ''
 
-		# get the highest ports
-		app.get('models').nodes.max('port').then((port) ->
+		# update the
 
-			# check the port
-			if port
-				if port < 15000
-					port = port + 15000
-			else
-				port = 15000
+		# create / find a node
+		app.get('services').node.find param_mac_addr, param_public_key, (err, node_obj) =>
 
-			# create the node if it doesn't exist
-			app.get('models').nodes.findOrCreate({
+			# ok so now save the key
+			app.get('services').node.saveKey node_obj, param_public_key, (err) =>
 
-					where: {
+				# set the new public key
+				node_obj.publickey = param_public_key
 
-						macaddr: param_mac_addr
+				# awesome so update for any missing properties
+				app.get('services').node.update node_obj, (err, node_obj) =>
 
-					}, 
-					defaults: {
+					# get the node
+					node_obj = node_obj.get()
 
-						serial: '',
-						groups: [],
-						server: process.env.TUNNEL_SERVER or 'goddard.io.co.za',
-						port: (port + 1),
-						mport: (port + 2),
-						macaddr: param_mac_addr,
-						publickey: param_public_key,
+					# format the response to send
+					app.get('services').node.formatResponse node_obj, (err, public_response_obj) =>
 
-						lat: null,
-						lng: null,
+						# try to start a build
+						app.get('services').build.create node_obj.serial, (err, build_obj) ->
 
-						lastping: new Date()
+							# and ... ?
+							console.log 'build reported back and running now'
 
-					}
-
-				}).then((returned_values) ->
-
-					# get a local obj to work with
-					node_obj = returned_values[0]
-					created = returned_values[1] == true
-
-					# handle run done
-					handleRunDone = =>
-
-						# update
-						if not node_obj.serial
-							node_obj.serial = S(node_obj.id).padLeft(4, '0').s
-
-						# save it
-						node_obj.save().then ->
-
-							# get the node
-							node_obj = node_obj.get()
-
-							# output
-							res.json {
-
-								'name': node_obj.name,
-								'serial': S( node_obj.id ).padLeft(5, '0').s,
-								'port': {
-
-									'tunnel': node_obj.port,
-									'monitor': node_obj.mport
-
-								},
-								'uid': node_obj.id,
-								'server': node_obj.server,
-								'publickey': param_public_key
-
-							}
-
-					# check if we match ..
-					if '' + node_obj.publickey != '' + param_public_key
-
-						# write the key to the autherised hosts
-						fs.appendFile '/home/node/.ssh/authorized_keys', param_public_key + '\n', (err) ->
-
-							# write the key to allow access
-							console.dir err
-
-							# cool so save that
-							node_obj.publickey = param_public_key
-
-							# just continue now
-							handleRunDone()
-
-					else handleRunDone()
-						
-			)
-
-		)
+							# start the actual build
+							app.get('services').build.run(build_obj, ->
+								console.log('build done ...')
+							)
+							
+						# output
+						res.json public_response_obj
