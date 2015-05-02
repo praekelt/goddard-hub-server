@@ -12,8 +12,18 @@ block content
 					label(for="") Name
 					input.form-control(name="name",type="text")
 				.form-group
-					label(for="") Image
-					input.form-control(name="image",type="text")
+					label(for="") Key
+					input.form-control(name="key",type="text")
+				.form-group
+					label(for="") Captive Portal
+					select.form-control(name="portal")
+						option(value="0") No
+						option(value="1") Yes
+				.form-group
+					label(for="") Visiblity
+					select.form-control(name="visible")
+						option(value="1") Visible in Portal
+						option(value="0") Hidden in Portal
 				.form-group
 					label(for="") Description
 					textarea.form-control(name="description")

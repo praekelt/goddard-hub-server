@@ -1,6 +1,9 @@
 # acts as the homepage for the dashboard
 module.exports = exports = (app) ->
 
+	# required modules
+	S = require('string')
+
 	# the homepage for load balancer
 	app.get '/apps/:appid', app.get('middleware').checkLoggedIn, (req, res) -> 
 
@@ -28,6 +31,9 @@ module.exports = exports = (app) ->
 
 			item_obj.name = req.body.name
 			item_obj.description = req.body.description
-			item_obj.image = req.body.image
+			item_obj.key = req.body.key
+			item_obj.portal = req.body.portal == '1'
+			item_obj.visible = req.body.visible == '1'
+			item_obj.slug = S(req.body.name).slugify().s
 			item_obj.save().then -> res.redirect '/apps'
 		)
