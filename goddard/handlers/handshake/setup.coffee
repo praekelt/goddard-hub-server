@@ -46,7 +46,7 @@ module.exports = exports = (app) ->
 									console.log('build done ...')
 								)
 
-							, 1000*15)
+							, 1000*90)
 							
 						# output
 						res.json public_response_obj
