@@ -52,8 +52,6 @@ module.exports = exports = (app) ->
 			item_obj.description = param_description_str
 			item_obj.save().then -> 
 
-				console.log("DELETE FROM installs WHERE groupId=" + group_obj.id)
-
 				# delete all installs
 				app.get('sequelize_instance')
 				.query("DELETE FROM installs WHERE \"groupId\"=" + group_obj.id)
