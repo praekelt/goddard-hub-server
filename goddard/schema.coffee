@@ -26,14 +26,27 @@ module.exports = exports = (app) ->
 	})
 
 	# set the models
+	Models.node_access = sequelize.define('node_dashboard_page_view', {
+
+		nodeId: { type: Sequelize.INTEGER, field: 'nodeId' }
+		h1: { type: Sequelize.INTEGER, field: 'h1' }
+		h24: { type: Sequelize.INTEGER, field: 'h24' }
+		h48: { type: Sequelize.INTEGER, field: 'h48' }
+		d7: { type: Sequelize.INTEGER, field: 'd7' }
+		d31: { type: Sequelize.INTEGER, field: 'd31' }
+		d365: { type: Sequelize.INTEGER, field: 'd365' }
+		allTime: { type: Sequelize.INTEGER, field: 'allTime' }
+		timestamp: { type: Sequelize.INTEGER, field: 'timestamp' }
+
+	})
+
+	# set the models
 	Models.node_access = sequelize.define('node_access', {
 
-		nodeid: { type: Sequelize.INTEGER, field: 'nodeid' }
-		year: { type: Sequelize.INTEGER, field: 'year' }
-		month: { type: Sequelize.INTEGER, field: 'month' }
-		day: { type: Sequelize.INTEGER, field: 'day' }
-		hour: { type: Sequelize.INTEGER, field: 'hour' }
-		pages_served: { type: Sequelize.INTEGER, field: 'pages_served' }
+		nodeId: { type: Sequelize.INTEGER, field: 'nodeId' }
+		appId: { type: Sequelize.INTEGER, field: 'appId' }
+		hourLoggedAt: { type: Sequelize.INTEGER, field: 'hourLoggedAt' }
+		pagesServed: { type: Sequelize.INTEGER, field: 'pagesServed' }
 
 	})
 
