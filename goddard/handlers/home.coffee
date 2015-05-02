@@ -4,6 +4,27 @@ module.exports = exports = (app) ->
 	# runs the db migration
 	app.get '/sync', (req, res) -> 
 		app.get('sequelize_instance').sync({})
+		app.get('models').groups.create({
+
+			id:1, 
+			name:'Default', 
+			description:'Default group',
+			key: 'default'
+		
+		}, null, {validate: false})
+		app.get('models').apps.create({
+
+			id:1, 
+			name:'Captive Portal', 
+			description:'The default captive portal for the nodes',
+			key: 'captiveportal',
+			slug: 'captive-portal',
+			visible: false,
+			portal: true
+
+		}, null, {validate: false})
+		app.get('sequelize_instance')
+		.query('INSERT INTO installs(id, "groupId", "appId", "createdAt", "updatedAt") VALUES(1,1,1,now(),now())')
 		res.json { status: 'ok' }
 
 	# the homepage for load balancer
