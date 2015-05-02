@@ -23,6 +23,7 @@ module.exports = exports = (app) ->
 
 		# get the params
 		param_name_str			= req.body.name
+		param_key_str			= req.body.key
 		param_description_str	= req.body.description
 		param_application_strs 		= req.body.applications
 
@@ -39,10 +40,6 @@ module.exports = exports = (app) ->
 
 			# get that app
 			app.get('models').apps.find( 1 * app_id_str ).then (app_obj) ->
-
-				console.dir group_obj.addInstall
-				console.dir group_obj.addApp
-				console.dir group_obj.addApps
 
 				# create and save it
 				group_obj.addApp(app_obj)

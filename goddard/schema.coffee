@@ -30,6 +30,7 @@ module.exports = exports = (app) ->
 	Models.node_access = sequelize.define('node_dashboard_page_view', {
 
 		nodeId: { type: Sequelize.INTEGER, field: 'nodeId' }
+		appId: { type: Sequelize.INTEGER, field: 'appId' }
 		h1: { type: Sequelize.INTEGER, field: 'h1' }
 		h24: { type: Sequelize.INTEGER, field: 'h24' }
 		h48: { type: Sequelize.INTEGER, field: 'h48' }
