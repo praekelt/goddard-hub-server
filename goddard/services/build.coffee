@@ -12,7 +12,7 @@ module.exports = exports = (app) ->
 	Build.buildPath = (target_str, fn) ->
 
 		# done
-		fn null, 'cd ' + process.env.PLAYBOOK_DIR + ' && ansible-playbook -i inventory.py -l ' + target_str + ' node.yml'
+		fn null, 'cd ' + process.env.PLAYBOOK_DIR + ' && ANSIBLE_HOST_KEY_CHECKING=no ansible-playbook -i inventory.py -l ' + target_str + ' node.yml'
 
 	# run a build and update using the build obj given
 	Build.run = (build_obj, fn) ->
