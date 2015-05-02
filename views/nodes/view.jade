@@ -1,6 +1,12 @@
 extends ../layout
 
 block content
+	-if(item_obj.warnings && item_obj.warnings.length > 0)
+		.alert.alert-warning 
+			ul
+				-each warning_str in item_obj.warnings
+					li #{warning_str}
+	// .alert.alert-danger NODE IS DOWN
 	.row
 		.col-md-12
 			.row
@@ -18,11 +24,6 @@ block content
 										p #{item_obj.name}
 									-else
 										p N/A
-							//
-								tr
-									td(style="text-align:left;",colspan="2")
-										strong Location
-										p Address Here
 							tr
 								td(style="text-align:left;")
 									strong Group
@@ -31,11 +32,6 @@ block content
 										a(href="/groups/" + group_obj.id) #{group_obj.name}
 									-else
 										a(href="/nodes/" + item_obj.id + '/edit') None
-							//
-								tr
-									td(style="text-align:left;")
-										strong Country
-									td(style="text-align:right;vertical-align:middle;width:30%;") Kenya
 							tr
 								td(style="text-align:left;",colspan="2")
 									strong Last Report
@@ -44,6 +40,14 @@ block content
 								td(style="text-align:left;",colspan="2")
 									strong Provisioned
 									p #{item_obj.createdAt}
+							tr
+								td(style="text-align:left;")
+									strong BGAN Signal
+								td(style="text-align:right;vertical-align:middle;width:30%;") 
+									-if(metrics && metrics.devices && metrics.devices.bgan_signal)
+										| #{metrics.devices.bgan_signal}
+									-else
+										strong N/A
 							tr
 								td(style="text-align:left;")
 									strong BGAN Temp
@@ -113,9 +117,9 @@ block content
 								td(style="text-align:left;")
 									strong Relays
 								td(style="text-align:right;vertical-align:middle;width:30%;")
-									-if(metrics && metrics.system && (metrics.system.relays || '').split(' ').length > 1)
-										-each relay_item in (metrics.system.relays || '').split(' ')
-											span.label.label-success(style="margin-left: 5px;") #{relay_item.toUpperCase()}
+									-if(metrics && metrics.devices)
+										-each relay_item in (metrics.devices.relays || '').split(' ')
+											span.label.label-warning(style="margin-left: 5px;") #{relay_item.toUpperCase()}
 									-else
 										strong N/A
 							tr
@@ -127,11 +131,6 @@ block content
 											span.label.label-success(style="margin-left: 5px;") #{raid_item.toUpperCase()}
 									-else
 										strong N/A
-							tr
-								td(style="text-align:left;")
-									strong Status
-								td(style="text-align:right;vertical-align:middle;width:30%;")
-									span.label.label-success(style="margin-right:5px;") Active
 									
 				.col-md-6
 					.pull-right
@@ -167,28 +166,28 @@ block content
 							.col-md-12
 								center
 									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.pages.h24 || 0}
-									h3(style="margin-top:0;") 24 Hours
+									h4(style="margin-top:0;") 24 Hours
 				.col-md-3
 					.jumbotron(style="padding-left: 0;padding-right: 0;")
 						.row
 							.col-md-12
 								center
 									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.pages.h48 || 0}
-									h3(style="margin-top:0;") 48 Hours
+									h4(style="margin-top:0;") 48 Hours
 				.col-md-3
 					.jumbotron(style="padding-left: 0;padding-right: 0;")
 						.row
 							.col-md-12
 								center
 									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.pages.d7 || 0}
-									h3(style="margin-top:0;") 7 Days
+									h4(style="margin-top:0;") 7 Days
 				.col-md-3
 					.jumbotron(style="padding-left: 0;padding-right: 0;")
 						.row
 							.col-md-12
 								center
 									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.pages.d31 || 0}
-									h3(style="margin-top:0;") 31 Days
+									h4(style="margin-top:0;") 31 Days
 
 
 

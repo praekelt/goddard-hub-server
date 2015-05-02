@@ -52,8 +52,8 @@ module.exports = exports = (app) ->
 
 			item_obj.name = req.body.name
 			item_obj.description = req.body.description
+			item_obj.enabled = req.body.status == 'enabled'
 			item_obj.groupId = group_int
-			item_obj.status = req.body.status
 			item_obj.save().then -> res.redirect '/nodes/' + item_obj.get().id
 
 		)

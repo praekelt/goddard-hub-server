@@ -9,23 +9,21 @@ block content
 			br
 			form.form(action="/nodes/" + item_obj.id + '/edit',method="post")
 				.form-group
-					label(for="") Name
+					label(for="name") Name
 					input.form-control(name="name",type="text",value=post_params.name || item_obj.name)
 				.form-group
-					label(for="") Group
+					label(for="group") Group
 					select.form-control(name="group")
 						option(value="none") None
 						-each group_obj in group_objs
 							option(value=group_obj.id,selected=item_obj.groupId==group_obj.id) #{group_obj.name}
 				.form-group
-					label(for="") Status
+					label(for="status") Status
 					select.form-control(name="status")
-						option(value="active",selected=item_obj.status == 'active') Active
-						option(value="warning",selected=item_obj.status == 'warning') Warning
-						option(value="error",selected=item_obj.status == 'error') Error
-						option(value="disabled",selected=item_obj.status == 'disabled') Disabled
+						option(value="enabled",selected=item_obj.enabled == true) Enabled
+						option(value="disabled",selected=item_obj.enabled == null || item_obj.enabled == false) Disabled
 				.form-group
-					label(for="") Notes
+					label(for="notes") Notes
 					textarea.form-control(name="description",rows="7") #{post_params.description || item_obj.description}
 
 				button.btn.btn-primary.btn-lg UPDATE

@@ -7,6 +7,71 @@ module.exports = exports = (app) ->
 	# start the Metric service
 	Metric = {}
 
+	# Checks for warnings
+	Metric.check = (node_obj, metric_obj, fn) ->
+
+		# errors to save
+		warning_strs = []
+
+		# handle it
+		if metric_obj.bgan
+
+			# check the temp
+			if metric_obj.bgan.temp
+				if metric_obj.bgan.temp > 50
+					warning_strs.push "BGAN temperature seems high at " + metric_obj.bgan.temp "C"
+			else
+				warning_strs.push "BGAN temperature is missing, presuming bad."
+
+			# check the temp
+			if metric_obj.bgan.signal
+				if metric_obj.bgan.signal < 30
+					warning_strs.push "BGAN signal is very low at " + metric_obj.bgan.signal
+			else
+				warning_strs.push "BGAN signal is missing, presuming bad."
+
+		else
+			warning_strs.push "BGAN doesn't seem to be connected."
+
+		# check the system
+		if metric_obj.node
+			# check disk
+			if metric_obj.node.memory
+				if metric_obj.node.memory
+					if metric_obj.node.memory.free <= 1024*1000*1000
+						warning_strs.push "Disk space on node is 1GB or under"
+				else
+					warning_strs.push "Node did not report back on free disk space"
+			else
+				warning_strs.push "Node did not report back on disk information"
+
+			# check disk
+			if metric_obj.node.load
+				if metric_obj.node.load
+					try
+						if 1 * metric_obj.node.load.split(' ')[0] >= 2
+							warning_strs.push "System load was over 2 for the last 5 minutes"
+					catch e
+						# nothing ..
+			else
+				warning_strs.push "Node did not report back on system load"
+
+			# check disk
+			if metric_obj.node.disk
+				if metric_obj.node.disk
+					if metric_obj.node.disk.free <= 10000
+						warning_strs.push "Disk space on node is 10GB or under"
+				else
+					warning_strs.push "Node did not report back on free disk space"
+			else
+				warning_strs.push "Node did not report back on disk information"
+		else
+			warning_strs.push "Node didn't report back any data."
+
+		# update with warnings
+		node_obj.warnings = warning_strs
+		node_obj.save().then(->fn(null, warning_strs)).catch(fn)
+
 	# updates the last ping of a node
 	Metric.addDeviceInfo = (node_obj, metric_obj, fn) ->
 
@@ -18,6 +83,7 @@ module.exports = exports = (app) ->
 			bgan_uptime: metric_obj.bgan.uptime,
 			bgan_lat: metric_obj.bgan.lat,
 			bgan_lng: metric_obj.bgan.lng,
+			bgan_signal: metric_obj.bgan.signal,
 
 			router_uptime: metric_obj.router.uptime,
 			wireless_uptime: metric_obj.wireless.uptime,

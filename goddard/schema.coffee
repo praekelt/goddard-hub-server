@@ -38,7 +38,7 @@ module.exports = exports = (app) ->
 		d31: { type: Sequelize.INTEGER, field: 'd31' }
 		d365: { type: Sequelize.INTEGER, field: 'd365' }
 		allTime: { type: Sequelize.INTEGER, field: 'allTime' }
-		timestamp: { type: Sequelize.INTEGER, field: 'timestamp' }
+		timestamp: { type: Sequelize.DATE, field: 'timestamp' }
 
 	})
 
@@ -90,7 +90,7 @@ module.exports = exports = (app) ->
 		address: { type: Sequelize.STRING(255), field: 'address' }
 		name: { type: Sequelize.STRING(255), field: 'name' }
 		description: { type: Sequelize.STRING(255), field: 'description' }
-		status: { type: Sequelize.STRING(32), field: 'status' }
+		warnings: { type: Sequelize.ARRAY(Sequelize.STRING(255)), field: 'warnings' }
 		comments: { type: Sequelize.TEXT, field: 'comments' }
 		port: { type: Sequelize.INTEGER, field: 'port' }
 		mport: { type: Sequelize.INTEGER, field: 'mport' },
@@ -99,7 +99,7 @@ module.exports = exports = (app) ->
 		lat: { type: Sequelize.FLOAT, field: 'lat' }
 		lng: { type: Sequelize.FLOAT, field: 'lng' }
 		lastping: { type: Sequelize.DATE, field: 'lastping' }
-		enabled: { type: Sequelize.BOOLEAN, field: 'enabled' },
+		enabled: { type: Sequelize.BOOLEAN, field: 'enabled' }
 
 	})
 
@@ -147,6 +147,7 @@ module.exports = exports = (app) ->
 		bgan_lat: { type: Sequelize.FLOAT, field: 'bgan_lat' },
 		bgan_lng: { type: Sequelize.FLOAT, field: 'bgan_lng' },
 		bgan_uptime: { type: Sequelize.FLOAT, field: 'bgan_uptime' },
+		bgan_signal: { type: Sequelize.FLOAT, field: 'bgan_signal' },
 		router_uptime: { type: Sequelize.FLOAT, field: 'mikrotik_uptime' },
 		wireless_uptime: { type: Sequelize.FLOAT, field: 'mikrotik_uptime' },
 		relays: { type: Sequelize.STRING(64), field: 'relays' }
