@@ -53,26 +53,21 @@ module.exports = exports = (app) ->
 	# loads in the key if the key has changed
 	Nodes.saveKey = (node_obj, param_public_key, fn) ->
 
-		# check if we match ..
-		if '' + node_obj.publickey != '' + param_public_key
+		# write the key to the autherised hosts
+		fs.appendFile '/home/node/.ssh/authorized_keys', param_public_key + '\n', (err) ->
 
-			# write the key to the autherised hosts
-			fs.appendFile '/home/node/.ssh/authorized_keys', param_public_key + '\n', (err) ->
+			# handle the error
+			if err
+				fn(err)
+				console.log 'saving key error:'
+				console.dir(err)
+			else
 
-				# handle the error
-				if err
-					fn(err)
-					console.log 'saving key error:'
-					console.dir(err)
-				else
+				# cool so save that
+				# node_obj.publickey = param_public_key
 
-					# cool so save that
-					# node_obj.publickey = param_public_key
-
-					# just continue now
-					fn()
-
-		else fn()
+				# just continue now
+				fn()
 
 	# updates with the existing nodes. Ensures that serial 
 	# and all missing fields are present
