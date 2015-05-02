@@ -63,9 +63,6 @@ module.exports = exports = (app) ->
 				console.dir(err)
 			else
 
-				# cool so save that
-				# node_obj.publickey = param_public_key
-
 				# just continue now
 				fn()
 
