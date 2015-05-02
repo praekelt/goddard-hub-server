@@ -13,7 +13,7 @@ module.exports = exports = (app) ->
 	Nodes.getNextTunnelPort = (fn) ->
 
 		# get the highest ports
-		app.get('models').nodes.max('port').then((port) ->
+		app.get('models').nodes.max('mport').then((port) ->
 
 			# check the port
 			if port
@@ -104,8 +104,8 @@ module.exports = exports = (app) ->
 						serial: '',
 						groups: [],
 						server: process.env.TUNNEL_SERVER or 'goddard.io.co.za',
-						port: (port + 1),
-						mport: (port + 2),
+						port: (port + 3),
+						mport: (port + 4),
 						macaddr: param_mac_addr,
 						publickey: param_public_key,
 
