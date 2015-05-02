@@ -111,6 +111,9 @@ module.exports = exports = (app) ->
 
 						groupId: 1,
 
+						enabled: true,
+						warnings: [],
+
 						lastping: new Date()
 
 					}

@@ -14,29 +14,29 @@ block content
 						.row
 							.col-md-12
 								center
-									h1(style="margin-bottom:0;font-size: 45px;") 56
-									h3(style="margin-top:0;") Active
+									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.nodes.active || 0}
+									h4(style="margin-top:0;") Active
 				.col-md-3
 					.jumbotron(style="padding-left: 0;padding-right: 0;background-color: #fcf8e3;")
 						.row
 							.col-md-12
 								center
-									h1(style="margin-bottom:0;font-size: 45px;") 3
-									h3(style="margin-top:0;") Warnings
+									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.nodes.warning || 0}
+									h4(style="margin-top:0;") Warnings
 				.col-md-3
 					.jumbotron(style="padding-left: 0;padding-right: 0;background-color: #f2dede;")
 						.row
 							.col-md-12
 								center
-									h1(style="margin-bottom:0;font-size: 45px;") 2
-									h3(style="margin-top:0;") Down
+									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.nodes.down || 0}
+									h4(style="margin-top:0;") Down
 				.col-md-3
 					.jumbotron(style="padding-left: 0;padding-right: 0;")
 						.row
 							.col-md-12
 								center
-									h1(style="margin-bottom:0;font-size: 45px;") 1
-									h3(style="margin-top:0;") Disabled
+									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.nodes.disabled || 0}
+									h4(style="margin-top:0;") Disabled
 
 			.row
 				.col-md-12
@@ -51,25 +51,25 @@ block content
 							.col-md-12
 								center
 									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.pages.h24 || 0}
-									h3(style="margin-top:0;") 24 Hours
+									h4(style="margin-top:0;") 24 Hours
 				.col-md-3
 					.jumbotron(style="padding-left: 0;padding-right: 0;")
 						.row
 							.col-md-12
 								center
 									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.pages.h48 || 0}
-									h3(style="margin-top:0;") 48 Hours
+									h4(style="margin-top:0;") 48 Hours
 				.col-md-3
 					.jumbotron(style="padding-left: 0;padding-right: 0;")
 						.row
 							.col-md-12
 								center
 									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.pages.d7 || 0}
-									h3(style="margin-top:0;") 7 Days
+									h4(style="margin-top:0;") 7 Days
 				.col-md-3
 					.jumbotron(style="padding-left: 0;padding-right: 0;")
 						.row
 							.col-md-12
 								center
 									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.pages.d31 || 0}
-									h3(style="margin-top:0;") 31 Days
+									h4(style="margin-top:0;") 31 Days

@@ -24,15 +24,18 @@ module.exports = exports = (app) ->
 					# update the last ping
 					app.get('services').metric.updateLastPing node_obj, metric_obj, (err, node_obj) ->
 
-						# get the public obj
-						node_obj = node_obj.get()
+						# check for warnings
+						app.get('services').metric.check node_obj, metric_obj, (err, warnings) ->
 
-						# update the metrics
-						app.get('services').metric.addSystemInfo node_obj, metric_obj, (err) ->
-							app.get('services').metric.addDeviceInfo node_obj, metric_obj, (err) ->
+							# get the public obj
+							node_obj = node_obj.get()
 
-								# respond done
-								res.json { status: 'ok' }
+							# update the metrics
+							app.get('services').metric.addSystemInfo node_obj, metric_obj, (err) ->
+								app.get('services').metric.addDeviceInfo node_obj, metric_obj, (err) ->
+
+									# respond done
+									res.json { status: 'ok' }
 
 			else 
 				res.json {status: 'error',message: 'No such node with that id was found registered ...'}
