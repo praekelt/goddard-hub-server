@@ -12,6 +12,9 @@ block content
 					label(for="") Name
 					input.form-control(name="name",type="text",value=post_params.name || item_obj.name)
 				.form-group
+					label(for="") Key
+					input.form-control(name="key",type="text",value=post_params.key || item_obj.key)
+				.form-group
 					label(for="") Description
 					textarea.form-control(name="description") #{post_params.description || item_obj.description}
 				.form-group

@@ -29,7 +29,7 @@ module.exports = exports = (app) ->
 				limit: req.requesting_pagination_limit,
 				where: filter_params
 
-			).then (result) ->
+			).then((result) ->
 
 				# render them out
 				res.render 'apps/list', {
@@ -40,6 +40,23 @@ module.exports = exports = (app) ->
 					offset: req.requesting_pagination_offset,
 					total_count: result.count,
 					current_page: req.requesting_pagination_page,
-					pages: Math.ceil( result.count / req.requesting_pagination_limit ),
+					pages: Math.ceil( result.count / req.requesting_pagination_limit )
 
-			}
+				}
+
+			).catch(->
+
+				# render them out
+				res.render 'apps/list', {
+
+					title: 'Registered apps',
+					items: [],
+					limit: req.requesting_pagination_limit,
+					offset: req.requesting_pagination_offset,
+					total_count: 0,
+					current_page: req.requesting_pagination_page,
+					pages: 0
+
+				}
+
+			)

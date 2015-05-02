@@ -21,19 +21,34 @@ module.exports = exports = (app) ->
 	Models.groups = sequelize.define('groups', {
 
 		name: { type: Sequelize.STRING(255), field: 'name' }
+		key: { type: Sequelize.STRING(255), field: 'key' }
 		description: { type: Sequelize.STRING(255), field: 'description' }
+
+	})
+
+	# set the models
+	Models.node_access = sequelize.define('node_dashboard_page_view', {
+
+		nodeId: { type: Sequelize.INTEGER, field: 'nodeId' }
+		appId: { type: Sequelize.INTEGER, field: 'appId' }
+		h1: { type: Sequelize.INTEGER, field: 'h1' }
+		h24: { type: Sequelize.INTEGER, field: 'h24' }
+		h48: { type: Sequelize.INTEGER, field: 'h48' }
+		d7: { type: Sequelize.INTEGER, field: 'd7' }
+		d31: { type: Sequelize.INTEGER, field: 'd31' }
+		d365: { type: Sequelize.INTEGER, field: 'd365' }
+		allTime: { type: Sequelize.INTEGER, field: 'allTime' }
+		timestamp: { type: Sequelize.INTEGER, field: 'timestamp' }
 
 	})
 
 	# set the models
 	Models.node_access = sequelize.define('node_access', {
 
-		nodeid: { type: Sequelize.INTEGER, field: 'nodeid' }
-		year: { type: Sequelize.INTEGER, field: 'year' }
-		month: { type: Sequelize.INTEGER, field: 'month' }
-		day: { type: Sequelize.INTEGER, field: 'day' }
-		hour: { type: Sequelize.INTEGER, field: 'hour' }
-		pages_served: { type: Sequelize.INTEGER, field: 'pages_served' }
+		nodeId: { type: Sequelize.INTEGER, field: 'nodeId' }
+		appId: { type: Sequelize.INTEGER, field: 'appId' }
+		hourLoggedAt: { type: Sequelize.INTEGER, field: 'hourLoggedAt' }
+		pagesServed: { type: Sequelize.INTEGER, field: 'pagesServed' }
 
 	})
 
@@ -52,9 +67,11 @@ module.exports = exports = (app) ->
 	Models.apps = sequelize.define('apps', {
 
 		name: { type: Sequelize.STRING(255), field: 'name' }
-		image: { type: Sequelize.STRING(255), field: 'image' }
+		key: { type: Sequelize.STRING(255), field: 'key' }
 		description: { type: Sequelize.STRING(255), field: 'description' }
 		slug: { type: Sequelize.STRING(255), field: 'slug' }
+		visible: { type: Sequelize.BOOLEAN, field: 'visible' }
+		portal: { type: Sequelize.BOOLEAN, field: 'portal' }
 
 	})
 

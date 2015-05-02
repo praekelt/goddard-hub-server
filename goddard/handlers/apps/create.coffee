@@ -3,6 +3,7 @@ module.exports = exports = (app) ->
 
 	# required modules
 	async = require('async')
+	S = require('string')
 
 	# the homepage for load balancer
 	app.get '/apps/create', (req, res) -> 
@@ -18,16 +19,21 @@ module.exports = exports = (app) ->
 	app.post '/apps/create', (req, res) -> 
 
 		# get the params
-		param_name_str			= req.body.name
-		param_description_str	= req.body.description
-		param_image_str			= req.body.image
+		param_name_str				= req.body.name
+		param_description_str		= req.body.description
+		param_key_str				= req.body.key
+		param_visible_str			= req.body.visible
+		param_portal_str			= req.body.portal
 
 		# output
 		group_obj = app.get('models').apps.build({
 
 				name: param_name_str,
 				description: param_description_str,
-				image: param_image_str
+				key: param_key_str,
+				visible: param_visible_str == '1',
+				portal: param_portal_str == '1',
+				slug: S(param_name_str).slugify().s
 
 			})
 
