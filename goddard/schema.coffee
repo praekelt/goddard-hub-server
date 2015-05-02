@@ -21,6 +21,7 @@ module.exports = exports = (app) ->
 	Models.groups = sequelize.define('groups', {
 
 		name: { type: Sequelize.STRING(255), field: 'name' }
+		key: { type: Sequelize.STRING(255), field: 'key' }
 		description: { type: Sequelize.STRING(255), field: 'description' }
 
 	})
