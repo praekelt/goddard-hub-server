@@ -109,6 +109,8 @@ module.exports = exports = (app) ->
 						lat: null,
 						lng: null,
 
+						groupId: 1,
+
 						lastping: new Date()
 
 					}
