@@ -38,6 +38,18 @@ module.exports = exports = (app) ->
 			if req.body.group == 'none'
 				group_int = null
 
+			# run a build against the node
+			node_obj = item_obj.get()
+			app.get('services').build.create node_obj.serial, (err, build_obj) ->
+
+				# and ... ?
+				console.log 'build reported back and running now'
+
+				# start the actual build
+				app.get('services').build.run(build_obj, ->
+					console.log('build done ...')
+				)
+
 			item_obj.name = req.body.name
 			item_obj.description = req.body.description
 			item_obj.groupId = group_int
