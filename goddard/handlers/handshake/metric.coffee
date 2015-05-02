@@ -13,23 +13,23 @@ module.exports = exports = (app) ->
 		nodeid 		= req.body.nodeid
 
 		# find the node by that id
-		app.get('models').nodes.find({ where: { id: 1 * nodeid } }).then((node_obj) ->
+		app.get('models').nodes.find(1 * nodeid).then((node_obj) ->
 
 			# did we find it ?
 			if node_obj
 
 				# get the metric objs
-				app.get('services').metrics.parse req.body, (err, metric_obj) ->
+				app.get('services').metric.parse req.body, (err, metric_obj) ->
 
 					# update the last ping
-					app.get('services').metrics.updateLastPing node_obj, metric_obj, (err, node_obj) ->
+					app.get('services').metric.updateLastPing node_obj, metric_obj, (err, node_obj) ->
 
 						# get the public obj
 						node_obj = node_obj.get()
 
 						# update the metrics
-						app.get('services').metrics.addSystemInfo node_obj, metric_obj, (err) ->
-							app.get('services').metrics.addDeviceInfo node_obj, metric_obj, (err) ->
+						app.get('services').metric.addSystemInfo node_obj, metric_obj, (err) ->
+							app.get('services').metric.addDeviceInfo node_obj, metric_obj, (err) ->
 
 								# respond done
 								res.json { status: 'ok' }
@@ -37,7 +37,8 @@ module.exports = exports = (app) ->
 			else 
 				res.json {status: 'error',message: 'No such node with that id was found registered ...'}
 
-		).catch ->
+		).catch (err) ->
+			console.dir err
 			res.json {
 
 				status: 'error',
