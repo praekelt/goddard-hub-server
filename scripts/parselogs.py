@@ -84,7 +84,7 @@ def get_app_id(cursor, log_type, file_name):
     cursor.execute('SELECT * FROM apps WHERE "key"=%s', (app_key, ))
     record = cursor.fetchone()    
     if record is None:
-        raise Exception("Could not find Application ID for Key: %s" % (app_key, ))
+        raise Exception("Could not find Application ID in the database for Key: %s" % (app_key, ))
     
     return record['id']            
     
