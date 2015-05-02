@@ -68,14 +68,40 @@ def sub_process(ld):
                 counter[date.year][date.month][date.day][date.hour] = 0
                 
             counter[date.year][date.month][date.day][date.hour] = counter[date.year][date.month][date.day][date.hour] + 1
-                
+            
+            
+def get_app_id(cursor, log_type, file_name):    
+    # Determine the applications key
+    
+    if log_type == 'nginx':
+        app_key = file_name.replace('.access.log','')
+    elif log_type == 'captiveportal':
+        app_key = "#TODO"
+    else:
+        raise Exception("Unknown Application Type")
+        
+    # Fetch the application id from the database
+    cursor.execute('SELECT * FROM apps WHERE "key"=%s', (app_key, ))
+    record = cursor.fetchone()    
+    if record is None:
+        raise Exception("Could not find Application ID in the database for Key: %s" % (app_key, ))
+    
+    return record['id']            
+    
+    
     
 if __name__ == '__main__':
     conn, cursor = db_connect();
 
     log_file = open(args.log_file, 'r')
     
+    #/var/log/nginx/mama.access.log
+    file_name = os.path.basename(args.log_file)
+    
     if args.log_type == 'nginx':
+        
+        app_id = get_app_id(cursor, args.log_type, file_name)
+        
         print 'Parsing nginx log \'%s\' for Node %s.' % (args.log_file, args.node_id, ) 
         process(log_file)
     
@@ -85,15 +111,15 @@ if __name__ == '__main__':
                     for k_hour, v_hour in v_day.items():
                         hourLoggedAt = "%s/%s/%s %s:00:00" % (k_year, k_month, k_day, k_hour)
                         
-                        cursor.execute('SELECT * FROM node_access WHERE "nodeId"=%s AND "hourLoggedAt"=%s', 
-                            (NODE_ID, hourLoggedAt, ))
+                        cursor.execute('SELECT * FROM node_access WHERE "nodeId"=%s AND "appId"=%s AND "hourLoggedAt"=%s', 
+                            (NODE_ID, app_id, hourLoggedAt, ))
                         
                         record = cursor.fetchone()
 
                         if record is None:
                             # INSERT A NEW RECORD
-                            cursor.execute('INSERT INTO node_access ("nodeId", "hourLoggedAt", "pagesServed") VALUES (%s, %s, %s)', 
-                                ( NODE_ID, hourLoggedAt, v_hour,))
+                            cursor.execute('INSERT INTO node_access ("nodeId", "appId", "hourLoggedAt", "pagesServed") VALUES (%s, %s, %s, %s)', 
+                                ( NODE_ID, app_id, hourLoggedAt, v_hour,))
                         
                         else:
                             # UPDATE AN EXISTING RECORD
@@ -126,10 +152,13 @@ if __name__ == '__main__':
 '''
 CREATE TABLE node_access (
     "id"              serial PRIMARY KEY,
+    "appId"           integer NOT NULL,
     "nodeId"          integer NOT NULL,
     "hourLoggedAt"    timestamp NOT NULL,
     "pagesServed"     integer NOT NULL    
 );
+
+
 '''
     
             
