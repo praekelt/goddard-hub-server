@@ -31,7 +31,8 @@ module.exports = exports = (app) ->
 		group_obj = app.get('models').groups.build({
 
 				name: param_name_str,
-				description: param_description_str
+				description: param_description_str,
+				key: param_key_str
 
 			})
 
