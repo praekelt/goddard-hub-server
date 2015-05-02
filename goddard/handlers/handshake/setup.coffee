@@ -38,10 +38,15 @@ module.exports = exports = (app) ->
 							# and ... ?
 							console.log 'build reported back and running now'
 
-							# start the actual build
-							app.get('services').build.run(build_obj, ->
-								console.log('build done ...')
-							)
+							# wait a few seconds to start the first build
+							setTimeout(=>
+
+								# start the actual build
+								app.get('services').build.run(build_obj, ->
+									console.log('build done ...')
+								)
+
+							, 1000*15)
 							
 						# output
 						res.json public_response_obj
