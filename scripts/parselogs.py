@@ -83,21 +83,22 @@ if __name__ == '__main__':
             for k_month, v_month in v_year.items():
                 for k_day, v_day in v_month.items():
                     for k_hour, v_hour in v_day.items():
+                        hourLoggedAt = "%s/%s/%s %s:00:00" % (k_year, k_month, k_day, k_hour)
                         
-                        cursor.execute("SELECT * FROM node_access WHERE nodeid=%s AND year=%s AND month=%s AND day=%s AND hour=%s", 
-                            (NODE_ID, k_year, k_month, k_day, k_hour,))
+                        cursor.execute('SELECT * FROM node_access WHERE "nodeId"=%s AND "hourLoggedAt"=%s', 
+                            (NODE_ID, hourLoggedAt, ))
                         
                         record = cursor.fetchone()
 
                         if record is None:
                             # INSERT A NEW RECORD
-                            cursor.execute("INSERT INTO node_access (nodeid, year, month, day, hour, pages_served) VALUES (%s, %s, %s, %s, %s, %s)", 
-                                ( NODE_ID, k_year, k_month, k_day, k_hour, v_hour,))
+                            cursor.execute('INSERT INTO node_access ("nodeId", "hourLoggedAt", "pagesServed") VALUES (%s, %s, %s)', 
+                                ( NODE_ID, hourLoggedAt, v_hour,))
                         
                         else:
                             # UPDATE AN EXISTING RECORD
-                            cursor.execute("UPDATE node_access set pages_served = %s WHERE ID=%s", 
-                                (record['pages_served'] + v_hour, record['id']))
+                            cursor.execute('UPDATE node_access set "pagesServed" = %s WHERE ID=%s', 
+                                (record['pagesServed'] + v_hour, record['id']))
                         
     elif args.log_type == 'captiveportal':
         raise Exception('Captive Portal log parsing is not yet implemented')
@@ -124,13 +125,10 @@ if __name__ == '__main__':
 # CREATE TABLE
 '''
 CREATE TABLE node_access (
-    id          serial PRIMARY KEY,
-    nodeid      integer NOT NULL,
-    year        integer NOT NULL,
-    month       integer NOT NULL,
-    day         integer NOT NULL,
-    hour        integer NOT NULL,
-    pages_served      integer NOT NULL    
+    "id"              serial PRIMARY KEY,
+    "nodeId"          integer NOT NULL,
+    "hourLoggedAt"    timestamp NOT NULL,
+    "pagesServed"     integer NOT NULL    
 );
 '''
     
