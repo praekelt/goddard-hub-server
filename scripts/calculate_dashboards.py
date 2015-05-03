@@ -16,18 +16,18 @@ def db_connect():
 
 def upsert(cursor, nodeid, stat):
     for app_id, astat in stat.items():
-        cursor.execute('SELECT id FROM node_dashboard_page_view WHERE "nodeId"=%s AND "appId"=%s', (node_id, app_id, ))
+        cursor.execute('SELECT id FROM node_dashboard_page_views WHERE "nodeId"=%s AND "appId"=%s', (node_id, app_id, ))
         row = cursor.fetchone()
         if row is None:
             # Record does not yet exist, lets add it. 
             print "Dashboard Calculations - Inserting node %s" % node_id
-            cursor.execute('INSERT INTO node_dashboard_page_view ("nodeId", "appId", "h1", "h24", "h48", "d7", "d31", "d365", "allTime") \
+            cursor.execute('INSERT INTO node_dashboard_page_views ("nodeId", "appId", "h1", "h24", "h48", "d7", "d31", "d365", "allTime") \
                 values (%s, %s, %s, %s, %s, %s, %s, %s, %s)', \
                 (node_id, app_id, astat['h1'], astat['h24'], astat['h48'], astat['d7'], astat['d31'], astat['d365'], astat['all_time'], ))
         else:
             # Record does exist, lets update.
             print "Dashboard Calculations - Updating node %s" % node_id
-            cursor.execute('UPDATE node_dashboard_page_view set "h1"=%s, "h24"=%s, "h48"=%s, "d7"=%s, "d31"=%s, "d365"=%s, \
+            cursor.execute('UPDATE node_dashboard_page_views set "h1"=%s, "h24"=%s, "h48"=%s, "d7"=%s, "d31"=%s, "d365"=%s, \
                 "allTime"=%s, timestamp=now() where "id"=%s',
                 (astat['h1'], astat['h24'], astat['h48'], astat['d7'], astat['d31'], astat['d365'], astat['all_time'], row['id'] ))
 
@@ -43,13 +43,13 @@ def upsert_mac(cursor, nodeid, stat):
     else:
         # Record does exist, lets update.
         print "Dashboard MAC Calculations - Updating node %s" % node_id
-        cursor.execute('UPDATE node_dashboard_page_view set "h1"=%s, "h24"=%s, "h48"=%s, "d7"=%s, "d31"=%s, "d365"=%s, \
+        cursor.execute('UPDATE node_dashboard_page_views set "h1"=%s, "h24"=%s, "h48"=%s, "d7"=%s, "d31"=%s, "d365"=%s, \
             "allTime"=%s, timestamp=now() where "id"=%s',
             (stat['h1'], stat['h24'], stat['h48'], stat['d7'], stat['d31'], stat['d365'], stat['all_time'], row['id'] ))
 
 
 def get_sum(cursor, node_id, app_id, target):
-    cursor.execute('SELECT SUM("pagesServed") FROM node_access WHERE "nodeId"=%s AND "appId"=%s AND "hourLoggedAt" >= %s', (node_id, app_id, target, ))
+    cursor.execute('SELECT SUM("pagesServed") FROM node_accesses WHERE "nodeId"=%s AND "appId"=%s AND "hourLoggedAt" >= %s', (node_id, app_id, target, ))
     r = cursor.fetchone()
     if r is None or r[0] is None: 
         return 0    
@@ -58,7 +58,7 @@ def get_sum(cursor, node_id, app_id, target):
         
         
 def get_mac_sum(cursor, node_id, target):
-    cursor.execute('SELECT count("id") FROM node_mac_access WHERE "nodeId"=%s AND "hourLoggedAt" >= %s', (node_id, target, ))
+    cursor.execute('SELECT count("id") FROM node_mac_accesses WHERE "nodeId"=%s AND "hourLoggedAt" >= %s', (node_id, target, ))
     r = cursor.fetchone()
     if r is None or r[0] is None: 
         return 0    
@@ -179,34 +179,3 @@ if __name__ == '__main__':
     
     
     conn.commit()    
-        
-        
-'''
-CREATE TABLE node_dashboard_page_view (
-    "id"              serial PRIMARY KEY,
-    "nodeId"          integer NOT NULL,
-    "appId"           integer NOT NULL,
-    "h1"              integer NOT NULL,
-	"h24"             integer NOT NULL,
-    "h48"             integer NOT NULL,
-    "d7"              integer NOT NULL,
-    "d31"             integer NOT NULL,
-	"d365"            integer NOT NULL,
-    "allTime"         integer NOT NULL, 
-    "timestamp"       timestamp default current_timestamp
-);
-
-CREATE TABLE node_dashboard_macs (
-    "id"              serial PRIMARY KEY,
-    "nodeId"          integer NOT NULL,
-    "h1"              integer NOT NULL,
-	"h24"             integer NOT NULL,
-    "h48"             integer NOT NULL,
-    "d7"              integer NOT NULL,
-    "d31"             integer NOT NULL,
-	"d365"            integer NOT NULL,
-    "allTime"         integer NOT NULL, 
-    "timestamp"       timestamp default current_timestamp
-);
-
-'''
