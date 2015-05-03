@@ -3,9 +3,50 @@ module.exports = exports = (app) ->
 
 	# pull in required modules
 	_ 				= require('underscore')
+	async			= require('async')
+	moment 			= require('moment')
 
 	# start the Metric service
 	Metric = {}
+
+	# saves the hosts
+	Metric.saveHosts = (node_obj, metric_obj, fn) ->
+
+		# sanity check
+		if metric_obj and metric_obj.router and metric_obj.router.hosts
+
+			# handle each item
+			handleEachMetricHost = (host_obj, cb) ->
+
+				# create the date
+				current_hour_block = moment({ hour: new Date().getHours(), second:0, minute:0 }).format('YYYY-MM-DD hh:00:00')
+
+				# create the node if it doesn't exist
+				app.get('models').node_mac_access.findOrCreate({
+
+						where: {
+
+							hourLoggedAt: moment(current_hour_block).toDate(),
+							macaddr: host_obj['mac-address']
+
+						}, 
+						defaults: {
+
+							nodeId: node_obj.id,
+							hourLoggedAt: current_hour_block,
+							macaddr: host_obj['mac-address'],
+							ip: host_obj['address']
+
+						}
+
+					}).then((returned_values) ->
+						cb(null)
+					).catch(cb)
+
+			# loop and insert them all
+			async.each(metric_obj.router.hosts or [], handleEachMetricHost, ->fn(null))
+
+		else fn(null) # return it
 
 	# Checks for warnings
 	Metric.check = (node_obj, metric_obj, fn) ->
