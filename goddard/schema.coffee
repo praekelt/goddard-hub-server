@@ -47,7 +47,7 @@ module.exports = exports = (app) ->
 
 		nodeId: { type: Sequelize.INTEGER, field: 'nodeId' }
 		appId: { type: Sequelize.INTEGER, field: 'appId' }
-		hourLoggedAt: { type: Sequelize.INTEGER, field: 'hourLoggedAt' }
+		hourLoggedAt: { type: Sequelize.DATE, field: 'hourLoggedAt' }
 		pagesServed: { type: Sequelize.INTEGER, field: 'pagesServed' }
 
 	})
