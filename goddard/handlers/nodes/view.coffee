@@ -56,20 +56,31 @@ module.exports = exports = (app) ->
 							.then((stat_objs)->
 
 								# try to get the stats
-								stat_obj = stat_objs[0][0]
+								pages_stat_obj = stat_objs[0][0]
 
-								res.render 'nodes/view', {
-									title: 'Node #' + item_obj.serial,
-									item_obj: item_obj,
-									group_obj: group_obj,
-									metrics: {
+								# delete all installs
+								app.get('sequelize_instance')
+								.query('SELECT SUM(h1) as h1, SUM(h24) as h24, SUM(h48) as h48, SUM(d7) as d7, SUM(d31) as d31, SUM(365) as d365 FROM node_dashboard_macs WHERE "nodeId" = ' + item_obj.id)
+								.then((stat_objs)->
 
-										devices: deviceinfo_objs,
-										system: systeminfo_objs,
-										pages: stat_obj
+									# try to get the stats
+									mac_stat_obj = stat_objs[0][0]
 
+									res.render 'nodes/view', {
+										title: 'Node #' + item_obj.serial,
+										item_obj: item_obj,
+										group_obj: group_obj,
+										metrics: {
+
+											devices: deviceinfo_objs,
+											system: systeminfo_objs,
+											pages: pages_stat_obj,
+											macs: mac_stat_obj
+
+										}
 									}
-								}
+
+								)
 
 							)
 		)
