@@ -53,12 +53,33 @@ module.exports = exports = (app) ->
 	})
 
 	# set the models
+	Models.node_mac_access = sequelize.define('node_mac_access', {
+
+		nodeId: { type: Sequelize.INTEGER, field: 'nodeId' }
+		hourLoggedAt: { type: Sequelize.DATE, field: 'hourLoggedAt' }
+		macaddr: { type: Sequelize.STRING(255), field: 'macaddr' }
+		ip: { type: Sequelize.STRING(255), field: 'ip' }
+
+	})
+
+	# set the models
+	Models.logs = sequelize.define('logs', {
+
+		buildId: { type: Sequelize.INTEGER, field: 'buildId' }
+		nodeId: { type: Sequelize.INTEGER, field: 'nodeId' }
+		ok: { type: Sequelize.INTEGER, field: 'source' }
+		changed: { type: Sequelize.INTEGER, field: 'source' }
+		unreachable: { type: Sequelize.INTEGER, field: 'source' }
+		failure: { type: Sequelize.INTEGER, field: 'source' }
+
+	})
+
+	# set the models
 	Models.builds = sequelize.define('builds', {
 
 		target: { type: Sequelize.STRING(255), field: 'target' }
 		source: { type: Sequelize.STRING(255), field: 'source' }
 		status: { type: Sequelize.INTEGER, field: 'status' }
-		result: { type: Sequelize.INTEGER, field: 'result' }
 		output: { type: Sequelize.TEXT, field: 'output' }
 
 	})

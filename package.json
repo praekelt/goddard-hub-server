@@ -19,7 +19,7 @@
     "express-session": "^1.10.4",
     "jade": "^1.9.2",
     "lodash": "^3.6.0",
-    "moment": "^2.9.0",
+    "moment": "^2.10.2",
     "pg": "^4.3.0",
     "pg-hstore": "^2.3.1",
     "request": "^2.55.0",
