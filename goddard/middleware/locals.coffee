@@ -29,8 +29,6 @@ module.exports = exports = (app) ->
 						# set the requesting user
 						req.requesting_user_obj = user_response_obj.get()
 
-						console.dir req.requesting_user_obj
-
 						# set as a local
 						res.locals.user_obj = req.requesting_user_obj
 
