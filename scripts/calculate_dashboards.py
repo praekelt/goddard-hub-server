@@ -21,9 +21,9 @@ def upsert(cursor, nodeid, stat):
         if row is None:
             # Record does not yet exist, lets add it. 
             print "Dashboard Calculations - Inserting node %s" % node_id
-            cursor.execute('INSERT INTO node_dashboard_page_views ("nodeId", "appId", "h1", "h24", "h48", "d7", "d31", "d365", "allTime") \
-                values (%s, %s, %s, %s, %s, %s, %s, %s, %s)', \
-                (node_id, app_id, astat['h1'], astat['h24'], astat['h48'], astat['d7'], astat['d31'], astat['d365'], astat['all_time'], ))
+            cursor.execute('INSERT INTO node_dashboard_page_views ("nodeId", "appId", "h1", "h24", "h48", "d7", "d31", "d365", "allTime", "createdAt", "updatedAt") \
+                values (%s, %s, %s, %s, %s, %s, %s, %s, %s, now(), now())', \
+                (node_id, app_id, astat['h1'], astat['h24'], astat['h48'], astat['d7'], astat['d31'], astat['d365'], astat['all_time'],))
         else:
             # Record does exist, lets update.
             print "Dashboard Calculations - Updating node %s" % node_id
@@ -37,9 +37,9 @@ def upsert_mac(cursor, nodeid, stat):
     if row is None:
         # Record does not yet exist, lets add it. 
         print "Dashboard MAC Calculations - Inserting node %s" % node_id
-        cursor.execute('INSERT INTO node_dashboard_macs ("nodeId", "h1", "h24", "h48", "d7", "d31", "d365", "allTime") \
-            values (%s, %s, %s, %s, %s, %s, %s, %s)', \
-            (node_id, stat['h1'], stat['h24'], stat['h48'], stat['d7'], stat['d31'], stat['d365'], stat['all_time'], ))
+        cursor.execute('INSERT INTO node_dashboard_macs ("nodeId", "h1", "h24", "h48", "d7", "d31", "d365", "allTime", "createdAt", "updatedAt") \
+            values (%s, %s, %s, %s, %s, %s, %s, %s, now(), now())', \
+            (node_id, stat['h1'], stat['h24'], stat['h48'], stat['d7'], stat['d31'], stat['d365'], stat['all_time'] ))
     else:
         # Record does exist, lets update.
         print "Dashboard MAC Calculations - Updating node %s" % node_id
