@@ -16,15 +16,28 @@ module.exports = exports = (app) ->
 
 			id:1, 
 			name:'Captive Portal', 
-			description:'The default captive portal for the nodes',
+			description:'The default captive portal for the Goddard platform.',
 			key: 'captiveportal',
 			slug: 'captive-portal',
 			visible: false,
 			portal: true
 
 		}, null, {validate: false})
+		app.get('models').apps.create({
+
+			id:2, 
+			name:'MAMA', 
+			description:'The Mobile Alliance for Maternal Action (MAMA) is a global movement that seeks to use mobile technologies to improve the health and lives of mothers in developing nations.',
+			key: 'mama',
+			slug: 'mama',
+			visible: true,
+			portal: false
+
+		}, null, {validate: false})
 		app.get('sequelize_instance')
 		.query('INSERT INTO installs(id, "groupId", "appId", "createdAt", "updatedAt") VALUES(1,1,1,now(),now())')
+		app.get('sequelize_instance')
+		.query('INSERT INTO installs(id, "groupId", "appId", "createdAt", "updatedAt") VALUES(1,1,2,now(),now())')
 		res.json { status: 'ok' }
 
 	# the homepage for load balancer
