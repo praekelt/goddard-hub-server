@@ -147,11 +147,9 @@ CREATE TABLE node_mac_access (
     "id"              serial PRIMARY KEY,
     "nodeId"          integer NOT NULL,
     "hourLoggedAt"    timestamp NOT NULL,
-    "mac"             character varying(30) NOT NULL,    
+    "macaddr"             character varying(30) NOT NULL,    
     "ip"              character varying(15) NOT NULL
 );
-
-
 '''
     
             
