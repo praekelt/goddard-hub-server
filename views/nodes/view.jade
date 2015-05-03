@@ -1,5 +1,15 @@
 extends ../layout
 
+block scripts
+	script.
+		$("#btn_force_update").click(function(){
+			$.ajax({
+				url: '/build.json?target={{item_obj.serial}}'
+			});
+			alert("Update has been queued");
+			$("#btn_force_update").hide();
+		});
+
 block content
 	-if(item_obj.warnings && item_obj.warnings.length > 0)
 		.alert.alert-warning 
@@ -145,8 +155,10 @@ block content
 									
 				.col-md-6
 					.pull-right
-						a.btn.btn-primary(href="/nodes/" + item_obj.id + "/edit") Edit
-					h4 Location:
+						a.btn.btn-primary(href="/nodes/" + item_obj.id + "/edit") Edit Node Details
+						| &nbsp;
+						a.btn.btn-primary#btn_force_update(href="#") Force Update
+					.clearfix
 					center
 						br
 						#map-canvas.map-canvas(style="border: 1px solid #666;min-width: 150px;width: 100%;height:600px;")
@@ -159,6 +171,42 @@ block content
 					.col-md-12
 						h4 Notes:
 						p #{item_obj.description}
+
+			.row
+
+				.col-md-12
+					.page-header
+						h1 Wifi Clients
+			
+			.row
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.macs.h24 || 0}
+									h4(style="margin-top:0;") 24 Hours
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.macs.h48 || 0}
+									h4(style="margin-top:0;") 48 Hours
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.macs.d7 || 0}
+									h4(style="margin-top:0;") 7 Days
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.macs.d31 || 0}
+									h4(style="margin-top:0;") 31 Days
 
 			.row
 				.col-md-12

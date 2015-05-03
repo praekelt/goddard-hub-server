@@ -27,7 +27,22 @@ module.exports = exports = (app) ->
 	})
 
 	# set the models
-	Models.node_access = sequelize.define('node_dashboard_page_view', {
+	Models.node_dashboard_macs = sequelize.define('node_dashboard_macs', {
+
+		nodeId: { type: Sequelize.INTEGER, field: 'nodeId' }
+		h1: { type: Sequelize.INTEGER, field: 'h1' }
+		h24: { type: Sequelize.INTEGER, field: 'h24' }
+		h48: { type: Sequelize.INTEGER, field: 'h48' }
+		d7: { type: Sequelize.INTEGER, field: 'd7' }
+		d31: { type: Sequelize.INTEGER, field: 'd31' }
+		d365: { type: Sequelize.INTEGER, field: 'd365' }
+		allTime: { type: Sequelize.INTEGER, field: 'allTime' }
+		timestamp: { type: Sequelize.DATE, field: 'timestamp' }
+
+	})
+
+	# set the models
+	Models.node_dashboard_page_view = sequelize.define('node_dashboard_page_view', {
 
 		nodeId: { type: Sequelize.INTEGER, field: 'nodeId' }
 		appId: { type: Sequelize.INTEGER, field: 'appId' }

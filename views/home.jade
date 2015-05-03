@@ -39,6 +39,42 @@ block content
 									h4(style="margin-top:0;") Disabled
 
 			.row
+
+				.col-md-12
+					.page-header
+						h1 Wifi Clients
+			
+			.row
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.macs.h24 || 0}
+									h4(style="margin-top:0;") 24 Hours
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.macs.h48 || 0}
+									h4(style="margin-top:0;") 48 Hours
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.macs.d7 || 0}
+									h4(style="margin-top:0;") 7 Days
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.macs.d31 || 0}
+									h4(style="margin-top:0;") 31 Days
+
+			.row
 				.col-md-12
 					.page-header
 						h1
