@@ -10,7 +10,6 @@ import os
 parser = argparse.ArgumentParser()
 parser.add_argument('--log_file', help='The full path/filename of the log file to parse.', required=True)
 parser.add_argument('--node_id', help='The id of the Node.', required=True)
-parser.add_argument('--log_type', help="The type of log file being parsed. Options are 'nginx' or 'captiveportal'.", required=True)
 args = parser.parse_args()
 
 #################################
@@ -70,15 +69,9 @@ def sub_process(ld):
             counter[date.year][date.month][date.day][date.hour] = counter[date.year][date.month][date.day][date.hour] + 1
             
             
-def get_app_id(cursor, log_type, file_name):    
-    # Determine the applications key
-    
-    if log_type == 'nginx':
-        app_key = file_name.replace('.access.log','')
-    elif log_type == 'captiveportal':
-        app_key = "#TODO"
-    else:
-        raise Exception("Unknown Application Type")
+def get_app_id(cursor, file_name):    
+    # Determine the applications key from the file name.
+    app_key = file_name.replace('.access.log','')
         
     # Fetch the application id from the database
     cursor.execute('SELECT * FROM apps WHERE "key"=%s', (app_key, ))
@@ -97,40 +90,32 @@ if __name__ == '__main__':
     
     #/var/log/nginx/mama.access.log
     file_name = os.path.basename(args.log_file)
+            
+    app_id = get_app_id(cursor, file_name)
     
-    if args.log_type == 'nginx':
-        
-        app_id = get_app_id(cursor, args.log_type, file_name)
-        
-        print 'Parsing nginx log \'%s\' for Node %s.' % (args.log_file, args.node_id, ) 
-        process(log_file)
-    
-        for k_year, v_year in counter.items():
-            for k_month, v_month in v_year.items():
-                for k_day, v_day in v_month.items():
-                    for k_hour, v_hour in v_day.items():
-                        hourLoggedAt = "%s/%s/%s %s:00:00" % (k_year, k_month, k_day, k_hour)
-                        
-                        cursor.execute('SELECT * FROM node_access WHERE "nodeId"=%s AND "appId"=%s AND "hourLoggedAt"=%s', 
-                            (NODE_ID, app_id, hourLoggedAt, ))
-                        
-                        record = cursor.fetchone()
+    print 'Parsing nginx log \'%s\' for Node %s.' % (args.log_file, args.node_id, ) 
+    process(log_file)
 
-                        if record is None:
-                            # INSERT A NEW RECORD
-                            cursor.execute('INSERT INTO node_access ("nodeId", "appId", "hourLoggedAt", "pagesServed") VALUES (%s, %s, %s, %s)', 
-                                ( NODE_ID, app_id, hourLoggedAt, v_hour,))
-                        
-                        else:
-                            # UPDATE AN EXISTING RECORD
-                            cursor.execute('UPDATE node_access set "pagesServed" = %s WHERE ID=%s', 
-                                (record['pagesServed'] + v_hour, record['id']))
-                        
-    elif args.log_type == 'captiveportal':
-        raise Exception('Captive Portal log parsing is not yet implemented')
-        
-    else:
-        raise Exception('Unknown log_type specified.')
+    for k_year, v_year in counter.items():
+        for k_month, v_month in v_year.items():
+            for k_day, v_day in v_month.items():
+                for k_hour, v_hour in v_day.items():
+                    hourLoggedAt = "%s/%s/%s %s:00:00" % (k_year, k_month, k_day, k_hour)
+                    
+                    cursor.execute('SELECT * FROM node_access WHERE "nodeId"=%s AND "appId"=%s AND "hourLoggedAt"=%s', 
+                        (NODE_ID, app_id, hourLoggedAt, ))
+                    
+                    record = cursor.fetchone()
+
+                    if record is None:
+                        # INSERT A NEW RECORD
+                        cursor.execute('INSERT INTO node_access ("nodeId", "appId", "hourLoggedAt", "pagesServed") VALUES (%s, %s, %s, %s)', 
+                            ( NODE_ID, app_id, hourLoggedAt, v_hour,))
+                    
+                    else:
+                        # UPDATE AN EXISTING RECORD
+                        cursor.execute('UPDATE node_access set "pagesServed" = %s WHERE ID=%s', 
+                            (record['pagesServed'] + v_hour, record['id']))
         
     conn.commit()
     print 'Parsing complete.'  
@@ -156,6 +141,14 @@ CREATE TABLE node_access (
     "nodeId"          integer NOT NULL,
     "hourLoggedAt"    timestamp NOT NULL,
     "pagesServed"     integer NOT NULL    
+);
+
+CREATE TABLE node_mac_access (
+    "id"              serial PRIMARY KEY,
+    "nodeId"          integer NOT NULL,
+    "hourLoggedAt"    timestamp NOT NULL,
+    "mac"             character varying(30) NOT NULL,    
+    "ip"              character varying(15) NOT NULL
 );
 
 
