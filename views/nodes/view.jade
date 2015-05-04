@@ -63,6 +63,14 @@ block content
 											strong N/A
 							tr
 								td(style="text-align:left;")
+									strong Public IP
+								td(style="text-align:right;vertical-align:middle;width:30%;") 
+									-if(metrics && metrics.devices && metrics.devices.bgan_public_ip)
+										| #{metrics.devices.bgan_public_ip}
+									-else
+										strong N/A
+							tr
+								td(style="text-align:left;")
 									strong BGAN Signal
 								td(style="text-align:right;vertical-align:middle;width:30%;") 
 									-if(metrics && metrics.devices && metrics.devices.bgan_signal)
