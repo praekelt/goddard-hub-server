@@ -144,6 +144,16 @@ module.exports = exports = (app) ->
 	# updates the last ping of a node
 	Metric.addSystemInfo = (node_obj, metric_obj, fn) ->
 
+		# build raid
+		raid_strs = []
+
+		# loop them
+		for raid_str in (metric_obj.node.disk.raid or [])
+			if raid_strs.length >= 2
+				break
+
+			raid_strs.push(raid_str)
+
 		# save according to our registered params
 		app.get('models').systeminfo.create({
 
@@ -156,7 +166,7 @@ module.exports = exports = (app) ->
 
 				totaldisk: metric_obj.node.disk.total,
 				freedisk: metric_obj.node.disk.free,
-				raid: (metric_obj.node.disk.raid or []).join(' '),
+				raid: raid_strs,
 
 				nodeid: node_obj.id
 
