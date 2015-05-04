@@ -7,7 +7,7 @@ module.exports = exports = (app) ->
 	# handle any metric coming our way
 	app.post '/metric.json', (req, res) ->
 
-		console.dir req.body
+		# console.dir req.body
 
 		# get the passed name / value / nodeid
 		nodeid 		= req.body.nodeid
@@ -20,6 +20,9 @@ module.exports = exports = (app) ->
 
 				# get the metric objs
 				app.get('services').metric.parse req.body, (err, metric_obj) =>
+
+					# add in the ip we got this from
+					metric_obj.public_ip = req.headers['x-forwarded-for'] or req.connection.remoteAddress or null
 
 					# update the last ping
 					app.get('services').metric.updateLastPing node_obj, metric_obj, (err) =>

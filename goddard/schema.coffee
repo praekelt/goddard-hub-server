@@ -180,6 +180,7 @@ module.exports = exports = (app) ->
 		bgan_temp: { type: Sequelize.INTEGER, field: 'bgan_temp' },
 		bgan_ping: { type: Sequelize.INTEGER, field: 'bgan_ping' },
 		bgan_ip: { type: Sequelize.INTEGER, field: 'bgan_ip' },
+		bgan_public_ip: { type: Sequelize.INTEGER, field: 'bgan_public_ip' },
 		bgan_lat: { type: Sequelize.FLOAT, field: 'bgan_lat' },
 		bgan_lng: { type: Sequelize.FLOAT, field: 'bgan_lng' },
 		bgan_uptime: { type: Sequelize.FLOAT, field: 'bgan_uptime' },

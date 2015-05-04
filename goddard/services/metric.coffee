@@ -125,6 +125,7 @@ module.exports = exports = (app) ->
 			bgan_lat: metric_obj.bgan.lat,
 			bgan_lng: metric_obj.bgan.lng,
 			bgan_signal: metric_obj.bgan.signal,
+			bgan_public_ip: metric_obj.public_ip or null,
 
 			router_uptime: metric_obj.router.uptime,
 			wireless_uptime: metric_obj.wireless.uptime,
