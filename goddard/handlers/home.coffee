@@ -55,7 +55,7 @@ module.exports = exports = (app) ->
 
 		# delete all installs
 		app.get('sequelize_instance')
-		.query('SELECT SUM(h1) as h1, SUM(h24) as h24, SUM(h48) as h48, SUM(d7) as d7, SUM(d31) as d31, SUM(365) as d365 FROM node_dashboard_macs')
+		.query('SELECT SUM(h1) as h1, SUM(h24) as h24, SUM(h48) as h48, SUM(d7) as d7, SUM(d31) as d31, SUM(d365) as d365 FROM node_dashboard_macs')
 		.then((stat_objs)->
 
 			# try to get the stats
@@ -63,7 +63,7 @@ module.exports = exports = (app) ->
 
 			# delete all installs
 			app.get('sequelize_instance')
-			.query('SELECT SUM(h1) as h1, SUM(h24) as h24, SUM(h48) as h48, SUM(d7) as d7, SUM(d31) as d31, SUM(365) as d365 FROM node_dashboard_page_views')
+			.query('SELECT SUM(h1) as h1, SUM(h24) as h24, SUM(h48) as h48, SUM(d7) as d7, SUM(d31) as d31, SUM(d365) as d365 FROM node_dashboard_page_views')
 			.then((pages_stat_objs)->
 
 				# try to get the stats
