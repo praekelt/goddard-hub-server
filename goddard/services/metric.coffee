@@ -166,7 +166,7 @@ module.exports = exports = (app) ->
 
 				totaldisk: metric_obj.node.disk.total,
 				freedisk: metric_obj.node.disk.free,
-				raid: raid_strs,
+				raid: raid_strs.join(' '),
 
 				nodeid: node_obj.id
 
