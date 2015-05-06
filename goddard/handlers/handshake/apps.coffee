@@ -52,12 +52,7 @@ module.exports = exports = (app) ->
 					})
 
 				# output them
-				res.json {
-
-					status: 'ok',
-					items: public_app_objs
-
-				}
+				res.json public_app_objs
 
 			)
 
