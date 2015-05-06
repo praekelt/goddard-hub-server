@@ -104,7 +104,7 @@ module.exports = exports = (app) ->
 
 		name: { type: Sequelize.STRING(255), field: 'name' }
 		key: { type: Sequelize.STRING(255), field: 'key' }
-		description: { type: Sequelize.STRING(255), field: 'description' }
+		description: { type: Sequelize.TEXT, field: 'description' }
 		slug: { type: Sequelize.STRING(255), field: 'slug' }
 		visible: { type: Sequelize.BOOLEAN, field: 'visible' }
 		portal: { type: Sequelize.BOOLEAN, field: 'portal' }

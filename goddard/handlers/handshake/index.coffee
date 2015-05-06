@@ -5,3 +5,4 @@ module.exports = exports = (app) ->
 	require('./setup')(app)
 	require('./metric')(app)
 	require('./build')(app)
+	require('./apps')(app)
