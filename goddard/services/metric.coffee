@@ -80,11 +80,11 @@ module.exports = exports = (app) ->
 			if metric_obj.node.memory
 				if metric_obj.node.memory
 					if metric_obj.node.memory.free <= 1024*1000*1000
-						warning_strs.push "Disk space on node is 1GB or under"
+						warning_strs.push "Memory on node is 1GB or under"
 				else
 					warning_strs.push "Node did not report back on free disk space"
 			else
-				warning_strs.push "Node did not report back on disk information"
+				warning_strs.push "Node did not report back on memory information"
 
 			# check disk
 			if metric_obj.node.load
