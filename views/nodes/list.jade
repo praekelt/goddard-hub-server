@@ -30,7 +30,8 @@ block content
 					-each item_obj in items
 						tr
 							td 
-								p(style="float: left;font-size: 26px;margin-right: 20px;min-width:40px;") OK
+								p(style="float: left;font-size: 26px;margin-right: 20px;min-width:40px;")
+									img(style="width:46px;",src="/img/" + (item_obj.status || 'unknown') + ".png")
 								p(style="margin:0;margin-bottom:5px;font-size: 16px;")
 									-if(item_obj.group)
 										a(href="/nodes?group=" + item_obj.group.id) #{item_obj.group.name}
