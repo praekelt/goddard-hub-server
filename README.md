@@ -52,3 +52,14 @@ The app accepts a few parameters that allow configuration on a server running th
 * *GOOGLE_OAUTH_CALLBACK_URL* - callback for the node. Would be http://{domain}/connect/callback
 * *TUNNEL_SERVER* - Server nodes will connect to, to open up a tunnel
 * *NODE_PUBLIC_KEY* - public key to load into the node from the server
+
+
+## Migrations
+
+The Hub was setup using code based migrations that can be run using the following command in the root folder of the app:
+
+````bash
+DB_URL=postgres://user:password@host/databasename node index.js --migrations [--seed]
+````
+
+This will run through the migrations and confirm when done. **--seed** is optional and tells the app to make sure the database is seeded with the default group "Default" and apps ("Captive Portal", "MAMA")
