@@ -9,7 +9,6 @@ import os
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--log_file', help='The full path/filename of the log file to parse.', required=True)
-parser.add_argument('--node_id', help='The id of the Node.', required=True)
 args = parser.parse_args()
 
 #################################
@@ -18,8 +17,6 @@ args = parser.parse_args()
 # Loop through the lines
 #   - Check for 200s
 #   - Insert or Increment a counter for the specified node/hour
-
-NODE_ID = args.node_id
 
 # 30/Apr/2015:08:55:56 +0000
 NGINX_DATE_FORMAT = "%d/%b/%Y:%H:%M:%S +0000"
@@ -43,7 +40,6 @@ def process(log_file):
      
         if len(l) != 0: 
             m = re.match(regex, l)
-            #pprint.pprint(m.groupdict())
             sub_process(m.groupdict())
        
         if not l: 
@@ -82,18 +78,24 @@ def get_app_id(cursor, file_name):
     return record['id']            
     
     
+def get_node_id(log_file):
+    if log_file.startswith('/var/log/node/'):
+        n = re.match('.*node\/(\d+)\/.*?', log_file)
+        return n.groups()[0]    
+    else:
+        raise Exception('Unexpected log file path, unable to parse Node ID. Was expecting a "/var/log/node/" prefix.')
+    
     
 if __name__ == '__main__':
     conn, cursor = db_connect();
 
     log_file = open(args.log_file, 'r')
-    
-    #/var/log/nginx/mama.access.log
     file_name = os.path.basename(args.log_file)
             
     app_id = get_app_id(cursor, file_name)
+    node_id = get_node_id(args.log_file)
     
-    print 'Parsing nginx log \'%s\' for Node %s.' % (args.log_file, args.node_id, ) 
+    print 'Parsing nginx log \'%s\' for Node %s.' % (args.log_file, node_id, ) 
     process(log_file)
 
     for k_year, v_year in counter.items():
@@ -102,19 +104,20 @@ if __name__ == '__main__':
                 for k_hour, v_hour in v_day.items():
                     hourLoggedAt = "%s/%s/%s %s:00:00" % (k_year, k_month, k_day, k_hour)
                     
-                    cursor.execute('SELECT * FROM node_access WHERE "nodeId"=%s AND "appId"=%s AND "hourLoggedAt"=%s', 
-                        (NODE_ID, app_id, hourLoggedAt, ))
+                    cursor.execute('SELECT * FROM node_accesses WHERE "nodeId"=%s AND "appId"=%s AND "hourLoggedAt"=%s', 
+                        (node_id, app_id, hourLoggedAt, ))
                     
                     record = cursor.fetchone()
 
                     if record is None:
                         # INSERT A NEW RECORD
-                        cursor.execute('INSERT INTO node_access ("nodeId", "appId", "hourLoggedAt", "pagesServed") VALUES (%s, %s, %s, %s)', 
-                            ( NODE_ID, app_id, hourLoggedAt, v_hour,))
+                        cursor.execute('INSERT INTO node_accesses ("nodeId", "appId", "hourLoggedAt", "pagesServed", "createdAt", \
+                            "updatedAt") VALUES (%s, %s, %s, %s, now(), now())', 
+                            (node_id, app_id, hourLoggedAt, v_hour,))
                     
                     else:
                         # UPDATE AN EXISTING RECORD
-                        cursor.execute('UPDATE node_access set "pagesServed" = %s WHERE ID=%s', 
+                        cursor.execute('UPDATE node_accesses set "pagesServed" = %s WHERE ID=%s', 
                             (record['pagesServed'] + v_hour, record['id']))
         
     conn.commit()
@@ -132,24 +135,3 @@ if __name__ == '__main__':
  'status': '200',
  'time_local': '30/Apr/2015:08:55:56 +0000'}
 '''
-
-# CREATE TABLE
-'''
-CREATE TABLE node_access (
-    "id"              serial PRIMARY KEY,
-    "appId"           integer NOT NULL,
-    "nodeId"          integer NOT NULL,
-    "hourLoggedAt"    timestamp NOT NULL,
-    "pagesServed"     integer NOT NULL    
-);
-
-CREATE TABLE node_mac_access (
-    "id"              serial PRIMARY KEY,
-    "nodeId"          integer NOT NULL,
-    "hourLoggedAt"    timestamp NOT NULL,
-    "macaddr"             character varying(30) NOT NULL,    
-    "ip"              character varying(15) NOT NULL
-);
-'''
-    
-            
