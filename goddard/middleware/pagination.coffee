@@ -6,7 +6,7 @@ module.exports = exports = (app) ->
 
 		# the defaults
 		offset_int = 0
-		limit_int = 15
+		limit_int = 10
 		page_int = 1
 
 		# check if the page is defined
