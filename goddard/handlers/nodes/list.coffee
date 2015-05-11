@@ -22,7 +22,7 @@ module.exports = exports = (app) ->
 
 				})
 
-		if req.query.group and req.query.group != 'all'
+		if req.query.group and req.query.group not in [ 'all', 'undefined' ]
 			if req.query.group == 'none'
 				filter_params.groupId = null
 			else
