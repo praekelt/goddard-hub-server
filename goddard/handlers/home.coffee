@@ -1,45 +1,6 @@
 # acts as the homepage for the dashboard
 module.exports = exports = (app) ->
 
-	# runs the db migration
-	app.get '/sync', (req, res) -> 
-		app.get('sequelize_instance').sync({})
-		app.get('models').groups.create({
-
-			id:1, 
-			name:'Default', 
-			description:'Default group',
-			key: 'default'
-		
-		}, null, {validate: false})
-		app.get('models').apps.create({
-
-			id:1, 
-			name:'Captive Portal', 
-			description:'The default captive portal for the Goddard platform.',
-			key: 'captiveportal',
-			slug: 'captive-portal',
-			visible: false,
-			portal: true
-
-		}, null, {validate: false})
-		app.get('models').apps.create({
-
-			id:2, 
-			name:'MAMA', 
-			description:'The Mobile Alliance for Maternal Action (MAMA) is a global movement that seeks to use mobile technologies to improve the health and lives of mothers in developing nations.',
-			key: 'mama',
-			slug: 'mama',
-			visible: true,
-			portal: false
-
-		}, null, {validate: false})
-		app.get('sequelize_instance')
-		.query('INSERT INTO installs(id, "groupId", "appId", "createdAt", "updatedAt") VALUES(1,1,1,now(),now())')
-		app.get('sequelize_instance')
-		.query('INSERT INTO installs(id, "groupId", "appId", "createdAt", "updatedAt") VALUES(1,1,2,now(),now())')
-		res.json { status: 'ok' }
-
 	# the homepage for load balancer
 	app.get '/', app.get('middleware').checkLoggedIn, (req, res) -> 
 

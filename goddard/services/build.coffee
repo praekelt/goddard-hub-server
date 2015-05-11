@@ -17,20 +17,8 @@ module.exports = exports = (app) ->
 	# run a build and update using the build obj given
 	Build.run = (build_obj, fn) ->
 
-		# is there a func
-		if build_obj.get
-			build_public_obj = build_obj.get()
-
-		# get the path to run
-		Build.buildPath build_public_obj.target, (err, path_str) ->
-
-			# try to find the app they are refereing to ...
-			exec path_str, (error, stdout, stderr) ->
-				
-				# update it
-				build_obj.status = 2
-				build_obj.output = stdout
-				build_obj.save().then(->fn(null)).catch(fn)
+		# disabled for now
+		fn(null)
 
 	# returns the user if the username / password are correct
 	Build.create = (target_str, fn) ->
