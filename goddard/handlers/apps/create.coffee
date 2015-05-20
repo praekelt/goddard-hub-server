@@ -4,6 +4,7 @@ module.exports = exports = (app) ->
 	# required modules
 	async = require('async')
 	S = require('string')
+	fs = require('fs')
 
 	# the homepage for load balancer
 	app.get '/apps/create', (req, res) -> 
@@ -25,17 +26,25 @@ module.exports = exports = (app) ->
 		param_visible_str			= req.body.visible
 		param_portal_str			= req.body.portal
 
-		# output
-		group_obj = app.get('models').apps.build({
+		# validate that the folder exists for the app
+		fs.exists process.env.APP_FOLDER_PATH + "/" + param_key_str, (exists) ->
 
-				name: param_name_str,
-				description: param_description_str,
-				key: param_key_str,
-				visible: param_visible_str == '1',
-				portal: param_portal_str == '1',
-				slug: S(param_name_str).slugify().s
+			# does it exist
+			if exists == true
 
-			})
+				# output
+				group_obj = app.get('models').apps.build({
+
+						name: param_name_str,
+						description: param_description_str,
+						key: param_key_str,
+						visible: param_visible_str == '1',
+						portal: param_portal_str == '1',
+						slug: S(param_name_str).slugify().s
+
+					})
+
+			else res.redirect '/apps/create?error=no such app folder exists'
 
 		# run it
 		group_obj.save().then -> res.redirect '/apps'

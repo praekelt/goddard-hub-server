@@ -52,6 +52,8 @@ The app accepts a few parameters that allow configuration on a server running th
 * *GOOGLE_OAUTH_CALLBACK_URL* - callback for the node. Would be http://{domain}/connect/callback
 * *TUNNEL_SERVER* - Server nodes will connect to, to open up a tunnel
 * *NODE_PUBLIC_KEY* - public key to load into the node from the server
+* *AUTHED_KEYS_FILE* - File to append the public key to, default /home/node/.ssh/authorized_keys
+* *APP_FOLDER_PATH* - Path of the folder that contains the apps, without a trailing slash.
 
 
 ## Migrations
