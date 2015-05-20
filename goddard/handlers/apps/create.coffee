@@ -27,7 +27,7 @@ module.exports = exports = (app) ->
 		param_portal_str			= req.body.portal
 
 		# validate that the folder exists for the app
-		fs.exists process.env.APP_FOLDER_PATH or '/var/goddard/apps', (exists) ->
+		fs.exists process.env.APP_FOLDER_PATH + "/" + param_key_str, (exists) ->
 
 			# does it exist
 			if exists == true
