@@ -54,7 +54,7 @@ module.exports = exports = (app) ->
 	Nodes.saveKey = (node_obj, param_public_key, fn) ->
 
 		# write the key to the autherised hosts
-		fs.appendFile '/home/node/.ssh/authorized_keys', param_public_key + '\n', (err) ->
+		fs.appendFile process.env.AUTHED_KEYS_FILE or '/home/node/.ssh/authorized_keys', param_public_key + '\n', (err) ->
 
 			# handle the error
 			if err
