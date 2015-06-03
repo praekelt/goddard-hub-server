@@ -1,0 +1,37 @@
+extends ../layout
+
+block content
+	.row
+		.col-md-6.col-md-offset-3
+			br
+			br
+			br
+			br
+			form.form(action="/groups/" + item_obj.id,method="post")
+				.form-group
+					label(for="") Name
+					input.form-control(name="name",type="text",value=post_params.name || item_obj.name)
+				.form-group
+					label(for="") Key
+					input.form-control(name="key",type="text",value=post_params.key || item_obj.key)
+				.form-group
+					label(for="") Description
+					textarea.form-control(name="description") #{post_params.description || item_obj.description}
+				.form-group
+					table.table
+						tbody
+							-each app_obj in app_objs
+								tr
+									td
+										.checkbox
+											.pull-right
+												a(href="/apps/" + app_obj.id) View
+											label
+												input(name="applications",checked=registered_app_ids.indexOf(app_obj.id) !== -1,value=app_obj.id,type="checkbox")
+												| #{app_obj.name}
+
+				button.btn.btn-primary.btn-lg UPDATE
+			br
+			br
+			br
+			br

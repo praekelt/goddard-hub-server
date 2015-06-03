@@ -1,0 +1,35 @@
+extends ../layout
+
+block content
+	.row
+		.col-md-6.col-md-offset-3
+			br
+			br
+			br
+			br
+			form.form(action="/apps/" + item_obj.id,method="post")
+				.form-group
+					label(for="") Name
+					input.form-control(name="name",type="text",value=post_params.name || item_obj.name)
+				.form-group
+					label(for="") Key
+					input.form-control(name="key",type="text",value=post_params.key || item_obj.key)
+				.form-group
+					label(for="") Captive Portal
+					select.form-control(name="portal")
+						option(value="0",selected=(post_params.portal || item_obj.portal) == '0') No
+						option(value="1",selected=(post_params.portal || item_obj.portal) == '1') Yes
+				.form-group
+					label(for="") Visiblity
+					select.form-control(name="visible")
+						option(value="0",selected=(post_params.visible || item_obj.visible) == '0') Visible in Portal
+						option(value="1",selected=(post_params.visible || item_obj.visible) == '1') Hidden in Portal
+				.form-group
+					label(for="") Description
+					textarea.form-control(name="description") #{post_params.description || item_obj.description}
+
+				button.btn.btn-primary.btn-lg UPDATE
+			br
+			br
+			br
+			br

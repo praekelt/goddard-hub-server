@@ -1,0 +1,47 @@
+{
+
+	"nodeid": 1,
+	"timestamp": "",
+	"node": {
+
+		"cpus": 4,
+		"load": "1.0, 0.6, 0.4",
+		"uptime": 13,
+
+		"memory": {
+
+			"free": 468,
+			"total": 1024
+
+		},
+		"disk": {
+
+			"free": 14300,
+			"total": 19900,
+			"raid": [ "ACTIVE","ACTIVE" ]
+
+		}
+
+	},
+	"bgan": {
+
+		"uptime": 1,
+		"lat": "33.123",
+		"lng": "18.134",
+		"temp": 38.4,
+		"ping": 1300
+
+	},
+	"router": {
+
+		"uptime": 100
+
+	},
+	"wireless": {
+
+		"uptime": 100
+
+	},
+	"relays": [ 1,0,0,0 ]
+
+}

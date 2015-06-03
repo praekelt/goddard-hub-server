@@ -1,0 +1,33 @@
+extends ../layout
+
+block content
+	.row
+		.col-md-6.col-md-offset-3
+			br
+			br
+			br
+			br
+			form.form(action="/nodes/" + item_obj.id + '/edit',method="post")
+				.form-group
+					label(for="name") Name
+					input.form-control(name="name",type="text",value=post_params.name || item_obj.name)
+				.form-group
+					label(for="group") Group
+					select.form-control(name="group")
+						option(value="none") None
+						-each group_obj in group_objs
+							option(value=group_obj.id,selected=item_obj.groupId==group_obj.id) #{group_obj.name}
+				.form-group
+					label(for="status") Status
+					select.form-control(name="status")
+						option(value="enabled",selected=item_obj.enabled == true) Enabled
+						option(value="disabled",selected=item_obj.enabled == null || item_obj.enabled == false) Disabled
+				.form-group
+					label(for="notes") Notes
+					textarea.form-control(name="description",rows="7") #{post_params.description || item_obj.description}
+
+				button.btn.btn-primary.btn-lg UPDATE
+			br
+			br
+			br
+			br

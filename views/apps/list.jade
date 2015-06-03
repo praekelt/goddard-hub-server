@@ -1,0 +1,43 @@
+extends ../layout
+
+block content
+	.row
+		.col-md-12
+			.pull-right
+				form(action="/apps",method="get")
+					input(type="text",name="q",placeholder="Search by name / email",value=post_params.q)
+					button Search
+			a.btn.btn-primary.btn-lg(href="/apps/create") Create
+			.clearfix
+	.row
+		.col-md-12
+			table.table
+				thead
+					tr
+						th &nbsp;
+						th(style="width:40%;") &nbsp;
+				tbody
+					-each item_obj in items
+						tr
+							td 
+								p(style="margin:0;margin-bottom:5px;font-size: 16px;")
+									a(href="/apps/" + item_obj.id) #{item_obj.name}
+								p(style="margin:0;font-size: 11px;") <strong>#{item_obj.key}</strong> #{item_obj.description}
+							td
+								.pull-right
+									a.btn.btn-default(style="margin-left: 10px;",href="/apps/#{item_obj.id}") Manage
+								.clearfix
+
+	.row
+		.col-md-12
+			.pull-right
+				nav
+					ul.pagination
+						-if(current_page > 1)
+							li
+								a(href="/users?q=" + (post_params.q ? post_params.q : '') + "&limit=" + limit + "&page=" + (current_page-1))
+									span Back
+						-if(current_page < pages)
+							li
+								a(href="/users?q=" + (post_params.q ? post_params.q : '') + "&limit=" + limit + "&page=" + (current_page+1))
+									span Next

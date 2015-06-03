@@ -1,0 +1,38 @@
+extends ../layout
+
+block content
+	.row
+		.col-md-6.col-md-offset-3
+			br
+			br
+			br
+			br
+			form.form(action="/groups/create",method="post")
+				.form-group
+					label(for="") Name
+					input.form-control(name="name",type="text")
+				.form-group
+					label(for="") Key
+					input.form-control(name="key",type="text")
+				.form-group
+					label(for="") Description
+					textarea.form-control(name="description")
+				.form-group
+					table.table
+						tbody
+							-each app_obj in app_objs
+								tr
+									td
+										.checkbox
+											.pull-right
+												a(href="/apps/" + app_obj.id) View
+											label
+												input(name="applications",value=app_obj.id,type="checkbox")
+												| #{app_obj.name}
+							
+
+				button.btn.btn-primary.btn-lg CREATE
+			br
+			br
+			br
+			br

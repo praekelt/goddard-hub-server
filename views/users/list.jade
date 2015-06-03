@@ -1,0 +1,55 @@
+extends ../layout
+
+block content
+	.row
+		.col-md-12
+			.pull-right
+				form(action="/users",method="get")
+					input(type="text",name="q",placeholder="Search by name / email",value=post_params.q)
+					button Search
+			.clearfix
+	.row
+		.col-md-12
+			table.table
+				thead
+					tr
+						th(style="width:64px;") &nbsp;
+						th &nbsp;
+						th(style="width:40%;") &nbsp;
+				tbody
+					-each item_obj in items
+						tr
+							td
+								center
+									img(style="width: 80%;",src=item_obj.avatar)
+							td(colspan=user_obj.id == item_obj.id ? '2' : "")
+								p(style="margin:0;font-size: 16px;") #{item_obj.name} (<a href="mailto:#{item_obj.email}">&nbsp;#{item_obj.email}&nbsp;</a>)
+								p(style="margin:0;font-size: 11px;") Last Login: #{item_obj.lastLogin}
+							-if(user_obj.id != item_obj.id)
+								td
+
+									.pull-right
+										-if(item_obj.enabled == true)
+											-if(item_obj.admin == true)
+												a.btn.btn-default(style="margin-right: 10px;",href="/users/" + item_obj.id + "/toggle/admin") Is Admin
+											-else
+												a.btn.btn-default(style="margin-right: 10px;",href="/users/" + item_obj.id + "/toggle/admin") Not Admin
+											a.btn.btn-default(href="/users/" + item_obj.id + "/toggle/enabled") Active
+										-else
+											a.btn.btn-default(href="/users/" + item_obj.id + "/toggle/enabled") Not Active
+										
+									.clearfix
+
+	.row
+		.col-md-12
+			.pull-right
+				nav
+					ul.pagination
+						-if(current_page > 1)
+							li
+								a(href="/users?q=" + (post_params.q ? post_params.q : '') + "&limit=" + limit + "&page=" + (current_page-1))
+									span Back
+						-if(current_page < pages)
+							li
+								a(href="/users?q=" + (post_params.q ? post_params.q : '') + "&limit=" + limit + "&page=" + (current_page+1))
+									span Next

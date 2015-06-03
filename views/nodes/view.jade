@@ -1,0 +1,279 @@
+extends ../layout
+
+block scripts
+	script.
+		$("#btn_force_update").click(function(){
+			$.ajax({
+				url: '/build.json?target={{item_obj.serial}}'
+			});
+			alert("Update has been queued");
+			$("#btn_force_update").hide();
+		});
+
+block content
+	-if(item_obj.warnings && item_obj.warnings.length > 0)
+		.alert.alert-warning 
+			ul
+				-each warning_str in item_obj.warnings
+					li #{warning_str}
+	// .alert.alert-danger NODE IS DOWN
+	.row
+		.col-md-12
+			.row
+				.col-md-6
+					table.table
+						tbody
+							tr
+								td(style="text-align:left;border-top:0;")
+									strong Number (Serial)
+								td(style="border-top:0;text-align:right;vertical-align:middle;width:30%;") #{item_obj.serial}
+							tr
+								td(style="text-align:left;",colspan="2")
+									strong Name
+									- if(item_obj.name)
+										p #{item_obj.name}
+									-else
+										p N/A
+							tr
+								td(style="text-align:left;")
+									strong Group
+								td(style="text-align:right;vertical-align:middle;width:30%;")
+									-if(locals.group_obj)
+										a(href="/groups/" + group_obj.id) #{group_obj.name}
+									-else
+										a(href="/nodes/" + item_obj.id + '/edit') None
+							tr
+								td(style="text-align:left;",colspan="2")
+									strong Last Report
+									p #{item_obj.lastping}
+							tr
+								td(style="text-align:left;",colspan="2")
+									strong Provisioned
+									p #{item_obj.createdAt}
+							tr
+								td(style="text-align:left;",colspan="2")
+									strong Last Location
+									-if(item_obj && item_obj.lat && item_obj.lng)
+										p
+											strong #{item_obj.lat}
+											span ,&nbsp;
+											strong #{item_obj.lng}
+									-else
+										p
+											strong N/A
+							tr
+								td(style="text-align:left;")
+									strong Public IP
+								td(style="text-align:right;vertical-align:middle;width:30%;") 
+									-if(metrics && metrics.devices && metrics.devices.bgan_public_ip)
+										| #{metrics.devices.bgan_public_ip}
+									-else
+										strong N/A
+							tr
+								td(style="text-align:left;")
+									strong BGAN Signal
+								td(style="text-align:right;vertical-align:middle;width:30%;") 
+									-if(metrics && metrics.devices && metrics.devices.bgan_signal)
+										| #{metrics.devices.bgan_signal}
+									-else
+										strong N/A
+							tr
+								td(style="text-align:left;")
+									strong BGAN Temp
+								td(style="text-align:right;vertical-align:middle;width:30%;") 
+									-if(metrics && metrics.devices && metrics.devices.bgan_temp)
+										| #{metrics.devices.bgan_temp}<strong>C</strong>
+									-else
+										strong N/A
+							tr
+								td(style="text-align:left;")
+									strong Uptime
+								td(style="text-align:right;vertical-align:middle;width:30%;")
+									-if(metrics && metrics.system && metrics.system.uptime)
+										| #{Math.round(metrics.system.uptime/60)} <strong style="font-size: 14px;">min</strong>
+									-else
+										strong N/A
+							tr
+								td(style="text-align:left;")
+									strong CPU #
+								td(style="text-align:right;vertical-align:middle;width:30%;")
+									-if(metrics && metrics.system && metrics.system.cpus)
+										| #{metrics.system.cpus}
+									-else
+										strong N/A
+							tr
+								td(style="text-align:left;")
+									strong Free Disk Space
+								td(style="text-align:right;vertical-align:middle;width:30%;")
+									-if(metrics && metrics.system && metrics.system.freedisk)
+										| #{Math.round(metrics.system.freedisk/1024,2)}GB
+									-else
+										strong N/A
+							tr
+								td(style="text-align:left;")
+									strong Total Disk Space
+								td(style="text-align:right;vertical-align:middle;width:30%;")
+									-if(metrics && metrics.system && metrics.system.totaldisk)
+										| #{Math.round(metrics.system.totaldisk/1024,2)}GB
+									-else
+										strong N/A
+							tr
+								td(style="text-align:left;")
+									strong Free Memory
+								td(style="text-align:right;vertical-align:middle;width:30%;")
+									-if(metrics && metrics.system && metrics.system.freemem)
+										| #{Math.round(metrics.system.freemem/1000/1000,2)}MB
+									-else
+										strong N/A
+							tr
+								td(style="text-align:left;")
+									strong Total Memory
+								td(style="text-align:right;vertical-align:middle;width:30%;")
+									-if(metrics && metrics.system && metrics.system.totalmem)
+										| #{Math.round(metrics.system.totalmem/1000/1000,2)}MB
+									-else
+										strong N/A
+							tr
+								td(style="text-align:left;")
+									strong Load
+								td(style="text-align:right;vertical-align:middle;width:30%;")
+									-if(metrics && metrics.system && metrics.system.load)
+										-each load_number_item in metrics.system.load.split(' ')
+											span.label.label-warning(style="margin-left:5px;") #{load_number_item}
+									-else
+										strong N/A
+							tr
+								td(style="text-align:left;")
+									strong Relays
+								td(style="text-align:right;vertical-align:middle;width:30%;")
+									-if(metrics && metrics.devices)
+										-each relay_item in (metrics.devices.relays || '').split(' ')
+											span.label.label-warning(style="margin-left: 5px;") #{relay_item.toUpperCase()}
+									-else
+										strong N/A
+							tr
+								td(style="text-align:left;")
+									strong RAID Status
+								td(style="text-align:right;vertical-align:middle;width:30%;")
+									-if(metrics && metrics.system && metrics.system.raid)
+										-each raid_item in metrics.system.raid.split(' ')
+											span.label.label-success(style="margin-left: 5px;") #{raid_item.toUpperCase()}
+									-else
+										strong N/A
+									
+				.col-md-6
+					.pull-right
+						a.btn.btn-primary(href="/nodes/" + item_obj.id + "/edit") Edit Node Details
+						| &nbsp;
+						a.btn.btn-primary#btn_force_update(href="#") Force Update
+					.clearfix
+					center
+						br
+						#map-canvas.map-canvas(style="border: 1px solid #666;min-width: 150px;width: 100%;height:600px;")
+						// img(src="https://maps.googleapis.com/maps/api/staticmap?center=" + item_obj.lat + "," + item_obj.lng + "&zoom=16&size=600x600&markers=color:red%7Clabel:C%7C" + item_obj.lat + "," + item_obj.lng + "",style="width: 100%;")
+						p(style="margin-top: 10px;margin-bottom:10px;")
+						br
+
+			-if(item_obj.description)
+				.row
+					.col-md-12
+						h4 Notes:
+						p #{item_obj.description}
+
+			.row
+
+				.col-md-12
+					.page-header
+						h1 Wifi Clients
+			
+			.row
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.macs.h24 || 0}
+									h4(style="margin-top:0;") 24 Hours
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.macs.h48 || 0}
+									h4(style="margin-top:0;") 48 Hours
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.macs.d7 || 0}
+									h4(style="margin-top:0;") 7 Days
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.macs.d31 || 0}
+									h4(style="margin-top:0;") 31 Days
+
+			.row
+				.col-md-12
+					.page-header
+						h1
+							| Pages Served
+
+			.row
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.pages.h24 || 0}
+									h4(style="margin-top:0;") 24 Hours
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.pages.h48 || 0}
+									h4(style="margin-top:0;") 48 Hours
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.pages.d7 || 0}
+									h4(style="margin-top:0;") 7 Days
+				.col-md-3
+					.jumbotron(style="padding-left: 0;padding-right: 0;")
+						.row
+							.col-md-12
+								center
+									h1(style="margin-bottom:0;font-size: 45px;") #{metrics.pages.d31 || 0}
+									h4(style="margin-top:0;") 31 Days
+
+
+
+			br
+			br
+			br
+			br
+
+			script(src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true")
+			script.
+				function initialize() {
+				var myLatlng = new google.maps.LatLng(#{item_obj.lat},#{item_obj.lng});
+				var mapOptions = {
+				zoom: 16,
+				center: myLatlng
+				}
+				var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+				var marker = new google.maps.Marker({
+				position: myLatlng,
+				map: map,
+				title: 'Location of Node'
+				});
+				}
+
+				google.maps.event.addDomListener(window, 'load', initialize);
