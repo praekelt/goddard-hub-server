@@ -181,18 +181,6 @@ module.exports = exports = (app) ->
 
 			).catch(fn)
 
-	# updates the last ping of a node
-	Metric.updateLastPing = (node_obj, metric_obj, fn) ->
-
-		# update the ndoe
-		node_obj.lastping = new Date()
-		if metric_obj.bgan
-			node_obj.lat = metric_obj.bgan.lat
-			node_obj.lng = metric_obj.bgan.lng
-
-		# save the details
-		node_obj.save().then(->fn(null, node_obj)).catch(fn)
-
 	# Metrics the path to run
 	Metric.parse = (body_params, fn) ->
 
