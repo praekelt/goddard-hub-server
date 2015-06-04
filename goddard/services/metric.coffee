@@ -10,6 +10,7 @@ module.exports = exports = (app) ->
 	Metric = {}
 
 	# saves the hosts
+	### istanbul ignore next ###
 	Metric.saveHosts = (node_obj, metric_obj, fn) ->
 
 		# sanity check
