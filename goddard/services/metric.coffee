@@ -10,6 +10,7 @@ module.exports = exports = (app) ->
 	Metric = {}
 
 	# saves the hosts
+	### istanbul ignore next ###
 	Metric.saveHosts = (node_obj, metric_obj, fn) ->
 
 		# sanity check
@@ -57,19 +58,25 @@ module.exports = exports = (app) ->
 		# handle it
 		if metric_obj.bgan
 
-			# check the temp
-			if metric_obj.bgan.temp
-				if metric_obj.bgan.temp > 50
-					warning_strs.push "BGAN temperature seems high at " + metric_obj.bgan.temp "C"
-			else
-				warning_strs.push "BGAN temperature is missing, presuming bad."
+			# sanity check for params
+			if metric_obj.bgan.signal and metric_obj.bgan.temp
 
-			# check the temp
-			if metric_obj.bgan.signal
-				if metric_obj.bgan.signal < 30
-					warning_strs.push "BGAN signal is very low at " + metric_obj.bgan.signal
+				# check the temp
+				if metric_obj.bgan.temp
+					if metric_obj.bgan.temp >= 50
+						warning_strs.push "BGAN temperature seems high at " + metric_obj.bgan.temp + "C"
+				else
+					warning_strs.push "BGAN temperature is missing, presuming bad."
+
+				# check the temp
+				if metric_obj.bgan.signal
+					if metric_obj.bgan.signal < 30
+						warning_strs.push "BGAN signal is very low at " + metric_obj.bgan.signal
+				else
+					warning_strs.push "BGAN signal is missing, presuming bad."
+
 			else
-				warning_strs.push "BGAN signal is missing, presuming bad."
+				warning_strs.push "BGAN doesn't seem to be connected."
 
 		else
 			warning_strs.push "BGAN doesn't seem to be connected."
@@ -78,40 +85,38 @@ module.exports = exports = (app) ->
 		if metric_obj.node
 			# check disk
 			if metric_obj.node.memory
-				if metric_obj.node.memory
-					if metric_obj.node.memory.free <= 1024*1000*1000
-						warning_strs.push "Memory on node is 1GB or under"
-				else
-					warning_strs.push "Node did not report back on free disk space"
+				if metric_obj.node.memory.free <= 1024*1000*1000
+					warning_strs.push "Memory on node is 1GB or under"
 			else
 				warning_strs.push "Node did not report back on memory information"
 
 			# check disk
 			if metric_obj.node.load
-				if metric_obj.node.load
-					try
-						if 1 * metric_obj.node.load.split(' ')[0] >= 2
-							warning_strs.push "System load was over 2 for the last 5 minutes"
-					catch e
-						# nothing ..
+				try
+					if 1 * metric_obj.node.load.split(' ')[0] >= 2
+						warning_strs.push "System load was over 2 for the last 5 minutes"
+				catch e
+					# nothing ..
 			else
 				warning_strs.push "Node did not report back on system load"
 
 			# check disk
 			if metric_obj.node.disk
-				if metric_obj.node.disk
-					if metric_obj.node.disk.free <= 10000
-						warning_strs.push "Disk space on node is 10GB or under"
-				else
-					warning_strs.push "Node did not report back on free disk space"
+				if metric_obj.node.disk.free <= 10000
+					warning_strs.push "Disk space on node is 10GB or under"
 			else
 				warning_strs.push "Node did not report back on disk information"
 		else
 			warning_strs.push "Node didn't report back any data."
 
+		# just return the warnings
+		fn(null, warning_strs)
+
 		# update with warnings
-		node_obj.warnings = warning_strs
-		node_obj.save().then(->fn(null, warning_strs)).catch(fn)
+		# node_obj.warnings = warning_strs
+		# node_obj.save().then(->fn(null, warning_strs)).catch(fn)
+
+	# saves the update to the node
 
 	# updates the last ping of a node
 	Metric.addDeviceInfo = (node_obj, metric_obj, fn) ->
@@ -176,18 +181,6 @@ module.exports = exports = (app) ->
 				fn(null)
 
 			).catch(fn)
-
-	# updates the last ping of a node
-	Metric.updateLastPing = (node_obj, metric_obj, fn) ->
-
-		# update the ndoe
-		node_obj.lastping = new Date()
-		if metric_obj.bgan
-			node_obj.lat = metric_obj.bgan.lat
-			node_obj.lng = metric_obj.bgan.lng
-
-		# save the details
-		node_obj.save().then(->fn(null, node_obj)).catch(fn)
 
 	# Metrics the path to run
 	Metric.parse = (body_params, fn) ->

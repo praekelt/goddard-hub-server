@@ -1,4 +1,5 @@
 # acts as the homepage for the dashboard
+### istanbul ignore next ###
 module.exports = exports = (app) ->
 
 	# modules

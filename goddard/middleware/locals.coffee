@@ -1,5 +1,8 @@
 # acts as the homepage for the dashboard
+### istanbul ignore next ###
 module.exports = exports = (app) ->
+
+	### istanbul ignore next ###
 
 	# local params
 	_ = require('underscore')

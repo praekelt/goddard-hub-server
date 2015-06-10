@@ -23,3 +23,4 @@ npm-debug.log
 # web-storm
 .idea
 dump.rdb
+coverage/
