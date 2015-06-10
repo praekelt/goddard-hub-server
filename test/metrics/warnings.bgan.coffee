@@ -51,7 +51,7 @@ payloads = {
 sample_node_obj = {}
 
 # checks warnings that we check for
-describe 'metrics', ->
+describe 'metric', ->
 
 	# require in the service
 	metric_service = require('../../goddard/services/metric')({})

@@ -16,7 +16,7 @@ sample_node_obj = {
 }
 
 # checks warnings that we check for
-describe 'metrics', ->
+describe 'node', ->
 
 	# require in the service
 	node_service = require('../../goddard/services/node')({})
