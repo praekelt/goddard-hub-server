@@ -1,4 +1,5 @@
 # loads all the modules and the subdirs for the app
+### istanbul ignore next ###
 module.exports = exports = (app) ->
 
 	# require the modules
@@ -29,14 +30,12 @@ module.exports = exports = (app) ->
 				# write then output our apps
 				for app_obj in app_objs[0]
 
-					console.dir app_obj
-
 					# generate the domain to use
-					domain_str = app_obj.key + '.goddard.com'
+					domain_str = '~' + app_obj.key + '\.(mamawifi|goddard)\.com'
 
 					# if this is a portal app
 					if app_obj.portal == true
-						domain_str = 'goddard.com'
+						domain_str = '~^(goddard|mamawifi)\.com$'
 
 					# append it
 					public_app_objs.push({
