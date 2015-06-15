@@ -44,7 +44,7 @@ module.exports = exports = (app) ->
 						'description': app_obj.description,
 						'domain': domain_str,
 						'port': 6100 + app_obj.id,
-						'internal': app_obj.visible == false,
+						'internal': app_obj.portal == false,
 						'key': app_obj.key,
 						'id': app_obj.id
 
