@@ -25,7 +25,7 @@ module.exports = exports = (app) ->
 				node_obj.publickey = param_public_key
 
 				# awesome so update for any missing properties
-				app.get('services').node.update node_obj, (err, node_obj) =>
+				app.get('services').node.update node_obj, (err) =>
 
 					# did we find the node ... ?
 					console.dir err
