@@ -27,27 +27,15 @@ module.exports = exports = (app) ->
 				# awesome so update for any missing properties
 				app.get('services').node.update node_obj, (err, node_obj) =>
 
+					# did we find the node ... ?
+					console.dir err
+					console.dir node_obj
+
 					# get the node
 					node_obj = node_obj.get()
 
 					# format the response to send
 					app.get('services').node.formatResponse node_obj, (err, public_response_obj) =>
-
-						# try to start a build
-						app.get('services').build.create node_obj.serial, (err, build_obj) ->
-
-							# and ... ?
-							console.log 'build reported back and running now'
-
-							# wait a few seconds to start the first build
-							setTimeout(=>
-
-								# start the actual build
-								app.get('services').build.run(build_obj, ->
-									console.log('build done ...')
-								)
-
-							, 1000*90)
 							
 						# output
 						res.json public_response_obj
