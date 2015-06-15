@@ -35,7 +35,7 @@ module.exports = exports = (app) ->
 
 					# if this is a portal app
 					if app_obj.portal == true
-						domain_str = '~^(goddard|mamawifi)\.com$'
+						domain_str = '~^(www\.|)(goddard|mamawifi)\.com$'
 
 					# append it
 					public_app_objs.push({
