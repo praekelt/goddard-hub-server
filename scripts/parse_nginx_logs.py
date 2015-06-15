@@ -9,6 +9,7 @@ import os
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--log_file', help='The full path/filename of the log file to parse.', required=True)
+parser.add_argument('--snapshot', help='Original log file name of the snapshot', required=True)
 args = parser.parse_args()
 
 #################################
@@ -65,7 +66,7 @@ def sub_process(ld):
             counter[date.year][date.month][date.day][date.hour] = counter[date.year][date.month][date.day][date.hour] + 1
             
             
-def get_app_id(cursor, file_name):    
+def get_app_id(cursor, file_name): 
     # Determine the applications key from the file name.
     app_key = file_name.replace('.access.log','')
         
@@ -91,9 +92,12 @@ if __name__ == '__main__':
 
     log_file = open(args.log_file, 'r')
     file_name = os.path.basename(args.log_file)
+
+    print args.log_file
+    print file_name
             
     app_id = get_app_id(cursor, file_name)
-    node_id = get_node_id(args.log_file)
+    node_id = get_node_id(args.snapshot)
     
     print 'Parsing nginx log \'%s\' for Node %s.' % (args.log_file, node_id, ) 
     process(log_file)
