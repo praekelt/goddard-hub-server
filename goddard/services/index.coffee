@@ -5,8 +5,7 @@ module.exports = exports = (app) ->
 	# load in our modules
 	### istanbul ignore next ###
 	app.set('services', {
-
-			build: require('./build')(app),
+			
 			node: require('./node')(app),
 			metric: require('./metric')(app)
 
