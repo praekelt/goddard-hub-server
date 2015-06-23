@@ -8,10 +8,31 @@ module.exports = exports = (app) ->
 	# dicts of models
 	Models = {}
 
-	# connect to the database
-	sequelize = new Sequelize(process.env.DB_URL, {
+	"""
+	# check according to if we are currently in testing or production
+	if process.env.NODE_ENV or '' != 'testing'
 
-		logging: false
+		# connect to the database
+		sequelize = new Sequelize(process.env.DB_URL, {
+
+			logging: false
+
+		})
+
+	else
+	"""
+
+	# generate a random database user/password
+	uuid = require('uuid')
+
+	# the generated random name for the database
+	database_name = uuid.v1()
+
+	# connect to the database
+	sequelize = new Sequelize(database_name, null, null, {
+
+		logging: false,
+		dialect: 'sqlite',
 
 	})
 
@@ -127,7 +148,7 @@ module.exports = exports = (app) ->
 		address: { type: Sequelize.STRING(255), field: 'address' }
 		name: { type: Sequelize.STRING(255), field: 'name' }
 		description: { type: Sequelize.STRING(255), field: 'description' }
-		warnings: { type: Sequelize.ARRAY(Sequelize.STRING(255)), field: 'warnings' }
+		warnings: { type: Sequelize.STRING(255), field: 'warnings' }
 		comments: { type: Sequelize.TEXT, field: 'comments' }
 		port: { type: Sequelize.INTEGER, field: 'port' }
 		mport: { type: Sequelize.INTEGER, field: 'mport' },

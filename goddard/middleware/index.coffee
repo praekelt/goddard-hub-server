@@ -6,6 +6,6 @@ module.exports = exports = (app) ->
 	app.set('middleware', {})
 
 	# load in our modules
-	require('./locals')(app)
 	require('./auth')(app)
+	require('./locals')(app)
 	require('./pagination')(app)
