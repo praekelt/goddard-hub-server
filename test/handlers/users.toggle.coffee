@@ -133,8 +133,6 @@ describe 'Handlers', ->
 
 				app.get('models').users.find(1).then((before_change_user_obj) ->
 
-						# console.dir before_change_user_obj
-
 						# check the returned user obj
 						assert(before_change_user_obj != null, 'was expecting a user obj ...')
 
@@ -143,8 +141,6 @@ describe 'Handlers', ->
 							.expect(302)
 							.end((err, res)->
 								assert(err == null, 'Was not expecting a error after request')
-
-								console.log(res.text)
 
 								app.get('models').users.find(1).then((user_obj) ->
 

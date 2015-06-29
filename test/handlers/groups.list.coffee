@@ -35,35 +35,48 @@ describe 'Handlers', ->
 
 						name: 'test test'
 
-					}).then(-> done()).catch(-> done())
+					}).then(->
 
-		# handle the settings
-		describe '#notloggedin', ->
+						app.get('models').groups.create({
 
-			# handle the error output
-			it 'should redirect away', ->
+							name: 'Default'
 
-				request(app)
-					.get('/groups')
-					.expect(302)
-					.end((err, res)->
-						assert(err == null, 'Was not expecting a error after request')
-						assert(res.text.indexOf('/login') != -1, "Can't use the group")
-					)
+						}).then(-> done()).catch(-> done())
 
-		# handle the settings
-		describe '#response', ->
+					).catch(-> done())
 
-			# handle the error output
-			it 'should always return "ok"', ->
+		# handle the error output
+		it 'should redirect away if not logged in', ->
 
-				request(app)
-					.get('/groups?logged_in_user_id=1')
-					.expect(200)
-					.end((err, res)->
-						assert(err == null, 'Was not expecting a error after request')
-						assert(res.text.indexOf('/groups/create') != -1, "Can't use the group")
-					)
+			request(app)
+				.get('/groups')
+				.expect(302)
+				.end((err, res)->
+					assert(err == null, 'Was not expecting a error after request')
+					assert(res.text.indexOf('/login') != -1, "Can't use the group")
+				)
+
+		# handle the error output
+		it 'should redirect away if item was does exist', ->
+
+			request(app)
+				.get('/groups?q=0002')
+				.expect(200)
+				.end((err, res)->
+					assert(err == null, 'Was not expecting a error after request')
+					assert(res.text.toLowerCase().indexOf('default') == -1, "Group 'default' should not be present after search")
+				)
+
+		# handle the error output
+		it 'should show list page', ->
+
+			request(app)
+				.get('/groups?logged_in_user_id=1')
+				.expect(200)
+				.end((err, res)->
+					assert(err == null, 'Was not expecting a error after request')
+					assert(res.text.indexOf('/groups/create') != -1, "Can't use the group")
+				)
 
 		after (done) ->
 

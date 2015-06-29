@@ -38,52 +38,86 @@ describe 'Handlers', ->
 
 					}).then(->
 
-						app.get('models').users.create({
+						# then save the device info
+						app.get('models').deviceinfo.create({
 
-							name: 'test test'
+							bgan_temp: 31,
+							bgan_ping: 1012,
+							bgan_uptime: 2,
+							bgan_lat: '9.9.9.9',
+							bgan_lng: '9.9.9.9',
+							bgan_signal: 62,
+							bgan_public_ip: '127.0.0.1',
 
-						}).then(-> done()).catch(-> done())
+							router_uptime: 5,
+							wireless_uptime: 1,
+
+							relays: '0 0 0 0',
+
+							nodeid: 1
+
+							}).then(->
+
+								# save according to our registered params
+								app.get('models').systeminfo.create({
+
+										cpus: 4,
+										load: '0 0 0',
+										uptime: 5,
+
+										totalmem: 1000,
+										freemem: 300,
+
+										totaldisk: 500,
+										freedisk: 1000,
+										raid: 'UP UP',
+
+										nodeid: 1
+
+									}).then(->
+
+										# finish !
+										app.get('models').users.create({
+
+											name: 'test test'
+
+										}).then(-> done()).catch(-> done())
+
+									).catch(-> done())
+
+							).catch(-> done())
 
 					).catch(-> done())
 
-		# handle the settings
-		describe '#notloggedin', ->
+		# handle the error output
+		it 'should redirect away if not logged in', ->
 
-			# handle the error output
-			it 'should redirect away', ->
+			request(app)
+				.get('/nodes/1')
+				.expect(302)
+				.end((err, res)->
+					assert(err == null, 'Was not expecting a error after request')
+				)
 
-				request(app)
-					.get('/nodes/33')
-					.expect(302)
-					.end((err, res)->
-						assert(err == null, 'Was not expecting a error after request')
-					)
+		# handle the error output
+		it 'should redirect away if it doesnt exist', ->
 
-		# handle the settings
-		describe '#notloggedin', ->
+			request(app)
+				.get('/nodes/33')
+				.expect(302)
+				.end((err, res)->
+					assert(err == null, 'Was not expecting a error after request')
+				)
 
-			# handle the error output
-			it 'should redirect away', ->
+		# handle the error output
+		it 'should always return "ok"', ->
 
-				request(app)
-					.get('/nodes/1')
-					.expect(302)
-					.end((err, res)->
-						assert(err == null, 'Was not expecting a error after request')
-					)
-
-		# handle the settings
-		describe '#response', ->
-
-			# handle the error output
-			it 'should always return "ok"', ->
-
-				request(app)
-					.get('/nodes/1?logged_in_user_id=1')
-					.expect(200)
-					.end((err, res)->
-						assert(err == null, 'Was not expecting a error after request')
-					)
+			request(app)
+				.get('/nodes/1?logged_in_user_id=1')
+				.expect(200)
+				.end((err, res)->
+					assert(err == null, 'Was not expecting a error after request')
+				)
 
 		after (done) ->
 

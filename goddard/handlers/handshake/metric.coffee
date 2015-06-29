@@ -33,7 +33,7 @@ module.exports = exports = (app) ->
 					app.get('services').metric.check node_obj, metric_obj, (err, warnings) =>
 
 						# save the metrics
-						node_obj.warnings = warnings or []
+						node_obj.warnings = JSON.stringify(warnings or [])
 
 						# update the ndoe
 						node_obj.lastping = new Date()
@@ -52,13 +52,19 @@ module.exports = exports = (app) ->
 
 							# update the metrics
 							app.get('services').metric.addSystemInfo node_obj, metric_obj, (err) =>
+								console.dir(err)
 								app.get('services').metric.addDeviceInfo node_obj, metric_obj, (err) =>
+									console.dir(err)
 									app.get('services').metric.saveHosts node_obj, metric_obj, (err) =>
+										console.dir(err)
 
 										# respond done
 										res.json { status: 'ok' }
 
-						).catch(->res.status(400).jsonp({status: 'error',message: 'Something went wrong'}))
+						).catch((err)->
+							console.dir(err)
+							res.status(400).jsonp({status: 'error',message: 'Something went wrong'})
+						)
 
 			else 
 				res.json {status: 'error',message: 'No such node with that id was found registered ...'}

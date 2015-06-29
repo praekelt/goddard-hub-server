@@ -8,9 +8,17 @@ module.exports = exports = (app) ->
 	# dicts of models
 	Models = {}
 
-	"""
 	# check according to if we are currently in testing or production
-	if process.env.NODE_ENV or '' != 'testing'
+	if process.env.NODE_ENV or '' == 'testing'
+
+		# connect to the database
+		sequelize = new Sequelize(require('uuid').v1(), null, null, {
+
+			logging: false,
+			dialect: 'sqlite'
+		})
+
+	else
 
 		# connect to the database
 		sequelize = new Sequelize(process.env.DB_URL, {
@@ -18,23 +26,6 @@ module.exports = exports = (app) ->
 			logging: false
 
 		})
-
-	else
-	"""
-
-	# generate a random database user/password
-	uuid = require('uuid')
-
-	# the generated random name for the database
-	database_name = uuid.v1()
-
-	# connect to the database
-	sequelize = new Sequelize(database_name, null, null, {
-
-		logging: false,
-		dialect: 'sqlite',
-
-	})
 
 	# set as variable
 	app.set('database', sequelize)
@@ -185,7 +176,7 @@ module.exports = exports = (app) ->
 	})
 
 	# set the models
-	Models.deviceinfo = sequelize.define('networkinfo', {
+	Models.networkinfo = sequelize.define('networkinfo', {
 
 		nodeid: { type: Sequelize.INTEGER, field: 'nodeid' },
 		mac: { type: Sequelize.INTEGER, field: 'mac' },

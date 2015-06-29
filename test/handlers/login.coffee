@@ -28,10 +28,7 @@ describe 'Handlers', ->
 			require('../../goddard/handlers')(app)
 
 			# output the amount
-			app.get('sequelize_instance').sync({}).then ->
-
-				# insert our tests
-				done()
+			app.get('database').sync({}).then -> done()
 
 		# handle the error output
 		it 'should show the login page', ->
@@ -40,7 +37,7 @@ describe 'Handlers', ->
 				.get('/login')
 				.expect(200)
 				.end((err, res)->
-					assert(err != null, 'Was not expecting a error after request')
+					assert(err == null, 'Was not expecting a error after request')
 					assert(res.text.toLowerCase().indexOf('login with your google account') != -1, "Was expecting the login button to be present")
 				)
 

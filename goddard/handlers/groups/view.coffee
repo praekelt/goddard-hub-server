@@ -40,6 +40,9 @@ module.exports = exports = (app) ->
 		param_application_strs 		= req.body.applications
 
 		app.get('models').groups.find(req.params.groupid).then((item_obj) ->
+
+			console.dir item_obj
+
 			if not item_obj
 				res.redirect '/groups'
 				return

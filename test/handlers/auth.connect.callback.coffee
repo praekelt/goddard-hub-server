@@ -7,10 +7,7 @@ request = require('supertest')
 # checks warnings that we check for
 describe 'Handlers', ->
 
-	describe '/apps', ->
-
-		# require in the service
-		node_service = require('../../goddard/services/node')({})
+	describe '/connect/callback', ->
 
 		# local instance
 		app = null
@@ -38,31 +35,37 @@ describe 'Handlers', ->
 					}).then(-> done()).catch(-> done())
 
 		# handle the settings
-		describe '#notloggedin', ->
-
-			# handle the error output
-			it 'should redirect away', ->
-
-				request(app)
-					.get('/apps')
-					.expect(200)
-					.end((err, res)->
-						assert(err == null, 'Was not expecting a error after request')
-						assert(res.text.indexOf('/login') != -1, "Can't use the group")
-					)
-
-		# handle the settings
 		describe '#response', ->
 
 			# handle the error output
-			it 'should always return "ok"', ->
+			it 'should redirect if already logged in', ->
 
 				request(app)
-					.get('/apps?logged_in_user_id=1')
-					.expect(200)
+					.get('/connect/callback?logged_in_user_id=1')
+					.expect(302)
 					.end((err, res)->
 						assert(err == null, 'Was not expecting a error after request')
-						assert(res.text.indexOf('/apps/create') != -1, "Can't use the app create function, assuming page bad")
+					)
+
+			# handle the error output
+			it 'should redirect if no code was given', ->
+
+				request(app)
+					.get('/connect/callback?logged_in_user_id=1')
+					.expect(302)
+					.end((err, res)->
+						assert(err == null, 'Was not expecting a error after request')
+						assert(res.text.indexOf('nocode') != -1, 'Was expecting to be redirect with error')
+					)
+
+			# handle the error output
+			it 'should redirect if code was invalid', ->
+
+				request(app)
+					.get('/connect/callback?logged_in_user_id=1&code=test')
+					.expect(302)
+					.end((err, res)->
+						assert(err == null, 'Was not expecting a error after request')
 					)
 
 		after (done) ->

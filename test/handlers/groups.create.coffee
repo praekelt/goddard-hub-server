@@ -94,7 +94,7 @@ describe 'Handlers', ->
 				request(app)
 					.post('/groups/create?logged_in_user_id=1')
 					.send({ name: 'test2', description: 'test2' })
-					.expect(200)
+					.expect(302)
 					.end((err, res)->
 
 						# handle errors

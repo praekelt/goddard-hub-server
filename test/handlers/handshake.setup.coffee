@@ -35,7 +35,7 @@ describe 'Handlers', ->
 			# output the amount
 			app.get('sequelize_instance').sync({ force: true }).then ->
 
-				app.get('models').groups.create({
+				app.get('models').nodes.create({
 
 						name: 'test node',
 						publickey: 'test',

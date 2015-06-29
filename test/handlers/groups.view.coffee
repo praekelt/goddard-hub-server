@@ -30,7 +30,7 @@ describe 'Handlers', ->
 			require('../../goddard/handlers')(app)
 
 			# output the amount
-			app.get('sequelize_instance').sync({ force: true }).then ->
+			app.get('database').sync({ force: true }).then (err) ->
 
 				# insert our tests
 				app.get('models').users.create({
@@ -49,18 +49,18 @@ describe 'Handlers', ->
 
 							# insert our tests
 							app.get('models').groups.create({
-
+								
 									name: 'Default'
 
 								}).then(->
 
 									done()
 
-								).catch(-> done())
+								)
 
-						).catch(-> done())
+						)
 
-				).catch(-> done())
+				)
 
 		# handle the settings
 		describe '#notloggedin', ->
@@ -95,7 +95,7 @@ describe 'Handlers', ->
 					.get('/groups/1?logged_in_user_id=1')
 					.expect(200)
 					.end((err, res)->
-
+						console.log(res.text)
 						# handle errors
 						assert(err == null, 'Was not expecting a error after request')
 						assert(res.text.indexOf('test group') != -1, 'Was expecting the name of the group to appear ...')
