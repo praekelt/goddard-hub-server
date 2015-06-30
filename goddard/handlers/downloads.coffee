@@ -33,4 +33,7 @@ module.exports = exports = (app) ->
 					# nothing
 					res.send('no such build was found .. head back <a href="/">here</a>')
 
-		else res.redirect('/connect?return=' + url_str)
+		else 
+
+			# redirect away to actually login
+			res.redirect('/connect?return=' + url_str)
