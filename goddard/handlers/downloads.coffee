@@ -31,7 +31,7 @@ module.exports = exports = (app) ->
 				else 
 
 					# nothing
-					res.send('no such build was found .. head back <a href="/">here</a>')
+					res.status(404).send('no such build was found .. head back <a href="/">here</a>')
 
 		else 
 
