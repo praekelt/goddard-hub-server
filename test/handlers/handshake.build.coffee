@@ -19,19 +19,13 @@ describe 'Handlers', ->
 		# handle the before method
 		before (done) ->
 
-			# update it, create the http server
-			app = require('../../goddard/httpd')
+			# returns the app details
+			require('./harness') (app_obj) ->
 
-			# connect and setup database
-			require('../../goddard/schema')(app)
-			require('../../goddard/services')(app)
-			require('../../goddard/middleware')(app)
-			require('../../goddard/handlers')(app)
+				# set the local instance
+				app = app_obj
 
-			# output the amount
-			app.get('sequelize_instance').sync({}).then ->
-
-				# insert our tests
+				# done !
 				done()
 
 		# handle the settings

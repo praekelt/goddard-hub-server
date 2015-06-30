@@ -23,38 +23,37 @@ describe 'Handlers', ->
 		# handle the before method
 		before (done) ->
 
-			# update it, create the http server
-			app = require('../../goddard/httpd')
+			
 
-			# connect and setup database
-			require('../../goddard/schema')(app)
-			require('../../goddard/services')(app)
-			require('../../goddard/middleware')(app)
-			require('../../goddard/handlers')(app)
+			# returns the app details
+			require('./harness') (app_obj) ->
 
-			# output the amount
-			app.get('sequelize_instance').sync({ force: true }).then ->
+				# set the local instance
+				app = app_obj
 
-				app.get('models').nodes.create({
+				# output the amount
+				app.get('sequelize_instance').sync({ force: true }).then ->
 
-						name: 'test node',
-						publickey: 'test',
-						macaddr: existing_mac_addr
+					app.get('models').nodes.create({
 
-					}).then(->
+							name: 'test node',
+							publickey: 'test',
+							macaddr: existing_mac_addr
 
-						# insert our tests
-						app.get('models').groups.create({
+						}).then(->
 
-								name: 'Default'
+							# insert our tests
+							app.get('models').groups.create({
 
-							}).then(->
+									name: 'Default'
 
-								done()
+								}).then(->
 
-							).catch(-> done())
+									done()
 
-					).catch(-> done())
+								).catch(-> done())
+
+						).catch(-> done())
 
 		# handle the settings
 		describe '#response', ->

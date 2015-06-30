@@ -18,79 +18,78 @@ describe 'Handlers', ->
 		# handle the before method
 		before (done) ->
 
-			# update it, create the http server
-			app = require('../../goddard/httpd')
+			
 
-			# connect and setup database
-			require('../../goddard/schema')(app)
-			require('../../goddard/services')(app)
-			require('../../goddard/middleware')(app)
-			require('../../goddard/handlers')(app)
+			# returns the app details
+			require('./harness') (app_obj) ->
 
-			# output the amount
-			app.get('database').sync({ force: true }).then ->
+				# set the local instance
+				app = app_obj
 
-				# insert our tests
-				app.get('models').nodes.create({
+				# output the amount
+				app.get('database').sync({ force: true }).then ->
 
-						mport: 15001,
-						port: 15000
+					# insert our tests
+					app.get('models').nodes.create({
 
-					}).then(->
-
-						app.get('models').users.create({
-
-							name: 'test test'
+							mport: 15001,
+							port: 15000
 
 						}).then(->
 
-							# then save the device info
-							app.get('models').deviceinfo.create({
+							app.get('models').users.create({
 
-									bgan_temp: 31,
-									bgan_ping: 1012,
-									bgan_uptime: 2,
-									bgan_lat: '9.9.9.9',
-									bgan_lng: '9.9.9.9',
-									bgan_signal: 62,
-									bgan_public_ip: '127.0.0.1',
+								name: 'test test'
 
-									router_uptime: 5,
-									wireless_uptime: 1,
+							}).then(->
 
-									relays: '0 0 0 0',
+								# then save the device info
+								app.get('models').deviceinfo.create({
 
-									nodeid: 1
+										bgan_temp: 31,
+										bgan_ping: 1012,
+										bgan_uptime: 2,
+										bgan_lat: '9.9.9.9',
+										bgan_lng: '9.9.9.9',
+										bgan_signal: 62,
+										bgan_public_ip: '127.0.0.1',
 
-								}).then(->
+										router_uptime: 5,
+										wireless_uptime: 1,
 
-									# save according to our registered params
-									app.get('models').systeminfo.create({
+										relays: '0 0 0 0',
 
-											cpus: 4,
-											load: '0 0 0',
-											uptime: 5,
+										nodeid: 1
 
-											totalmem: 1000,
-											freemem: 300,
+									}).then(->
 
-											totaldisk: 500,
-											freedisk: 1000,
-											raid: 'UP UP',
+										# save according to our registered params
+										app.get('models').systeminfo.create({
 
-											nodeid: 1
+												cpus: 4,
+												load: '0 0 0',
+												uptime: 5,
 
-										}).then(->
+												totalmem: 1000,
+												freemem: 300,
 
-											done()
+												totaldisk: 500,
+												freedisk: 1000,
+												raid: 'UP UP',
 
-										)
+												nodeid: 1
 
-								)
+											}).then(->
+
+												done()
+
+											)
+
+									)
+
+							)
 
 						)
-
-					)
 
 		# handle the settings
 		describe '#search', ->

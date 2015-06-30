@@ -12,10 +12,11 @@ module.exports = exports = (app) ->
 	if process.env.NODE_ENV or '' == 'testing'
 
 		# connect to the database
-		sequelize = new Sequelize(require('uuid').v1(), null, null, {
+		sequelize = new Sequelize('goddardtest', 'johanndutoit', null, {
 
 			logging: false,
-			dialect: 'sqlite'
+			host: '127.0.0.1',
+			dialect: 'postgres'
 		})
 
 	else

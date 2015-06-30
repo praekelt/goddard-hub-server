@@ -15,58 +15,52 @@ describe 'Handlers', ->
 		# handle the before method
 		before (done) ->
 
-			# update it, create the http server
-			app = require('../../goddard/httpd')
+			# returns the app details
+			require('./harness') (app_obj) ->
 
-			# connect and setup database
-			require('../../goddard/schema')(app)
-			require('../../goddard/services')(app)
-			require('../../goddard/middleware')(app)
-			require('../../goddard/handlers')(app)
+				# set the local instance
+				app = app_obj
 
-			# output the amount
-			app.get('database').sync({}).then ->
+				# output the amount
+				app.get('database').sync({}).then ->
 
-				# insert our tests
-				app.get('models').users.create({
+					# insert our tests
+					app.get('models').users.create({
 
-						name: 'test test'
+							name: 'test test'
 
-					}).then(-> done()).catch(-> done())
+						}).then(-> done()).catch(-> done())
 
-		# handle the settings
-		describe '#response', ->
+		# handle the error output
+		it 'should redirect if already logged in', ->
 
-			# handle the error output
-			it 'should redirect if already logged in', ->
+			request(app)
+				.get('/connect/callback?logged_in_user_id=1')
+				.expect(302)
+				.end((err, res)->
+					assert(err == null, 'Was not expecting a error after request')
+				)
 
-				request(app)
-					.get('/connect/callback?logged_in_user_id=1')
-					.expect(302)
-					.end((err, res)->
-						assert(err == null, 'Was not expecting a error after request')
-					)
+		# handle the error output
+		it 'should redirect if no code was given', ->
 
-			# handle the error output
-			it 'should redirect if no code was given', ->
+			request(app)
+				.get('/connect/callback?logged_in_user_id=1')
+				.expect(302)
+				.end((err, res)->
+					assert(err == null, 'Was not expecting a error after request')
+					assert(res.text.indexOf('nocode') != -1, 'Was expecting to be redirect with error')
+				)
 
-				request(app)
-					.get('/connect/callback?logged_in_user_id=1')
-					.expect(302)
-					.end((err, res)->
-						assert(err == null, 'Was not expecting a error after request')
-						assert(res.text.indexOf('nocode') != -1, 'Was expecting to be redirect with error')
-					)
+		# handle the error output
+		it 'should redirect if code was invalid', ->
 
-			# handle the error output
-			it 'should redirect if code was invalid', ->
-
-				request(app)
-					.get('/connect/callback?logged_in_user_id=1&code=test')
-					.expect(302)
-					.end((err, res)->
-						assert(err == null, 'Was not expecting a error after request')
-					)
+			request(app)
+				.get('/connect/callback?logged_in_user_id=1&code=test')
+				.expect(302)
+				.end((err, res)->
+					assert(err == null, 'Was not expecting a error after request')
+				)
 
 		after (done) ->
 

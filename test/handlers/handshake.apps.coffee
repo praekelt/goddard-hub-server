@@ -18,57 +18,56 @@ describe 'Handlers', ->
 		# handle the before method
 		before (done) ->
 
-			# update it, create the http server
-			app = require('../../goddard/httpd')
+			
 
-			# connect and setup database
-			require('../../goddard/schema')(app)
-			require('../../goddard/services')(app)
-			require('../../goddard/middleware')(app)
-			require('../../goddard/handlers')(app)
+			# returns the app details
+			require('./harness') (app_obj) ->
 
-			# output the amount
-			app.get('sequelize_instance').sync({}).then ->
+				# set the local instance
+				app = app_obj
 
-				# insert our tests
-				app.get('models').nodes.create({
+				# output the amount
+				app.get('sequelize_instance').sync({}).then ->
 
-						id: 1,
-						mport: 15001,
-						port: 15000
+					# insert our tests
+					app.get('models').nodes.create({
 
-					}).then(->
+							id: 1,
+							mport: 15001,
+							port: 15000
 
-						# insert our tests
-						app.get('models').apps.create({
+						}).then(->
 
-								id: 1,
-								name: 'mama',
-								key: 'mama'
+							# insert our tests
+							app.get('models').apps.create({
 
-							}).then(->
+									id: 1,
+									name: 'mama',
+									key: 'mama'
 
-								# insert our tests
-								app.get('models').groups.create({
+								}).then(->
 
-										id: 1,
-										name: 'Default'
+									# insert our tests
+									app.get('models').groups.create({
 
-									}).then(->
+											id: 1,
+											name: 'Default'
 
-										# add install
-										app.get('sequelize_instance')
-										.query('INSERT INTO installs("groupId", "AppId", "nodeId") VALUES(1,1,1);')
-										.then (pages_stat_objs)->
+										}).then(->
 
-											# insert our tests
-											done()
+											# add install
+											app.get('sequelize_instance')
+											.query('INSERT INTO installs("groupId", "AppId", "nodeId") VALUES(1,1,1);')
+											.then (pages_stat_objs)->
 
-									).catch(-> done())
+												# insert our tests
+												done()
 
-							).catch(-> done())
+										).catch(-> done())
 
-					).catch(-> done())
+								).catch(-> done())
+
+						).catch(-> done())
 
 		# handle the settings
 		describe '#response', ->

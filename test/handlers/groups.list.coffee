@@ -18,32 +18,29 @@ describe 'Handlers', ->
 		# handle the before method
 		before (done) ->
 
-			# update it, create the http server
-			app = require('../../goddard/httpd')
+			# returns the app details
+			require('./harness') (app_obj) ->
 
-			# connect and setup database
-			require('../../goddard/schema')(app)
-			require('../../goddard/services')(app)
-			require('../../goddard/middleware')(app)
-			require('../../goddard/handlers')(app)
+				# set the local instance
+				app = app_obj
 
-			# output the amount
-			app.get('sequelize_instance').sync({}).then ->
+				# output the amount
+				app.get('sequelize_instance').sync({}).then ->
 
-				# insert our tests
-				app.get('models').users.create({
+					# insert our tests
+					app.get('models').users.create({
 
-						name: 'test test'
+							name: 'test test'
 
-					}).then(->
+						}).then(->
 
-						app.get('models').groups.create({
+							app.get('models').groups.create({
 
-							name: 'Default'
+								name: 'Default'
 
-						}).then(-> done()).catch(-> done())
+							}).then(-> done()).catch(-> done())
 
-					).catch(-> done())
+						).catch(-> done())
 
 		# handle the error output
 		it 'should redirect away if not logged in', ->

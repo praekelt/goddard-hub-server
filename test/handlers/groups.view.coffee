@@ -20,17 +20,11 @@ describe 'Handlers', ->
 		# handle the before method
 		before (done) ->
 
-			# update it, create the http server
-			app = require('../../goddard/httpd')
+			# returns the app details
+			require('./harness') (app_obj) ->
 
-			# connect and setup database
-			require('../../goddard/schema')(app)
-			require('../../goddard/services')(app)
-			require('../../goddard/middleware')(app)
-			require('../../goddard/handlers')(app)
-
-			# output the amount
-			app.get('database').sync({ force: true }).then (err) ->
+				# set the local instance
+				app = app_obj
 
 				# insert our tests
 				app.get('models').users.create({
@@ -95,8 +89,6 @@ describe 'Handlers', ->
 					.get('/groups/1?logged_in_user_id=1')
 					.expect(200)
 					.end((err, res)->
-						console.log(res.text)
-						# handle errors
 						assert(err == null, 'Was not expecting a error after request')
 						assert(res.text.indexOf('test group') != -1, 'Was expecting the name of the group to appear ...')
 					)
