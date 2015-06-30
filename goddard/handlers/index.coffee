@@ -4,6 +4,7 @@ module.exports = exports = (app) ->
 
 	# load in our modules
 	require('./home')(app)
+	require('./downloads')(app)
 	require('./handshake')(app)
 	require('./auth')(app)
 	require('./users')(app)
