@@ -11,12 +11,15 @@ module.exports = exports = (app) ->
 	# check according to if we are currently in testing or production
 	if process.env.NODE_ENV or '' == 'testing'
 
+		# get the uuid library
+		uuid = require('uuid')
+
 		# connect to the database
-		sequelize = new Sequelize('goddardtest', 'johanndutoit', null, {
+		sequelize = new Sequelize(uuid.v1(), '', null, {
 
 			logging: false,
-			host: '127.0.0.1',
-			dialect: 'postgres'
+			dialect: 'sqlite'
+
 		})
 
 	else
