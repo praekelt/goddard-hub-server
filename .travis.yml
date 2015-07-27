@@ -2,7 +2,7 @@ language: node_js
 node_js:
     - stable
 before_script:
-	- npm install
+    - npm install
     - npm install istanbul-coveralls
 env:
     - BUILDS_FOLDER_PATH=/tmp 
