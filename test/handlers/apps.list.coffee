@@ -25,7 +25,7 @@ describe 'Handlers', ->
 				app = app_obj
 
 				# output the amount
-				app.get('database').sync({}).then ->
+				app.get('database').sync({ force: true }).then ->
 
 					# insert our tests
 					app.get('models').users.create({

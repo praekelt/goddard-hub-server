@@ -73,22 +73,8 @@ module.exports = exports = (app) ->
 					# loop and save
 					async.each param_application_strs or [], handleSavingApp, (err) ->
 
-						# run a build against the node
-						group_obj = item_obj.get()
-
-						# create a build
-						app.get('services').build.create group_obj.key, (err, build_obj) ->
-
-							# and ... ?
-							console.log 'build reported back and running now'
-
-							# start the actual build
-							app.get('services').build.run(build_obj, ->
-								console.log('build done ...')
-							)
-
 						# redirect to group
 						res.redirect '/groups'
 
 				)
-		)
+		).error( -> res.redirect '/groups' )

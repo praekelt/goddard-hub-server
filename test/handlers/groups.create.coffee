@@ -103,7 +103,7 @@ describe 'Handlers', ->
 							# check the 
 							assert(group_obj.name == 'test2', 'Name of group created must be "test2" after checking DB')
 
-						).catch((err) -> assert.fail())
+						).catch((err) -> if !err then assert.fail())
 
 					)
 

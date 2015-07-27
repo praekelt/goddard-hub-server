@@ -25,7 +25,7 @@ describe 'Handlers', ->
 				app = app_obj
 
 				# output the amount
-				app.get('sequelize_instance').sync({}).then ->
+				app.get('sequelize_instance').sync({ force: true }).then ->
 
 					# insert our tests
 					app.get('models').users.create({
