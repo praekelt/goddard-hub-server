@@ -26,7 +26,7 @@ module.exports = exports = (app) ->
 	# the homepage for load balancer
 	app.post '/nodes/:nodeid/edit', app.get('middleware').checkLoggedIn, (req, res) -> 
 
-		app.get('models').nodes.find(req.params.nodeid).then((item_obj) ->
+		app.get('models').nodes.findById(req.params.nodeid).then((item_obj) ->
 			if not item_obj
 				res.redirect '/nodes'
 				return
