@@ -24,8 +24,6 @@ module.exports = exports = (app) ->
 				.query('SELECT apps.* FROM installs,apps where installs."appId"=apps.id AND "groupId"=' + node_obj.groupId + " GROUP BY apps.id")
 				.then((app_objs) ->
 
-					console.dir app_objs
-
 					# public app output
 					public_app_objs = []
 

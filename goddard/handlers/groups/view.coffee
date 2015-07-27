@@ -41,8 +41,6 @@ module.exports = exports = (app) ->
 
 		app.get('models').groups.findById(req.params.groupid).then((item_obj) ->
 
-			console.dir item_obj
-
 			if not item_obj
 				res.redirect '/groups'
 				return

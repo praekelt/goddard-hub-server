@@ -44,9 +44,6 @@ module.exports = exports = (app) ->
 						# get the group
 						app.get('models').groups.findById(1 * obj.groupId).then (group_obj) ->
 
-							console.dir deviceinfo_objs
-							console.dir systeminfo_objs
-
 							if group_obj
 								group_obj = group_obj.get()
 
