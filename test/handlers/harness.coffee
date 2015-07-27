@@ -11,6 +11,6 @@ module.exports = exports = (fn) ->
 
 	# output the amount
 	app.get('sequelize_instance')
-	.sync({ force: true })
+	.sync({ sync: true })
 	.then(-> fn(app))
 	.catch((err) -> console.dir err)

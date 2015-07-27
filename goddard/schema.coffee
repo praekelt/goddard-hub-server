@@ -113,8 +113,8 @@ module.exports = exports = (app) ->
 	})
 
 	# setup the apps
-	Models.apps.hasMany(Models.groups, {as: 'Groups', through: 'installs'})
-	Models.groups.hasMany(Models.apps, {as: 'Apps',through: 'installs'})
+	Models.apps.hasMany(Models.groups, {as: 'Groups', through: 'installs',unique: false})
+	Models.groups.hasMany(Models.apps, {as: 'Apps',through: 'installs',unique: false})
 
 	# set the models
 	Models.nodes = sequelize.define('nodes', {
@@ -142,7 +142,7 @@ module.exports = exports = (app) ->
 
 	# setup the apps
 	Models.nodes.belongsTo(Models.groups)
-	Models.groups.hasMany(Models.nodes, {as: 'Nodes'})
+	Models.groups.hasMany(Models.nodes, {as: 'Nodes',unique: false})
 
 	# setup joins
 	# Models.nodes.hasOne(Models.groups, { as: 'group' })
