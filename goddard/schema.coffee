@@ -8,28 +8,12 @@ module.exports = exports = (app) ->
 	# dicts of models
 	Models = {}
 
-	# check according to if we are currently in testing or production
-	if process.env.NODE_ENV or '' == 'testing'
+	# connect to the database
+	sequelize = new Sequelize(process.env.DB_URL or 'postgres://postgres@localhost/testdatabase', {
 
-		# get the uuid library
-		uuid = require('uuid')
+		logging: false
 
-		# connect to the database
-		sequelize = new Sequelize(uuid.v1(), '', null, {
-
-			logging: false,
-			dialect: 'sqlite'
-
-		})
-
-	else
-
-		# connect to the database
-		sequelize = new Sequelize(process.env.DB_URL, {
-
-			logging: false
-
-		})
+	})
 
 	# set as variable
 	app.set('database', sequelize)
@@ -128,6 +112,10 @@ module.exports = exports = (app) ->
 
 	})
 
+	# setup the apps
+	Models.apps.hasMany(Models.groups, {as: 'Groups', through: 'installs'})
+	Models.groups.hasMany(Models.apps, {as: 'Apps',through: 'installs'})
+
 	# set the models
 	Models.nodes = sequelize.define('nodes', {
 
@@ -152,6 +140,14 @@ module.exports = exports = (app) ->
 
 	})
 
+	# setup the apps
+	Models.nodes.belongsTo(Models.groups)
+	Models.groups.hasMany(Models.nodes, {as: 'Nodes'})
+
+	# setup joins
+	# Models.nodes.hasOne(Models.groups, { as: 'group' })
+	Models.groups.hasMany(Models.nodes, {as: 'Nodes'})
+
 	# set the models
 	Models.systeminfo = sequelize.define('systeminfo', {
 
@@ -168,11 +164,11 @@ module.exports = exports = (app) ->
 	})
 
 	# set the models
-	Models.networkinfo = sequelize.define('networkinfo', {
+	Models.deviceinfo = sequelize.define('networkinfo', {
 
 		nodeid: { type: Sequelize.INTEGER, field: 'nodeid' },
 		mac: { type: Sequelize.INTEGER, field: 'mac' },
-		ip: { type: Sequelize.INTEGER, field: 'ip' },
+		ip: { type: Sequelize.STRING(255), field: 'ip' },
 		useragent: { type: Sequelize.INTEGER, field: 'useragent' },
 		timestamp: { type: Sequelize.INTEGER, field: 'timestamp' }
 
@@ -184,8 +180,8 @@ module.exports = exports = (app) ->
 		nodeid: { type: Sequelize.INTEGER, field: 'nodeid' },
 		bgan_temp: { type: Sequelize.INTEGER, field: 'bgan_temp' },
 		bgan_ping: { type: Sequelize.INTEGER, field: 'bgan_ping' },
-		bgan_ip: { type: Sequelize.INTEGER, field: 'bgan_ip' },
-		bgan_public_ip: { type: Sequelize.INTEGER, field: 'bgan_public_ip' },
+		bgan_ip: { type: Sequelize.STRING(255), field: 'bgan_ip' },
+		bgan_public_ip: { type: Sequelize.STRING(255), field: 'bgan_public_ip' },
 		bgan_lat: { type: Sequelize.FLOAT, field: 'bgan_lat' },
 		bgan_lng: { type: Sequelize.FLOAT, field: 'bgan_lng' },
 		bgan_uptime: { type: Sequelize.FLOAT, field: 'bgan_uptime' },
@@ -209,11 +205,6 @@ module.exports = exports = (app) ->
 		lastLogin: { type: Sequelize.DATE, field: 'lastLogin' }
 
 	})
-
-	# setup the apps
-	Models.apps.belongsToMany(Models.groups, {as: 'Groups', through: 'installs'})
-	Models.apps.belongsToMany(Models.groups, {as: 'Apps', through: 'installs'})
-	Models.nodes.belongsTo(Models.groups)
 
 	# sync all the tables
 	# sequelize.sync({ force: true })

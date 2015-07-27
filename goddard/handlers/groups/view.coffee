@@ -11,7 +11,7 @@ module.exports = exports = (app) ->
 		# get all the groups
 		app.get('models').apps.findAll().then (app_objs) ->
 
-			app.get('models').groups.findById(req.params.groupid).then((item_obj) ->
+			app.get('models').groups.find(req.params.groupid).then((item_obj) ->
 				if not item_obj
 					res.redirect '/groups'
 					return
@@ -39,7 +39,7 @@ module.exports = exports = (app) ->
 		param_description_str	= req.body.description
 		param_application_strs 		= req.body.applications
 
-		app.get('models').groups.findById(req.params.groupid).then((item_obj) ->
+		app.get('models').groups.find(req.params.groupid).then((item_obj) ->
 
 			if not item_obj
 				res.redirect '/groups'
@@ -62,7 +62,7 @@ module.exports = exports = (app) ->
 					handleSavingApp = (app_id_str, cb) ->
 
 						# get that app
-						app.get('models').apps.findById( 1 * app_id_str ).then (app_obj) ->
+						app.get('models').apps.find( 1 * app_id_str ).then (app_obj) ->
 
 							# create and save it
 							item_obj.addApp(app_obj)

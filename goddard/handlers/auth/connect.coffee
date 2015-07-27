@@ -76,7 +76,7 @@ module.exports = exports = (app) ->
 						param_picture_str 		= response_user_obj.picture
 
 						# save in database
-						app.get('models').users.findById({
+						app.get('models').users.find({
 
 								where: {
 

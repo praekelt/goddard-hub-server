@@ -11,7 +11,7 @@ module.exports = exports = (app) ->
 		node_id_str = req.query.uid or req.query.nodeid or null
 
 		# find the node by that id
-		app.get('models').nodes.findById(1 * node_id_str).then((item_obj) =>
+		app.get('models').nodes.find(1 * node_id_str).then((item_obj) =>
 
 			# did we find the item ?
 			if item_obj

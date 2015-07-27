@@ -40,7 +40,7 @@ module.exports = exports = (app) ->
 		handleSavingApp = (app_id_str, cb) ->
 
 			# get that app
-			app.get('models').apps.findById( 1 * app_id_str ).then (app_obj) ->
+			app.get('models').apps.find( 1 * app_id_str ).then (app_obj) ->
 
 				# create and save it
 				group_obj.addApp(app_obj)
