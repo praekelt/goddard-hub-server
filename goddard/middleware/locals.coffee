@@ -28,7 +28,7 @@ module.exports = exports = (app) ->
 			if req.session.logged_in_user_id
 
 				# get the user obj
-				app.get('models').users.find( req.session.logged_in_user_id ).then (user_response_obj) ->
+				app.get('models').users.findById( req.session.logged_in_user_id ).then (user_response_obj) ->
 
 					# did we find it ???
 					if user_response_obj

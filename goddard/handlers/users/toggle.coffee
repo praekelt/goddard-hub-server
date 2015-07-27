@@ -10,7 +10,7 @@ module.exports = exports = (app) ->
 			return
 
 		# find by the given id
-		app.get('models').users.find(1 * req.params.userid).then((obj) ->
+		app.get('models').users.findById(1 * req.params.userid).then((obj) ->
 
 			# was it found ?
 			if not obj

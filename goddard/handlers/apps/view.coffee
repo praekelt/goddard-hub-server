@@ -8,7 +8,7 @@ module.exports = exports = (app) ->
 	# the homepage for load balancer
 	app.get '/apps/:appid', app.get('middleware').checkLoggedIn, (req, res) -> 
 
-		app.get('models').apps.find(req.params.appid).then((item_obj) ->
+		app.get('models').apps.findById(req.params.appid).then((item_obj) ->
 			if not item_obj
 				res.redirect '/apps'
 				return
@@ -25,7 +25,7 @@ module.exports = exports = (app) ->
 	# the homepage for load balancer
 	app.post '/apps/:appid', app.get('middleware').checkLoggedIn, (req, res) -> 
 
-		app.get('models').apps.find(req.params.appid).then((item_obj) ->
+		app.get('models').apps.findById(req.params.appid).then((item_obj) ->
 			if not item_obj
 				res.redirect '/apps'
 				return

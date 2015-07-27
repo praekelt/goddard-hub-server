@@ -128,10 +128,6 @@ module.exports = exports = (app) ->
 
 	})
 
-	# setup the apps
-	Models.apps.hasMany(Models.groups, {as: 'Groups', through: 'installs'})
-	Models.groups.hasMany(Models.apps, {as: 'Apps',through: 'installs'})
-
 	# set the models
 	Models.nodes = sequelize.define('nodes', {
 
@@ -155,14 +151,6 @@ module.exports = exports = (app) ->
 		enabled: { type: Sequelize.BOOLEAN, field: 'enabled' }
 
 	})
-
-	# setup the apps
-	Models.nodes.belongsTo(Models.groups)
-	Models.groups.hasMany(Models.nodes, {as: 'Nodes'})
-
-	# setup joins
-	# Models.nodes.hasOne(Models.groups, { as: 'group' })
-	Models.groups.hasMany(Models.nodes, {as: 'Nodes'})
 
 	# set the models
 	Models.systeminfo = sequelize.define('systeminfo', {
@@ -221,6 +209,11 @@ module.exports = exports = (app) ->
 		lastLogin: { type: Sequelize.DATE, field: 'lastLogin' }
 
 	})
+
+	# setup the apps
+	Models.apps.belongsToMany(Models.groups, {as: 'Groups', through: 'installs'})
+	Models.apps.belongsToMany(Models.groups, {as: 'Apps', through: 'installs'})
+	Models.nodes.belongsTo(Models.groups)
 
 	# sync all the tables
 	# sequelize.sync({ force: true })

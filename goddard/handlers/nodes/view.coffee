@@ -12,7 +12,7 @@ module.exports = exports = (app) ->
 			return
 
 		# find by the given id
-		app.get('models').nodes.find(1 * req.params.nodeid).then((obj) ->
+		app.get('models').nodes.findById(1 * req.params.nodeid).then((obj) ->
 
 			# was it found ?
 			if not obj
@@ -42,7 +42,7 @@ module.exports = exports = (app) ->
 							systeminfo_objs = []
 
 						# get the group
-						app.get('models').groups.find(1 * obj.groupId).then (group_obj) ->
+						app.get('models').groups.findById(1 * obj.groupId).then (group_obj) ->
 
 							console.dir deviceinfo_objs
 							console.dir systeminfo_objs
