@@ -8,12 +8,29 @@ module.exports = exports = (app) ->
 	# dicts of models
 	Models = {}
 
-	# connect to the database
-	sequelize = new Sequelize(process.env.DB_URL or 'postgres://postgres@localhost/testdatabase', {
 
-		logging: false
+	# if testing we switch to SQLite
+	if process.env.NODE_ENV == 'testing'
 
-	})
+		# handle the uuid
+		uuid = require('uuid')
+
+		# connect to the database
+		sequelize = new Sequelize( uuid.v1(), '', '', {
+
+			logging: false,
+			dialect: 'sqlite'
+
+		})
+
+	else
+
+		# connect to the database
+		sequelize = new Sequelize(process.env.DB_URL, {
+
+			logging: false
+
+		})
 
 	# set as variable
 	app.set('database', sequelize)

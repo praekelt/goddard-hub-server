@@ -4,8 +4,6 @@ module.exports = exports = (app) ->
 	# the homepage for load balancer
 	app.get '/nodes/:nodeid', app.get('middleware').checkLoggedIn, (req, res) ->
 
-		console.log 'node here' 
-
 		# check for the id
 		if not req.params.nodeid
 			res.redirect('/nodes')

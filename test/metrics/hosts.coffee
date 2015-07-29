@@ -15,15 +15,11 @@ describe 'node', ->
 	# handle the before method
 	before (done) ->
 
-		# update it, create the http server
-		app = require('../../goddard/httpd')
+		# setup the harness
+		require('../handlers/harness') (app_obj) ->
 
-		# connect and setup database
-		require('../../goddard/schema')(app)
-		require('../../goddard/services')(app)
-
-		# output the amount
-		app.get('sequelize_instance').sync({}).then ->
+			# handle app
+			app = app_obj
 
 			# insert our tests
 			app.get('models').nodes.create({
@@ -44,14 +40,6 @@ describe 'node', ->
 				# do our assertions
 				assert(err == null, "Error whould be null")
 				assert(port == 15001, "Port should be 15001 as that's the highest")
-
-	after (done) ->
-
-		# done !
-		app = null
-
-		# close it all
-		done()
 
 	
 

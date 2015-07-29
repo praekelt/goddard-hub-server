@@ -2,54 +2,8 @@
 # modules
 assert = require('assert')
 _ = require('underscore')
+fs = require('fs')
 request = require('supertest')
-metric_obj = {
-
-	"nodeid": 1,
-	"timestamp": "",
-	"node": {
-
-		"cpus": 4,
-		"load": "1.0, 0.6, 0.4",
-		"uptime": 13,
-
-		"memory": {
-
-			"free": 468,
-			"total": 1024
-
-		},
-		"disk": {
-
-			"free": 14300,
-			"total": 19900,
-			"raid": [ "ACTIVE","ACTIVE" ]
-
-		}
-
-	},
-	"bgan": {
-
-		"uptime": 1,
-		"lat": "33.123",
-		"lng": "18.134",
-		"temp": 38.4,
-		"ping": 1300
-
-	},
-	"router": {
-
-		"uptime": 100
-
-	},
-	"wireless": {
-
-		"uptime": 100
-
-	},
-	"relays": [ 1,0,0,0 ]
-
-}
 
 # checks warnings that we check for
 describe 'Handlers', ->
@@ -71,13 +25,8 @@ describe 'Handlers', ->
 				# set the local instance
 				app = app_obj
 
-				# insert our tests
-				app.get('models').nodes.create({
-
-						mport: 15001,
-						port: 15000
-
-					}).then(-> done()).catch(-> done())
+				# done !
+				done()
 
 		# handle the settings
 		describe '#response', ->
@@ -86,24 +35,35 @@ describe 'Handlers', ->
 			it 'should always return "ok"', ->
 
 				request(app)
-					.get('/metric.json')
-					.expect(404)
-					.end((err, res)->
-						assert(err == null, 'Was not expecting a error after request')
-					)
-
-			# handle the error output
-			it 'should log our actual metric test', ->
-
-				request(app)
-					.post('/metric.json')
-					.send(metric_obj)
+					.get('/build.json')
 					.expect(200)
 					.end((err, res)->
 						assert(err == null, 'Was not expecting a error after request')
 						response_obj = JSON.parse(res.text)
 						assert(response_obj != null, "Did not return valid JSON")
 						assert(response_obj.status == 'ok', "Response for the status was something else than 'ok'")
+					)
+
+		# handle the settings
+		describe '#webhook.txt', ->
+
+			# handle the error output
+			it 'should create a webhook file', ->
+
+				request(app)
+					.get('/build.json')
+					.expect(200)
+					.end((err, res)->
+						assert(err == null, 'Was not expecting a error after request')
+						response_obj = JSON.parse(res.text)
+						assert(response_obj != null, "Did not return valid JSON")
+						assert(response_obj.status == 'ok', "Response for the status was something else than 'ok'")
+
+						# and check the file
+						assert( fs.existsSync('/tmp/webhook.txt'), 'Webhook.txt file should exist after calling build.json' )
+
+						# delete it
+						fs.unlinkSync('/tmp/webhook.txt')
 					)
 
 		after (done) ->

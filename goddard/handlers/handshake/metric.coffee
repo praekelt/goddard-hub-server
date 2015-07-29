@@ -19,8 +19,6 @@ module.exports = exports = (app) ->
 				# get the metric objs
 				app.get('services').metric.parse req.body, (err, metric_obj) =>
 
-					console.dir metric_obj
-
 					# add in the ip we got this from
 					metric_obj.public_ip = req.headers['x-forwarded-for'] or req.connection.remoteAddress or null
 
@@ -50,11 +48,8 @@ module.exports = exports = (app) ->
 
 							# update the metrics
 							app.get('services').metric.addSystemInfo node_obj, metric_obj, (err) =>
-								console.dir(err)
 								app.get('services').metric.addDeviceInfo node_obj, metric_obj, (err) =>
-									console.dir(err)
 									app.get('services').metric.saveHosts node_obj, metric_obj, (err) =>
-										console.dir(err)
 
 										# respond done
 										res.json { status: 'ok' }
