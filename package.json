@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "rm -rf ./coverage && BUILDS_FOLDER_PATH=/tmp AUTHED_KEYS_FILE=/tmp/authedkeys.txt WEBHOOKFILE=/tmp/webhook.txt NODE_PUBLIC_KEY=test NODE_ENV=testing mocha --recursive --compilers coffee:coffee-script/register --require coffee-coverage/register-istanbul",
+    "test": "rm -rf ./coverage && BUILDS_FOLDER_PATH=/tmp AUTHED_KEYS_FILE=/tmp/authedkeys.txt WEBHOOKFILE=/tmp/webhook.txt NODE_PUBLIC_KEY=test NODE_ENV=testing mocha --recursive --compilers coffee:coffee-script/register --require coffee-coverage/register-istanbul && istanbul report lcov --include coverage/coverage-coffee.json",
     "coverage": "npm test && istanbul report lcov --include coverage/coverage-coffee.json"
   },
   "author": "",
