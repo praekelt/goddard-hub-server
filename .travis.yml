@@ -10,4 +10,4 @@ before_script:
 env:
   - BUILDS_FOLDER_PATH=/tmp AUTHED_KEYS_FILE=/tmp/authedkeys.txt WEBHOOKFILE=/tmp/webhook.txt NODE_PUBLIC_KEY=test NODE_ENV=testing
 after_script:
-  - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+  - istanbul-coveralls
