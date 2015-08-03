@@ -2,3 +2,4 @@ name: inmarsat-hub
 buildscript: scripts/deploy
 postinstall: scripts/postinstall.sh
 buildtype: node
+user: node
