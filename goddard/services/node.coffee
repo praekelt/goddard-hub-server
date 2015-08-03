@@ -9,23 +9,42 @@ module.exports = exports = (app) ->
 	# start the Nodes service
 	Nodes = {}
 
+	# returns the max part from the database
+	### istanbul ignore next ###
+	Nodes.getMaxTunnelPort = (fn) ->
+
+		# if this is testing we use a random port
+		if process.env.NODE_ENV == 'testing'
+			fn(null, 300)
+		else
+			# get the highest ports
+			app.get('models').nodes.max('mport').then((port) ->
+
+				# done
+				fn(null, port)
+
+			).catch(fn)
+
 	# returns the next available port to use
+	### istanbul ignore next ###
 	Nodes.getNextTunnelPort = (fn) ->
 
 		# get the highest ports
-		app.get('models').nodes.max('mport').then((port) ->
+		Nodes.getMaxTunnelPort (err, port) ->
 
-			# check the port
-			if port
-				if port < 15000
-					port = port + 15000
+			# check for error
+			if err
+				fn(err)
 			else
-				port = 15000
+				# check the port
+				if port
+					if port < 15000
+						port = port + 15000
+				else
+					port = 15000
 
-			# done
-			fn(null, port)
-
-		).catch(fn)
+				# done
+				fn(null, port)
 
 	# returns a nicely formatted response for the handshake client
 	Nodes.formatResponse = (node_obj, fn) ->
@@ -68,11 +87,12 @@ module.exports = exports = (app) ->
 
 	# updates with the existing nodes. Ensures that serial 
 	# and all missing fields are present
+	### istanbul ignore next ###
 	Nodes.update = (node_obj, fn) ->
 
 		# update
 		if not node_obj.serial
-			node_obj.serial = S(node_obj.id).padLeft(4, '0').s
+			node_obj.serial = S(node_obj.id).padLeft(5, '0').s
 
 		# save it
 		node_obj.save().then(->
@@ -83,6 +103,7 @@ module.exports = exports = (app) ->
 		).catch(fn)
 
 	# Nodess the path to run
+	### istanbul ignore next ###
 	Nodes.find = (param_mac_addr, param_public_key, fn) ->
 
 		# get the next

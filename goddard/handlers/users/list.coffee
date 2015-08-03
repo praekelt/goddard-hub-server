@@ -2,6 +2,7 @@
 module.exports = exports = (app) ->
 
 	# the homepage for load balancer
+	### istanbul ignore next ###
 	app.get '/users', app.get('middleware').checkLoggedIn, app.get('middleware').handlePagination, (req, res) -> 
 
 		# search params

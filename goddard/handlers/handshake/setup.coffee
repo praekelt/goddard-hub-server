@@ -1,4 +1,5 @@
 # loads all the modules and the subdirs for the app
+### istanbul ignore next ###
 module.exports = exports = (app) ->
 
 	# required modules
@@ -24,29 +25,17 @@ module.exports = exports = (app) ->
 				node_obj.publickey = param_public_key
 
 				# awesome so update for any missing properties
-				app.get('services').node.update node_obj, (err, node_obj) =>
+				app.get('services').node.update node_obj, (err) =>
+
+					# did we find the node ... ?
+					console.dir err
+					console.dir node_obj
 
 					# get the node
 					node_obj = node_obj.get()
 
 					# format the response to send
 					app.get('services').node.formatResponse node_obj, (err, public_response_obj) =>
-
-						# try to start a build
-						app.get('services').build.create node_obj.serial, (err, build_obj) ->
-
-							# and ... ?
-							console.log 'build reported back and running now'
-
-							# wait a few seconds to start the first build
-							setTimeout(=>
-
-								# start the actual build
-								app.get('services').build.run(build_obj, ->
-									console.log('build done ...')
-								)
-
-							, 1000*90)
 							
 						# output
 						res.json public_response_obj
