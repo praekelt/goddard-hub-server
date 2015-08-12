@@ -1,5 +1,4 @@
 # loads all the modules and the subdirs for the app
-### istanbul ignore next ###
 module.exports = exports = (app) ->
 
 	# required modules
@@ -18,6 +17,8 @@ module.exports = exports = (app) ->
 		# create / find a node
 		app.get('services').node.find param_mac_addr, param_public_key, (err, node_obj) =>
 
+			console.dir err
+
 			# ok so now save the key
 			app.get('services').node.saveKey node_obj, param_public_key, (err) =>
 
@@ -29,7 +30,6 @@ module.exports = exports = (app) ->
 
 					# did we find the node ... ?
 					console.dir err
-					console.dir node_obj
 
 					# get the node
 					node_obj = node_obj.get()

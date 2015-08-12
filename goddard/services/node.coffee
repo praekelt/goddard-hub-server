@@ -10,23 +10,19 @@ module.exports = exports = (app) ->
 	Nodes = {}
 
 	# returns the max part from the database
-	### istanbul ignore next ###
+	
 	Nodes.getMaxTunnelPort = (fn) ->
 
-		# if this is testing we use a random port
-		if process.env.NODE_ENV == 'testing'
-			fn(null, 300)
-		else
-			# get the highest ports
-			app.get('models').nodes.max('mport').then((port) ->
+		# get the highest ports
+		app.get('models').nodes.max('mport').then((port) ->
 
-				# done
-				fn(null, port)
+			# done
+			fn(null, port)
 
-			).catch(fn)
+		).catch(fn)
 
 	# returns the next available port to use
-	### istanbul ignore next ###
+	
 	Nodes.getNextTunnelPort = (fn) ->
 
 		# get the highest ports
@@ -44,7 +40,7 @@ module.exports = exports = (app) ->
 					port = 15000
 
 				# done
-				fn(null, port)
+				fn(null, port + 3, port + 4)
 
 	# returns a nicely formatted response for the handshake client
 	Nodes.formatResponse = (node_obj, fn) ->
@@ -87,7 +83,7 @@ module.exports = exports = (app) ->
 
 	# updates with the existing nodes. Ensures that serial 
 	# and all missing fields are present
-	### istanbul ignore next ###
+	
 	Nodes.update = (node_obj, fn) ->
 
 		# update
@@ -103,11 +99,11 @@ module.exports = exports = (app) ->
 		).catch(fn)
 
 	# Nodess the path to run
-	### istanbul ignore next ###
+	
 	Nodes.find = (param_mac_addr, param_public_key, fn) ->
 
 		# get the next
-		Nodes.getNextTunnelPort (err, port) ->
+		Nodes.getNextTunnelPort (err, port, mport) ->
 
 			# create the node if it doesn't exist
 			app.get('models').nodes.findOrCreate({
@@ -122,8 +118,8 @@ module.exports = exports = (app) ->
 						serial: '',
 						groups: [],
 						server: process.env.TUNNEL_SERVER or 'goddard.io.co.za',
-						port: (port + 3),
-						mport: (port + 4),
+						port: port,
+						mport: mport,
 						macaddr: param_mac_addr,
 						publickey: param_public_key,
 
@@ -133,7 +129,7 @@ module.exports = exports = (app) ->
 						groupId: 1,
 
 						enabled: true,
-						warnings: [],
+						warnings: null,
 
 						lastping: new Date()
 

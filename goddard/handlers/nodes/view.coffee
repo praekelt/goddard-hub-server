@@ -1,11 +1,8 @@
 # acts as the homepage for the dashboard
-### istanbul ignore next ###
 module.exports = exports = (app) ->
 
 	# the homepage for load balancer
 	app.get '/nodes/:nodeid', app.get('middleware').checkLoggedIn, (req, res) ->
-
-		console.log 'node here' 
 
 		# check for the id
 		if not req.params.nodeid
@@ -44,9 +41,6 @@ module.exports = exports = (app) ->
 
 						# get the group
 						app.get('models').groups.find(1 * obj.groupId).then (group_obj) ->
-
-							console.dir deviceinfo_objs
-							console.dir systeminfo_objs
 
 							if group_obj
 								group_obj = group_obj.get()

@@ -41,7 +41,7 @@ block content
 											| #{item_obj.name}
 											| (&nbsp;<strong>#{item_obj.serial}</strong>&nbsp;)
 										-else
-											##{item_obj.serial}
+											| ##{item_obj.serial}
 								p(style="margin:0;font-size: 11px;") 
 									-if(item_obj.country)
 										strong= item_obj.country

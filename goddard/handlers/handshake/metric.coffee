@@ -1,5 +1,4 @@
 # loads all the modules and the subdirs for the app
-### istanbul ignore next ###
 module.exports = exports = (app) ->
 
 	# require the modules
@@ -7,8 +6,6 @@ module.exports = exports = (app) ->
 
 	# handle any metric coming our way
 	app.post '/metric.json', (req, res) ->
-
-		# console.dir req.body
 
 		# get the passed name / value / nodeid
 		nodeid 		= req.body.nodeid
@@ -22,8 +19,6 @@ module.exports = exports = (app) ->
 				# get the metric objs
 				app.get('services').metric.parse req.body, (err, metric_obj) =>
 
-					console.dir metric_obj
-
 					# add in the ip we got this from
 					metric_obj.public_ip = req.headers['x-forwarded-for'] or req.connection.remoteAddress or null
 
@@ -34,7 +29,7 @@ module.exports = exports = (app) ->
 					app.get('services').metric.check node_obj, metric_obj, (err, warnings) =>
 
 						# save the metrics
-						node_obj.warnings = warnings or []
+						node_obj.warnings = JSON.stringify(warnings or [])
 
 						# update the ndoe
 						node_obj.lastping = new Date()
@@ -59,7 +54,10 @@ module.exports = exports = (app) ->
 										# respond done
 										res.json { status: 'ok' }
 
-						).catch(->res.status(400).jsonp({status: 'error',message: 'Something went wrong'}))
+						).catch((err)->
+							console.dir(err)
+							res.status(400).jsonp({status: 'error',message: 'Something went wrong'})
+						)
 
 			else 
 				res.json {status: 'error',message: 'No such node with that id was found registered ...'}

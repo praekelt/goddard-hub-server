@@ -1,9 +1,7 @@
-### istanbul ignore next ###
 # required modules
 Sequelize = require('sequelize');
 
 # create the http server
-### istanbul ignore next ###
 app = require('./httpd')
 
 # connect and setup database
