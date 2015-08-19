@@ -14,7 +14,7 @@ block content
 	-if(item_obj.warnings && item_obj.warnings.length > 0)
 		.alert.alert-warning 
 			ul
-				-each warning_str in item_obj.warnings
+				-each warning_str in ( JSON.stringify(item_obj.warnings || '[]') || [] )
 					li #{warning_str}
 	// .alert.alert-danger NODE IS DOWN
 	.row

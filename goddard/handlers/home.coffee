@@ -51,7 +51,7 @@ module.exports = exports = (app) ->
 
 						# delete all installs
 						app.get('sequelize_instance')
-						.query('SELECT COUNT(id) as count FROM nodes WHERE nodes.enabled =true and warnings IS NOT NULL AND array_length(warnings, 1) > 0')
+						.query('SELECT COUNT(id) as count FROM nodes WHERE nodes.enabled=true and warnings IS NOT NULL AND warnings IS NOT NULL')
 						.then((node_stat_obj)->
 
 							# check the nodes
