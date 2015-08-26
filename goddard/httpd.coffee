@@ -3,6 +3,7 @@
 express			= require('express')
 bodyParser 		= require('body-parser')
 session 		= require('express-session')
+raven 			= require('raven');
 RedisStore 		= require('connect-redis')(session);
 
 # create the instance to setup and use
