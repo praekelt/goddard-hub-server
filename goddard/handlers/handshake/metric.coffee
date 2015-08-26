@@ -31,6 +31,10 @@ module.exports = exports = (app) ->
 						# save the metrics
 						node_obj.warnings = JSON.stringify(warnings or [])
 
+						# if it's empty mark as null
+						if node_obj.warnings.length == 0
+							node_obj.warnings = null
+
 						# update the ndoe
 						node_obj.lastping = new Date()
 						if metric_obj.bgan
