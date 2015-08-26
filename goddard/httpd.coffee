@@ -9,6 +9,9 @@ RedisStore 		= require('connect-redis')(session);
 # create the instance to setup and use
 app = express()
 
+# Should be the first item listed
+app.use(raven.middleware.express.requestHandler(process.env.SENTRY_DSN or ''))
+
 # middleware
 app.use bodyParser.json()
 app.use bodyParser.urlencoded({ extended: true })
@@ -37,11 +40,8 @@ app.use session(session_params)
 # set the view engine
 app.set 'view engine', 'jade'
 
-# Should be the first item listed
-app.use(raven.middleware.express.requestHandler(process.env.SENTRY_DSN or ''));
-
 # Should come before any other error middleware
-app.use(raven.middleware.express.errorHandler(process.env.SENTRY_DSN or ''));
+app.use(raven.middleware.express.errorHandler(process.env.SENTRY_DSN or ''))
 
 # expose interface
 module.exports = exports = app
