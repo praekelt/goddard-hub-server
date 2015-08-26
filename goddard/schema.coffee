@@ -1,4 +1,5 @@
 # acts as the homepage for the dashboard
+### istanbul ignore next ###
 module.exports = exports = (app) ->
 
 	# required modules
@@ -7,12 +8,29 @@ module.exports = exports = (app) ->
 	# dicts of models
 	Models = {}
 
-	# connect to the database
-	sequelize = new Sequelize(process.env.DB_URL, {
 
-		logging: false
+	# if testing we switch to SQLite
+	if process.env.NODE_ENV == 'testing'
 
-	})
+		# handle the uuid
+		uuid = require('uuid')
+
+		# connect to the database
+		sequelize = new Sequelize( uuid.v1(), '', '', {
+
+			logging: false,
+			dialect: 'sqlite'
+
+		})
+
+	else
+
+		# connect to the database
+		sequelize = new Sequelize(process.env.DB_URL, {
+
+			logging: false
+
+		})
 
 	# set as variable
 	app.set('database', sequelize)
@@ -112,8 +130,8 @@ module.exports = exports = (app) ->
 	})
 
 	# setup the apps
-	Models.apps.hasMany(Models.groups, {as: 'Groups', through: 'installs'})
-	Models.groups.hasMany(Models.apps, {as: 'Apps',through: 'installs'})
+	Models.apps.hasMany(Models.groups, {as: 'Groups', through: 'installs',unique: false})
+	Models.groups.hasMany(Models.apps, {as: 'Apps',through: 'installs',unique: false})
 
 	# set the models
 	Models.nodes = sequelize.define('nodes', {
@@ -126,7 +144,7 @@ module.exports = exports = (app) ->
 		address: { type: Sequelize.STRING(255), field: 'address' }
 		name: { type: Sequelize.STRING(255), field: 'name' }
 		description: { type: Sequelize.STRING(255), field: 'description' }
-		warnings: { type: Sequelize.ARRAY(Sequelize.STRING(255)), field: 'warnings' }
+		warnings: { type: Sequelize.STRING(255), field: 'warnings' }
 		comments: { type: Sequelize.TEXT, field: 'comments' }
 		port: { type: Sequelize.INTEGER, field: 'port' }
 		mport: { type: Sequelize.INTEGER, field: 'mport' },
@@ -141,7 +159,7 @@ module.exports = exports = (app) ->
 
 	# setup the apps
 	Models.nodes.belongsTo(Models.groups)
-	Models.groups.hasMany(Models.nodes, {as: 'Nodes'})
+	Models.groups.hasMany(Models.nodes, {as: 'Nodes',unique: false})
 
 	# setup joins
 	# Models.nodes.hasOne(Models.groups, { as: 'group' })
@@ -167,7 +185,7 @@ module.exports = exports = (app) ->
 
 		nodeid: { type: Sequelize.INTEGER, field: 'nodeid' },
 		mac: { type: Sequelize.INTEGER, field: 'mac' },
-		ip: { type: Sequelize.INTEGER, field: 'ip' },
+		ip: { type: Sequelize.STRING(255), field: 'ip' },
 		useragent: { type: Sequelize.INTEGER, field: 'useragent' },
 		timestamp: { type: Sequelize.INTEGER, field: 'timestamp' }
 
@@ -179,8 +197,8 @@ module.exports = exports = (app) ->
 		nodeid: { type: Sequelize.INTEGER, field: 'nodeid' },
 		bgan_temp: { type: Sequelize.INTEGER, field: 'bgan_temp' },
 		bgan_ping: { type: Sequelize.INTEGER, field: 'bgan_ping' },
-		bgan_ip: { type: Sequelize.INTEGER, field: 'bgan_ip' },
-		bgan_public_ip: { type: Sequelize.INTEGER, field: 'bgan_public_ip' },
+		bgan_ip: { type: Sequelize.STRING(255), field: 'bgan_ip' },
+		bgan_public_ip: { type: Sequelize.STRING(255), field: 'bgan_public_ip' },
 		bgan_lat: { type: Sequelize.FLOAT, field: 'bgan_lat' },
 		bgan_lng: { type: Sequelize.FLOAT, field: 'bgan_lng' },
 		bgan_uptime: { type: Sequelize.FLOAT, field: 'bgan_uptime' },

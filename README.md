@@ -1,5 +1,7 @@
 # Goddard Hub Server
 
+[![Coverage Status](https://coveralls.io/repos/praekelt/goddard-hub-server/badge.svg?branch=feature%2Fcoverage&service=github)](https://coveralls.io/github/praekelt/goddard-hub-server?branch=feature%2Fcoverage)
+
 ## About
 
 The "Hub" is the management interface for the system.

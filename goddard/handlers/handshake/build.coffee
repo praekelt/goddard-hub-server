@@ -3,31 +3,17 @@ module.exports = exports = (app) ->
 
 	# require the modules
 	_ 			= require('underscore')
+	fs 			= require('fs')
 
 	# handle any metric coming our way
-	app.get '/build.json', (req, res) ->
+	app.all '/build.json', (req, res) ->
 
-		# get the params
-		param_target_str = req.query.target
+		# write out the lock file so the builds can happen
+		fs.writeFileSync(process.env.WEBHOOKFILE or '/var/goddard/builds/webhook.txt', '' + new Date().getTime())
 
-		# try to start a build
-		app.get('services').build.create param_target_str, (err, build_obj) ->
+		# output as build happens async
+		res.json {
 
-			# error ?
-			if err or not build_obj
-				res.json {
+			status: 'ok'
 
-					status: 'error',
-					message: 'Something went wrong'
-
-				}
-			else 
-				# start the actual build
-				app.get('services').build.run(build_obj, ->
-					console.log('build done ...')
-				)
-
-				# output as build happens async
-				res.json {
-					status: 'ok'
-				}
+		}

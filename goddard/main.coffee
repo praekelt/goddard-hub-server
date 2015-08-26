@@ -18,6 +18,8 @@ require('./handlers')(app)
 argv = require('minimist')(process.argv.slice(2));
 
 # should we run the migrations ?
+### istanbul ignore if ###
+### istanbul ignore else ###
 if argv.migrations == true
 
 	# run the migrations

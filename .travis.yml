@@ -1,0 +1,13 @@
+language: node_js
+addons:
+  postgresql: "9.3"
+node_js:
+  - stable
+before_script:
+  - npm install
+  - npm install istanbul-coveralls
+  - psql -c 'create database testdatabase;' -U postgres
+env:
+  - BUILDS_FOLDER_PATH=/tmp AUTHED_KEYS_FILE=/tmp/authedkeys.txt WEBHOOKFILE=/tmp/webhook.txt NODE_PUBLIC_KEY=test NODE_ENV=testing
+after_script:
+  - istanbul-coveralls
