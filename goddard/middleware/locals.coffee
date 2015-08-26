@@ -1,11 +1,18 @@
 # acts as the homepage for the dashboard
+### istanbul ignore next ###
 module.exports = exports = (app) ->
+
+	### istanbul ignore next ###
 
 	# local params
 	_ = require('underscore')
 
 	# setup our locals for all the views
 	app.use (req, res, next) ->
+
+		# should we skip ?
+		if process.env.NODE_ENV == 'testing'
+			req.session.logged_in_user_id = req.params.logged_in_user_id or req.query.logged_in_user_id or req.headers.logged_in_user_id or null
 
 		# set the send params
 		res.locals.post_params = _.extend({}, req.body)
@@ -40,6 +47,7 @@ module.exports = exports = (app) ->
 						# logout then ...
 						res.redirect '/logout?notfound=1'
 
-			else next()
+			else 
+				next()
 
 		else next()

@@ -5,4 +5,3 @@ module.exports = exports = (app) ->
 	require('./list')(app)
 	require('./create')(app)
 	require('./view')(app)
-	require('./delete')(app)

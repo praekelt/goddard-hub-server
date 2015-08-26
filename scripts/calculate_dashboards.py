@@ -43,7 +43,7 @@ def upsert_mac(cursor, nodeid, stat):
     else:
         # Record does exist, lets update.
         print "Dashboard MAC Calculations - Updating node %s" % node_id
-        cursor.execute('UPDATE node_dashboard_page_views set "h1"=%s, "h24"=%s, "h48"=%s, "d7"=%s, "d31"=%s, "d365"=%s, \
+        cursor.execute('UPDATE node_dashboard_macs set "h1"=%s, "h24"=%s, "h48"=%s, "d7"=%s, "d31"=%s, "d365"=%s, \
             "allTime"=%s, timestamp=now() where "id"=%s',
             (stat['h1'], stat['h24'], stat['h48'], stat['d7'], stat['d31'], stat['d365'], stat['all_time'], row['id'] ))
 

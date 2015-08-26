@@ -4,8 +4,6 @@ module.exports = exports = (app) ->
 	# the homepage for load balancer
 	app.get '/nodes/:nodeid', app.get('middleware').checkLoggedIn, (req, res) ->
 
-		console.log 'node here' 
-
 		# check for the id
 		if not req.params.nodeid
 			res.redirect('/nodes')
@@ -44,9 +42,6 @@ module.exports = exports = (app) ->
 						# get the group
 						app.get('models').groups.find(1 * obj.groupId).then (group_obj) ->
 
-							console.dir deviceinfo_objs
-							console.dir systeminfo_objs
-
 							if group_obj
 								group_obj = group_obj.get()
 
@@ -66,10 +61,17 @@ module.exports = exports = (app) ->
 									# try to get the stats
 									mac_stat_obj = stat_objs[0][0]
 
+									# warnings
+									try
+										warning_objs = JSON.parse(item_obj.warnings or '[]')
+									catch e
+										warning_objs = []
+
 									res.render 'nodes/view', {
 										title: 'Node #' + item_obj.serial,
 										item_obj: item_obj,
 										group_obj: group_obj,
+										warning_objs: warning_objs,
 										metrics: {
 
 											devices: deviceinfo_objs,
