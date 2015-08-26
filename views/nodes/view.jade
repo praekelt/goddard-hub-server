@@ -11,12 +11,11 @@ block scripts
 		});
 
 block content
-	-if(item_obj.warnings && (JSON.parse(item_obj.warnings || '[]') || []).length > 0)
+	-if(item_obj.warnings && JSON.parse(item_obj.warnings || '[]').length > 0)
 		.alert.alert-warning 
 			ul
 				-each warning_str in JSON.parse(item_obj.warnings || '[]')
 					li #{warning_str}
-	// .alert.alert-danger NODE IS DOWN
 	.row
 		.col-md-12
 			.row
