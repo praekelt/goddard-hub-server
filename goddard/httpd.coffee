@@ -10,7 +10,9 @@ RedisStore 		= require('connect-redis')(session);
 app = express()
 
 # Should be the first item listed
-app.use(raven.middleware.express.requestHandler(process.env.SENTRY_DSN or ''))
+if process.env.SENTRY_DSN?
+	# only if the DSN was given
+	app.use(raven.middleware.express.requestHandler(process.env.SENTRY_DSN))
 
 # middleware
 app.use bodyParser.json()
@@ -41,7 +43,9 @@ app.use session(session_params)
 app.set 'view engine', 'jade'
 
 # Should come before any other error middleware
-app.use(raven.middleware.express.errorHandler(process.env.SENTRY_DSN or ''))
+if process.env.SENTRY_DSN?
+	# only if the DSN was given
+	app.use(raven.middleware.express.errorHandler(process.env.SENTRY_DSN))
 
 # expose interface
 module.exports = exports = app
