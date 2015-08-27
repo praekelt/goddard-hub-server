@@ -36,6 +36,14 @@ module.exports = exports = (app) ->
 	app.set('database', sequelize)
 
 	# set the models
+	Models.tokens = sequelize.define('tokens', {
+
+		name: { type: Sequelize.STRING(255), field: 'name' },
+		key: { type: Sequelize.STRING(255), field: 'key' }
+
+	})
+
+	# set the models
 	Models.groups = sequelize.define('groups', {
 
 		name: { type: Sequelize.STRING(255), field: 'name' }
