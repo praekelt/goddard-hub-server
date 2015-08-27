@@ -5,3 +5,4 @@ module.exports = exports = (app) ->
 	# load in our modules
 	require('./connect')(app)
 	require('./login')(app)
+	require('./logout')(app)
