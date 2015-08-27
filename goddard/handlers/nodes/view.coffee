@@ -61,10 +61,17 @@ module.exports = exports = (app) ->
 									# try to get the stats
 									mac_stat_obj = stat_objs[0][0]
 
+									# warnings
+									try
+										warning_objs = JSON.parse(item_obj.warnings or '[]')
+									catch e
+										warning_objs = []
+
 									res.render 'nodes/view', {
 										title: 'Node #' + item_obj.serial,
 										item_obj: item_obj,
 										group_obj: group_obj,
+										warning_objs: warning_objs,
 										metrics: {
 
 											devices: deviceinfo_objs,

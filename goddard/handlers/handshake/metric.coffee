@@ -28,8 +28,14 @@ module.exports = exports = (app) ->
 					# check for warnings
 					app.get('services').metric.check node_obj, metric_obj, (err, warnings) =>
 
-						# save the metrics
-						node_obj.warnings = JSON.stringify(warnings or [])
+						
+
+						# if it's empty mark as null
+						if not warnings or warnings.length == 0
+							node_obj.warnings = null
+						else
+							# save the metrics
+							node_obj.warnings = JSON.stringify(warnings or [])
 
 						# update the ndoe
 						node_obj.lastping = new Date()

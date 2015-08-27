@@ -3,10 +3,16 @@
 express			= require('express')
 bodyParser 		= require('body-parser')
 session 		= require('express-session')
+raven 			= require('raven');
 RedisStore 		= require('connect-redis')(session);
 
 # create the instance to setup and use
 app = express()
+
+# Should be the first item listed
+if process.env.SENTRY_DSN?
+	# only if the DSN was given
+	app.use(raven.middleware.express.requestHandler(process.env.SENTRY_DSN))
 
 # middleware
 app.use bodyParser.json()
@@ -35,6 +41,11 @@ app.use session(session_params)
 
 # set the view engine
 app.set 'view engine', 'jade'
+
+# Should come before any other error middleware
+if process.env.SENTRY_DSN?
+	# only if the DSN was given
+	app.use(raven.middleware.express.errorHandler(process.env.SENTRY_DSN))
 
 # expose interface
 module.exports = exports = app
