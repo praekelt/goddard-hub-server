@@ -10,30 +10,47 @@ module.exports = exports = (app) ->
 		# redirect
 		url_str = ['', 'downloads', req.params.year, req.params.month, req.params.file].join('/')
 
-		# check if logged in
-		if req.session and req.session.logged_in_user_id
+		# was a token given ... ?
+		if req.query.token?
 
-			# base folder
-			base_folder_str = process.env.BUILDS_FOLDER_PATH or '/var/goddard/builds'
+			# find the token by key
+			app.get('models').tokens.find(
 
-			# build the file name
-			file_name = [base_folder_str, req.params.year, req.params.month, req.params.file].join('/')
+					offset: 0,
+					limit: 1,
+					where: {
+						key: req.query.token
+					}
 
-			# try to login
-			fs.exists file_name, (exists_bool) ->
+				).then (item_obj) ->
 
-				# check it
-				if exists_bool == true
+					# check the token given
+					if item_obj?
 
-					# pipe the file
-					fs.createReadStream(file_name).pipe(res)
+						# base folder
+						base_folder_str = process.env.BUILDS_FOLDER_PATH or '/var/goddard/builds'
 
-				else 
+						# build the file name
+						file_name = [base_folder_str, req.params.year, req.params.month, req.params.file].join('/')
 
-					# nothing
-					res.status(404).send('no such build was found .. head back <a href="/">here</a>')
+						# try to login
+						fs.exists file_name, (exists_bool) ->
 
-		else 
+							# check it
+							if exists_bool == true
 
-			# redirect away to actually login
-			res.redirect('/connect?return=' + url_str)
+								# pipe the file
+								fs.createReadStream(file_name).pipe(res)
+
+							else 
+
+								# nothing
+								res.status(404).send('no such build was found .. head back <a href="/">here</a>')
+
+					else 
+
+						# redirect away to actually login
+						res.status(401).send('Token is not valid, access might have been revoked or no such token exists .. head back <a href="/">here</a>')
+
+		else
+			res.status(401).send('?token query string parameter is required .. head back <a href="/">here</a>')
