@@ -3,6 +3,8 @@ module.exports = exports = (app) ->
 
 	# require the modules
 	_ 			= require('underscore')
+	moment 		= require('moment')
+	request		= require('request')
 
 	# handle any metric coming our way
 	app.post '/metric.json', (req, res) ->
@@ -28,14 +30,46 @@ module.exports = exports = (app) ->
 					# check for warnings
 					app.get('services').metric.check node_obj, metric_obj, (err, warnings) =>
 
-						
-
 						# if it's empty mark as null
 						if not warnings or warnings.length == 0
 							node_obj.warnings = null
 						else
 							# save the metrics
 							node_obj.warnings = JSON.stringify(warnings or [])
+
+						# check if this is older than a week ... ?
+						time_delta = new Date().getTime() - moment(node_obj.lastping).toDate().getTime()
+
+						# check if older than a week ...
+						if process.env.SLACK_NOTIFICATION_URL? and time_delta > (1000 * 60 * 60 * 24 * 7)
+
+							# the name parts
+							name_parts = []
+
+							# build name
+							if node_obj.name?
+								name_parts.push(node_obj.name)
+								name_parts.push('(' + node_obj.serial + ')')
+							else
+								name_parts.push(node_obj.name)
+
+
+							# send a notification back to Goddard channel
+							options = {
+								uri: process.env.SLACK_NOTIFICATION_URL,
+								method: 'POST',
+								timeout: 1000 * 10,
+								json: {
+									"text": name_parts.join(' ') + ' came back online after more than a week of inactivity. Click <http://hub.goddard.unicore.io/nodes/' + node_obj.id + '|here> to have a look'
+								}
+							}
+
+							# send the rquest 
+							request options, (error, response, body) ->
+
+								# done !
+								console.log('done')
+
 
 						# update the ndoe
 						node_obj.lastping = new Date()
