@@ -4,7 +4,7 @@ block content
 	.row
 		.col-md-12
 			.pull-right
-				form(action="/apps",method="get")
+				form(action="/tokens",method="get")
 					input(type="text",name="q",placeholder="Search by name",value=post_params.q)
 					button Search
 			a.btn.btn-primary.btn-lg(href="/tokens/create") Create
@@ -20,12 +20,11 @@ block content
 					-each item_obj in items
 						tr
 							td 
-								p(style="margin:0;margin-bottom:5px;font-size: 16px;")
-									a(href="/apps/" + item_obj.id) #{item_obj.name}
-								p(style="margin:0;font-size: 11px;") <strong>#{item_obj.key}</strong> #{item_obj.description}
+								p(style="margin:0;margin-bottom:5px;font-size: 16px;") #{item_obj.name}
+								p(style="margin:0;font-size: 11px;") <strong>#{item_obj.key}</strong>
 							td
 								.pull-right
-									a.btn.btn-default(style="margin-left: 10px;",href="/apps/#{item_obj.id}") Manage
+									a.btn.btn-default(style="margin-left: 10px;",href="/tokens/#{item_obj.id}/revoke",onclick="return confirm('Really revoke access ?');") Revoke
 								.clearfix
 
 	.row

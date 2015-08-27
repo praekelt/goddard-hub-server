@@ -39,7 +39,7 @@ module.exports = exports = (app) ->
 	Models.tokens = sequelize.define('tokens', {
 
 		name: { type: Sequelize.STRING(255), field: 'name' },
-		token: { type: Sequelize.STRING(255), field: 'token' }
+		key: { type: Sequelize.STRING(255), field: 'key' }
 
 	})
 

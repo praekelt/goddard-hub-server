@@ -4,3 +4,5 @@ module.exports = exports = (app) ->
 
 	# load in our modules
 	require('./list')(app)
+	require('./create')(app)
+	require('./revoke')(app)

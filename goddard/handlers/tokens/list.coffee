@@ -33,7 +33,9 @@ module.exports = exports = (app) ->
 
 				}
 
-			).catch(->
+			).catch((err) ->
+
+				console.dir(err)
 
 				# render them out
 				res.render 'tokens/list', {
