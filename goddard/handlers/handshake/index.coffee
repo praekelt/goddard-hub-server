@@ -7,3 +7,4 @@ module.exports = exports = (app) ->
 	require('./metric')(app)
 	require('./build')(app)
 	require('./apps')(app)
+	require('./reports')(app)
