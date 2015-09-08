@@ -44,6 +44,13 @@ describe 'Handlers', ->
 						if not parsed_item_obj
 							assert.fail('Parsed JSON returned was invalid')
 						assert(parsed_item_obj.status == 'ok', 'Status returned needs to be "ok"')
+						app.get('models').reports.find(1).then((before_report_obj) ->
+
+							# check the returned user obj
+							assert(before_report_obj != null, 'was expecting a report obj ...')
+							assert(before_report_obj.message == 'test', 'Was expecting the message "test"')
+
+						).catch((err) -> assert.fail(err))
 					)
 
 			# handle the error output
