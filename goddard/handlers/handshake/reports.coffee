@@ -23,7 +23,6 @@ module.exports = exports = (app) ->
 				res.jsonp { status: 'ok' }
 
 			).catch((err) ->
-				console.dir(err)
 				res.status(400).jsonp {
 
 					status: 'error',
