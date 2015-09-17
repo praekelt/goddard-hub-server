@@ -44,6 +44,15 @@ module.exports = exports = (app) ->
 	})
 
 	# set the models
+	Models.reports = sequelize.define('reports', {
+
+		nodeId: { type: Sequelize.INTEGER, field: 'nodeId' }
+		status: { type: Sequelize.STRING(255), field: 'status' }
+		message: { type: Sequelize.STRING(255), field: 'message' }
+
+	})
+
+	# set the models
 	Models.groups = sequelize.define('groups', {
 
 		name: { type: Sequelize.STRING(255), field: 'name' }
