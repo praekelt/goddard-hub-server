@@ -4,7 +4,8 @@ html
     head
         meta(charset='utf8')
         meta(http-equiv='X-UA-Compatible', content='IE=edge, chrome=1')
-        meta(name='description', content='description of your site')
+        -if(locals.description)
+            meta(name='description', content=locals.description || '')
         meta(name='author', content= "author of the site")
         meta(name="viewport" content="width=device-width, initial-scale=1, user-scalable=no")
         -if(locals.title)
@@ -30,6 +31,8 @@ html
                                     a(href="/groups") Groups
                                 li
                                     a(href="/apps") Applications
+                                li
+                                    a(href="/tokens") Access Tokens
                                 li
                                     a(href="/users") Users
                         -if(locals.user_obj)
