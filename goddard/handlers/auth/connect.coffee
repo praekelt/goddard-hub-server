@@ -20,7 +20,7 @@ module.exports = exports = (app) ->
 			client_id: param_client_id_str,
 			redirect_uri: redirect_uri_str,
 			scope: [ 'email', 'profile' ].join(' '),
-			state: '',
+			state: req.query.return or '',
 			access_type: 'online',
 			approval_prompt: 'auto'
 
@@ -115,8 +115,16 @@ module.exports = exports = (app) ->
 										# all good log them in
 										req.session.logged_in_user_id = user_obj.id
 
-										# set as the logged in user
-										res.redirect('/')
+										# check for redirect ?
+										if req.query.return and req.query.return != 'null'
+
+											# redirect it
+											res.redirect( req.query.return )
+
+										else
+
+											# set as the logged in user
+											res.redirect('/')
 
 									else
 										res.render 'auth/accessdenied', {

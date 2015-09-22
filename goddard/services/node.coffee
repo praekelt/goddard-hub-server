@@ -9,23 +9,38 @@ module.exports = exports = (app) ->
 	# start the Nodes service
 	Nodes = {}
 
-	# returns the next available port to use
-	Nodes.getNextTunnelPort = (fn) ->
+	# returns the max part from the database
+	
+	Nodes.getMaxTunnelPort = (fn) ->
 
 		# get the highest ports
 		app.get('models').nodes.max('mport').then((port) ->
-
-			# check the port
-			if port
-				if port < 15000
-					port = port + 15000
-			else
-				port = 15000
 
 			# done
 			fn(null, port)
 
 		).catch(fn)
+
+	# returns the next available port to use
+	
+	Nodes.getNextTunnelPort = (fn) ->
+
+		# get the highest ports
+		Nodes.getMaxTunnelPort (err, port) ->
+
+			# check for error
+			if err
+				fn(err)
+			else
+				# check the port
+				if port
+					if port < 15000
+						port = port + 15000
+				else
+					port = 15000
+
+				# done
+				fn(null, port + 3, port + 4)
 
 	# returns a nicely formatted response for the handshake client
 	Nodes.formatResponse = (node_obj, fn) ->
@@ -68,11 +83,12 @@ module.exports = exports = (app) ->
 
 	# updates with the existing nodes. Ensures that serial 
 	# and all missing fields are present
+	
 	Nodes.update = (node_obj, fn) ->
 
 		# update
 		if not node_obj.serial
-			node_obj.serial = S(node_obj.id).padLeft(4, '0').s
+			node_obj.serial = S(node_obj.id).padLeft(5, '0').s
 
 		# save it
 		node_obj.save().then(->
@@ -83,10 +99,11 @@ module.exports = exports = (app) ->
 		).catch(fn)
 
 	# Nodess the path to run
+	
 	Nodes.find = (param_mac_addr, param_public_key, fn) ->
 
 		# get the next
-		Nodes.getNextTunnelPort (err, port) ->
+		Nodes.getNextTunnelPort (err, port, mport) ->
 
 			# create the node if it doesn't exist
 			app.get('models').nodes.findOrCreate({
@@ -101,8 +118,8 @@ module.exports = exports = (app) ->
 						serial: '',
 						groups: [],
 						server: process.env.TUNNEL_SERVER or 'goddard.io.co.za',
-						port: (port + 3),
-						mport: (port + 4),
+						port: port,
+						mport: mport,
 						macaddr: param_mac_addr,
 						publickey: param_public_key,
 
@@ -112,7 +129,7 @@ module.exports = exports = (app) ->
 						groupId: 1,
 
 						enabled: true,
-						warnings: [],
+						warnings: null,
 
 						lastping: new Date()
 
