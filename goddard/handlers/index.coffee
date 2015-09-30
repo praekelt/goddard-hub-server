@@ -11,3 +11,4 @@ module.exports = exports = (app) ->
 	require('./nodes')(app)
 	require('./groups')(app)
 	require('./apps')(app)
+	require('./tokens')(app)

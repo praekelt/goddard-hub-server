@@ -3,8 +3,6 @@
 module.exports = exports = (app) ->
 
 	# load in our modules
-	require('./setup')(app)
-	require('./metric')(app)
-	require('./build')(app)
-	require('./apps')(app)
-	require('./reports')(app)
+	require('./list')(app)
+	require('./create')(app)
+	require('./revoke')(app)
