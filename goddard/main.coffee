@@ -20,58 +20,76 @@ argv = require('minimist')(process.argv.slice(2));
 # should we run the migrations ?
 ### istanbul ignore if ###
 ### istanbul ignore else ###
-if argv.migrations == true
+if argv.migrations?
 
 	# run the migrations
-	app.get('sequelize_instance').sync({})
+	app.get('sequelize_instance').sync({}).then (result, err) ->
 
-	# should we seed ?
-	if argv.seed == true
-		app.get('models').groups.create({
+		# should we seed ?
+		if argv.seed?
+			app.get('models').groups.create({
 
-			id:1,
-			name:'Default',
-			description:'Default group',
-			key: 'default'
+				id:1,
+				name:'Default',
+				description:'Default group',
+				key: 'default'
 
-		}, null, {validate: false})
-		.catch(->)
-		app.get('models').apps.create({
+			}, null, {validate: false})
+			.then ->
+				return app.get('models').apps.create({
+					id:1,
+					name:'Captive Portal',
+					description:'The default captive portal for the Goddard platform.',
+					key: 'captiveportal',
+					slug: 'captive-portal',
+					visible: false,
+					portal: true
 
-			id:1,
-			name:'Captive Portal',
-			description:'The default captive portal for the Goddard platform.',
-			key: 'captiveportal',
-			slug: 'captive-portal',
-			visible: false,
-			portal: true
+				}, null, {validate: false})
+			.then ->
+				return app.get('models').apps.create({
+					id:2,
+					name:'MAMA',
+					description:'The Mobile Alliance for Maternal Action (MAMA) is a global movement that seeks to use mobile technologies to improve the health and lives of mothers in developing nations.',
+					key: 'mama',
+					slug: 'mama',
+					visible: true,
+					portal: false
+				}, null, {validate: false})
+			.then -> 
+				return app.get('sequelize_instance').query('INSERT INTO installs("groupId", "appId", "createdAt", "updatedAt") VALUES(1,1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)')
+			.then -> 
+				return app.get('sequelize_instance').query('INSERT INTO installs("groupId", "appId", "createdAt", "updatedAt") VALUES(1,2,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)')
+			.catch (err) ->
+				# debugging
+				console.log('problem while seeding')
 
-		}, null, {validate: false})
-		.catch(->)
-		app.get('models').apps.create({
+				# debugging
+				console.dir(err)
+			.then ->
 
-			id:2,
-			name:'MAMA',
-			description:'The Mobile Alliance for Maternal Action (MAMA) is a global movement that seeks to use mobile technologies to improve the health and lives of mothers in developing nations.',
-			key: 'mama',
-			slug: 'mama',
-			visible: true,
-			portal: false
+				# debug output
+				console.log('database was synced up and seeded')
 
-		}, null, {validate: false})
-		.catch(->)
-		app.get('sequelize_instance')
-		.query('INSERT INTO installs(id, "groupId", "appId", "createdAt", "updatedAt") VALUES(1,1,1,now(),now())')
-		.catch(->)
-		app.get('sequelize_instance')
-		.query('INSERT INTO installs(id, "groupId", "appId", "createdAt", "updatedAt") VALUES(1,1,2,now(),now())')
-		.catch(->)
+			# exit cleanly
+			process.exit(0)
 
-		# debug output
-		console.log('database was synced up')
+		else
 
-	# done
-	process.exit(0)
+			# debugging
+			console.log('database was synced up')
+
+			# exit cleanly
+			process.exit(0)
+
+
+	.catch (err) -> 
+
+		# debugging
+		console.log('problem while syncing')
+
+		# debugging
+		console.dir(err)
 
 else
 
