@@ -143,7 +143,6 @@ module.exports = exports = (app) ->
 		slug: { type: Sequelize.STRING(255), field: 'slug' }
 		visible: { type: Sequelize.BOOLEAN, field: 'visible' }
 		portal: { type: Sequelize.BOOLEAN, field: 'portal' }
-		docker_command: { type: Sequelize.STRING(255), field: 'docker_command' }
 
 	})
 
