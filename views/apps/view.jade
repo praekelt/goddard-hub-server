@@ -27,6 +27,9 @@ block content
 				.form-group
 					label(for="") Description
 					textarea.form-control(name="description") #{post_params.description || item_obj.description}
+				.form-group
+					label(for="") Docker Command
+					textarea.form-control(name="docker_command") #{post_paams.docker_command || item_obj.docker_command}
 
 				button.btn.btn-primary.btn-lg UPDATE
 			br

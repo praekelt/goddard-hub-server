@@ -6,7 +6,7 @@ module.exports = exports = (app) ->
 	S = require('string')
 
 	# the homepage for load balancer
-	app.get '/apps/:appid', app.get('middleware').checkLoggedIn, (req, res) -> 
+	app.get '/apps/:appid', app.get('middleware').checkLoggedIn, (req, res) ->
 
 		app.get('models').apps.find(req.params.appid).then((item_obj) ->
 			if not item_obj
@@ -23,7 +23,7 @@ module.exports = exports = (app) ->
 		)
 
 	# the homepage for load balancer
-	app.post '/apps/:appid', app.get('middleware').checkLoggedIn, (req, res) -> 
+	app.post '/apps/:appid', app.get('middleware').checkLoggedIn, (req, res) ->
 
 		app.get('models').apps.find(req.params.appid).then((item_obj) ->
 			if not item_obj
@@ -36,5 +36,6 @@ module.exports = exports = (app) ->
 			item_obj.portal = req.body.portal == '1'
 			item_obj.visible = req.body.visible == '1'
 			item_obj.slug = S(req.body.name).slugify().s
+			item_obj.docker_command = req.body.docker_command
 			item_obj.save().then -> res.redirect '/apps'
 		)

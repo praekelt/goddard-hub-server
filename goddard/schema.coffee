@@ -143,6 +143,7 @@ module.exports = exports = (app) ->
 		slug: { type: Sequelize.STRING(255), field: 'slug' }
 		visible: { type: Sequelize.BOOLEAN, field: 'visible' }
 		portal: { type: Sequelize.BOOLEAN, field: 'portal' }
+		docker_command: { type: Sequelize.STRING(255), field: 'dommand_command' }
 
 	})
 
@@ -243,7 +244,7 @@ module.exports = exports = (app) ->
 	# sync all the tables
 	# sequelize.sync({ force: true })
 
-	# create our schema 
+	# create our schema
 	app.set('models', Models)
 	app.set('sequelize', Sequelize)
 	app.set('sequelize_instance', sequelize)

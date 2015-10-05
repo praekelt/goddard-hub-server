@@ -8,9 +8,9 @@ module.exports = exports = (app) ->
 	fs = require('fs')
 
 	# the homepage for load balancer
-	app.get '/apps/create', (req, res) -> 
+	app.get '/apps/create', (req, res) ->
 
-		# render the create page 
+		# render the create page
 		res.render 'apps/create', {
 
 			title: 'Create a Group'
@@ -18,7 +18,7 @@ module.exports = exports = (app) ->
 		}
 
 	# the homepage for load balancer
-	app.post '/apps/create', (req, res) -> 
+	app.post '/apps/create', (req, res) ->
 
 		# get the params
 		param_name_str				= req.body.name
@@ -26,6 +26,7 @@ module.exports = exports = (app) ->
 		param_key_str				= req.body.key
 		param_visible_str			= req.body.visible
 		param_portal_str			= req.body.portal
+		param_docker_command_str    = req.body.docker_command
 
 		# validate that the folder exists for the app
 		fs.exists process.env.APP_FOLDER_PATH + "/" + param_key_str, (exists) ->
@@ -41,8 +42,8 @@ module.exports = exports = (app) ->
 						key: param_key_str,
 						visible: param_visible_str == '1',
 						portal: param_portal_str == '1',
-						slug: S(param_name_str).slugify().s
-
+						slug: S(param_name_str).slugify().s,
+						docker_command: param_docker_command_str
 					})
 
 			else res.redirect '/apps/create?error=no such app folder exists'

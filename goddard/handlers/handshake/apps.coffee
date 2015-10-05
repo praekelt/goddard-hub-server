@@ -46,6 +46,7 @@ module.exports = exports = (app) ->
 							'port': 6100 + app_obj.id,
 							'internal': app_obj.portal == true,
 							'key': app_obj.key,
+							'docker_command': app_obj.docker_command,
 							'id': app_obj.id
 
 						})
