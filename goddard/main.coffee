@@ -29,17 +29,17 @@ if argv.migrations == true
 	if argv.seed == true
 		app.get('models').groups.create({
 
-			id:1, 
-			name:'Default', 
+			id:1,
+			name:'Default',
 			description:'Default group',
 			key: 'default'
-		
+
 		}, null, {validate: false})
 		.catch(->)
 		app.get('models').apps.create({
 
-			id:1, 
-			name:'Captive Portal', 
+			id:1,
+			name:'Captive Portal',
 			description:'The default captive portal for the Goddard platform.',
 			key: 'captiveportal',
 			slug: 'captive-portal',
@@ -50,8 +50,8 @@ if argv.migrations == true
 		.catch(->)
 		app.get('models').apps.create({
 
-			id:2, 
-			name:'MAMA', 
+			id:2,
+			name:'MAMA',
 			description:'The Mobile Alliance for Maternal Action (MAMA) is a global movement that seeks to use mobile technologies to improve the health and lives of mothers in developing nations.',
 			key: 'mama',
 			slug: 'mama',
@@ -66,7 +66,7 @@ if argv.migrations == true
 		app.get('sequelize_instance')
 		.query('INSERT INTO installs(id, "groupId", "appId", "createdAt", "updatedAt") VALUES(1,1,2,now(),now())')
 		.catch(->)
-		
+
 		# debug output
 		console.log('database was synced up')
 
