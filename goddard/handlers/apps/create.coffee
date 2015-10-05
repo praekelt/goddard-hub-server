@@ -45,8 +45,8 @@ module.exports = exports = (app) ->
 						slug: S(param_name_str).slugify().s,
 						docker_command: param_docker_command_str
 					})
+				
+				# run it
+				group_obj.save().then -> res.redirect '/apps'
 
 			else res.redirect '/apps/create?error=no such app folder exists'
-
-		# run it
-		group_obj.save().then -> res.redirect '/apps'
