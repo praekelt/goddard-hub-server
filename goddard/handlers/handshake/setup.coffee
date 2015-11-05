@@ -17,8 +17,6 @@ module.exports = exports = (app) ->
 		# create / find a node
 		app.get('services').node.find param_mac_addr, param_public_key, (err, node_obj) =>
 
-			console.dir err
-
 			# ok so now save the key
 			app.get('services').node.saveKey node_obj, param_public_key, (err) =>
 
@@ -28,14 +26,14 @@ module.exports = exports = (app) ->
 				# awesome so update for any missing properties
 				app.get('services').node.update node_obj, (err) =>
 
-					# did we find the node ... ?
-					console.dir err
-
 					# get the node
 					node_obj = node_obj.get()
 
 					# format the response to send
 					app.get('services').node.formatResponse node_obj, (err, public_response_obj) =>
 							
+						# append the whitelist
+						public_response_obj.whitelist = [] # list will go here
+
 						# output
 						res.json public_response_obj
