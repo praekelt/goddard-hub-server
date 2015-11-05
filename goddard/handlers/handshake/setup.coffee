@@ -31,9 +31,45 @@ module.exports = exports = (app) ->
 
 					# format the response to send
 					app.get('services').node.formatResponse node_obj, (err, public_response_obj) =>
-							
-						# append the whitelist
-						public_response_obj.whitelist = [] # list will go here
+						
+						# get all the items from the whitelist that match that group
+						app.get('models').whitelist.findAll({
 
-						# output
-						res.json public_response_obj
+							where: {
+
+								'groupId': node_obj.groupId
+
+							}
+
+						}).then (whitelist_objs) ->
+
+							# append the whitelist
+							public_response_obj.whitelist = []
+
+							# output
+							for whitelist_obj in whitelist_objs
+
+								# get the values
+								parsed_whitelist_obj = null
+
+								# try to get values
+								try
+									parsed_whitelist_obj = whitelist_obj.dataValues
+								catch e
+									# ignored ...
+									continue
+
+								# handle the dir
+								public_response_obj.whitelist.push({
+
+									name: parsed_whitelist_obj.name,
+									domain: parsed_whitelist_obj.domain
+
+								})
+
+							# output
+							res.json public_response_obj
+
+						.catch (err) -> 
+							console.dir(err)
+							res.json { status: 'error', message: 'Something went wrong ...' }

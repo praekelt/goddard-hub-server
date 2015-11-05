@@ -3,7 +3,7 @@
 module.exports = {
   up: function (queryInterface, Sequelize) {
     return queryInterface.createTable(
-      'whitelist',
+      'whitelists',
       {
         id: {
           type: Sequelize.INTEGER,
@@ -24,6 +24,6 @@ module.exports = {
   },
 
   down: function (queryInterface, Sequelize) {
-    return queryInterface.dropTable('whitelist')
+    return queryInterface.dropTable('whitelists')
   }
 };
