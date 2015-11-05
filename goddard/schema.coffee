@@ -250,7 +250,7 @@ module.exports = exports = (app) ->
 	})
 
 	# setup relationships
-	Models.nodes.belongsTo(Models.groups)
+	Models.whitelist.belongsTo(Models.groups)
 
 	# create our schema
 	app.set('models', Models)
