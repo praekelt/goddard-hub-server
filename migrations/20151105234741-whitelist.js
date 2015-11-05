@@ -17,7 +17,7 @@ module.exports = {
           type: Sequelize.DATE
         },
         name: Sequelize.STRING,
-        domain: Sequelize.INTEGER,
+        domain: Sequelize.STRING,
         'groupId': Sequelize.INTEGER
       }
       );
