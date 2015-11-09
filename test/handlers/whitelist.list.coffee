@@ -25,12 +25,21 @@ describe 'Handlers', ->
         app.get('sequelize_instance').sync({ force: true }).then ->
 
           # insert our tests
-          app.get('models').whitelist.create({
+          app.get('models').users.create({
 
-              name: 'test test',
-              domain: 'goddard.com'
+              name: 'test mctest'
 
-            }).then(-> done()).catch((err)->done())
+            }).then(->
+
+              # insert our tests
+              app.get('models').whitelist.create({
+
+                  name: 'test test',
+                  domain: 'goddard.com'
+
+                }).then(-> done()).catch((err)->done())
+
+            ).catch((err)->done())
 
     # handle the settings
     describe '#notloggedin', ->
@@ -44,6 +53,20 @@ describe 'Handlers', ->
           .end((err, res)->
             assert(err == null, 'Was not expecting a error after request')
             assert(res.text.indexOf('/login') != -1, "Can't use the whitelist")
+          )
+
+    # handle the settings
+    describe '#response', ->
+
+      # handle the error output
+      it 'should always return "ok"', ->
+
+        request(app)
+          .get('/whitelist?logged_in_user_id=1')
+          .expect(200)
+          .end((err, res)->
+            console.dir(err)
+            assert(err == null, 'Was not expecting a error after request')
           )
 
     after (done) ->
