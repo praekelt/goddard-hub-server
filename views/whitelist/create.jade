@@ -14,7 +14,6 @@ block content
         .form-group
           label(for="group") Group
           select.form-control(name="group")
-            option(value="none") None
             -each group_obj in group_objs
               option(value=group_obj.id,selected=post_params.group==group_obj.id) #{group_obj.name}
         .form-group

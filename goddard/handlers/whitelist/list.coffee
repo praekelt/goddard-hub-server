@@ -1,7 +1,10 @@
 module.exports = exports = (app) ->
 
+	# required modules
+	async = require('async')
+
 	# the homepage for load balancer
-	app.get '/tokens', app.get('middleware').checkLoggedIn, app.get('middleware').handlePagination, (req, res) -> 
+	app.get '/whitelist', app.get('middleware').checkLoggedIn, app.get('middleware').handlePagination, (req, res) -> 
 
 		# search params
 		filter_params = {}
@@ -19,19 +22,59 @@ module.exports = exports = (app) ->
 
 			).then((result) ->
 
-				# render them out
-				res.render 'whitelist/list', {
+				# get all the groups
+				app.get('models').groups.findAll().then (group_objs) ->
 
-					title: 'Domains users are allowed to browse',
-					description: 'Domains users are allowed to browse',
-					items: result.rows,
-					limit: req.requesting_pagination_limit,
-					offset: req.requesting_pagination_offset,
-					total_count: result.count,
-					current_page: req.requesting_pagination_page,
-					pages: Math.ceil( result.count / req.requesting_pagination_limit )
+					# public items we will be rendering
+					public_whitelist_objs = []
 
-				}
+					# handles rendering a nice version of whitelist
+					renderWhitelist = (raw_whitelist_obj, cb) ->
+
+						# item to pass out to view
+						public_whitelist_obj = raw_whitelist_obj.get()
+
+						# get the group of the whitelist
+						for group_obj in group_objs
+
+							# the id matches ?
+							if group_obj.id == public_whitelist_obj.groupId
+
+								# set as group
+								public_whitelist_obj.groupName = group_obj.name
+								public_whitelist_obj.groupId = group_obj.id
+
+								# done
+								break
+
+						if !public_whitelist_obj.groupName
+
+							# set as group
+							public_whitelist_obj.groupName = 'N/A'
+							public_whitelist_obj.groupId = null
+
+						# append
+						public_whitelist_objs.push(public_whitelist_obj)
+
+						# done
+						cb(null)
+
+					# loop them all
+					async.each result.rows, renderWhitelist, ->
+
+						# render them out
+						res.render 'whitelist/list', {
+
+							title: 'Whitelist',
+							description: 'Domains users are allowed to browse',
+							items: public_whitelist_objs,
+							limit: req.requesting_pagination_limit,
+							offset: req.requesting_pagination_offset,
+							total_count: result.count,
+							current_page: req.requesting_pagination_page,
+							pages: Math.ceil( result.count / req.requesting_pagination_limit )
+
+						}
 
 			).catch((err) ->
 
