@@ -1,0 +1,46 @@
+extends ../layout
+
+block content
+  .row
+    .col-md-12
+      a.btn.btn-primary.btn-lg.pull-right(href="/whitelist/create") Create
+      .clearfix
+  .row
+    .col-md-12
+      table.table
+        thead
+          tr
+            th &nbsp;
+            th(style="width:40%;") &nbsp;
+        tbody
+          -each item_obj in items
+            tr
+              td 
+                p(style="margin:0;margin-bottom:5px;font-size: 16px;")
+                  a(href="/whitelist/" + item_obj.id) #{item_obj.domain} - #{item_obj.name}
+                -if(item_obj.groupId)
+                  p(style="margin:0;font-size: 11px;")
+                    strong
+                      a(href="/groups/" + item_obj.groupId) Group: #{item_obj.groupName}
+                -else
+                  p(style="margin:0;font-size: 11px;")
+                    strong Group: Unknown Group
+              td
+                .pull-right
+                  a.btn.btn-default(style="margin-left: 10px;",href="/whitelist/#{item_obj.id}") Manage
+                  a.btn.btn-default(onclick="return confirm('Really Remove ? This will stop any users from going to this site.');",style="margin-left: 10px;",href="/whitelist/remove/#{item_obj.id}") Remove
+                .clearfix
+
+  .row
+    .col-md-12
+      .pull-right
+        nav
+          ul.pagination
+            -if(current_page > 1)
+              li
+                a(href="/whitelist?q=" + (post_params.q ? post_params.q : '') + "&limit=" + limit + "&page=" + (current_page-1))
+                  span Back
+            -if(current_page < pages)
+              li
+                a(href="/whitelist?q=" + (post_params.q ? post_params.q : '') + "&limit=" + limit + "&page=" + (current_page+1))
+                  span Next

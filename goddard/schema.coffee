@@ -241,8 +241,16 @@ module.exports = exports = (app) ->
 
 	})
 
-	# sync all the tables
-	# sequelize.sync({ force: true })
+	# set the models
+	Models.whitelist = sequelize.define('whitelist', {
+
+		name: { type: Sequelize.STRING(255), field: 'name' },
+		domain: { type: Sequelize.STRING(255), field: 'domain' }
+
+	})
+
+	# setup relationships
+	Models.whitelist.belongsTo(Models.groups)
 
 	# create our schema
 	app.set('models', Models)

@@ -12,3 +12,4 @@ module.exports = exports = (app) ->
 	require('./groups')(app)
 	require('./apps')(app)
 	require('./tokens')(app)
+	require('./whitelist')(app)
