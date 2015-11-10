@@ -52,7 +52,6 @@ module.exports = exports = (app) ->
 		fn null, {
 
 			'name': node_obj.name,
-			'docker_command': node_obj.docker_command or null,
 			'serial': S( node_obj.id ).padLeft(5, '0').s,
 			'port': {
 

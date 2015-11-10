@@ -160,7 +160,6 @@ module.exports = exports = (app) ->
 		region: { type: Sequelize.STRING(255), field: 'region' }
 		city: { type: Sequelize.STRING(255), field: 'city' }
 		address: { type: Sequelize.STRING(255), field: 'address' }
-		docker_command: { type: Sequelize.STRING(255), field: 'docker_command' }
 		name: { type: Sequelize.STRING(255), field: 'name' }
 		description: { type: Sequelize.STRING(255), field: 'description' }
 		warnings: { type: Sequelize.STRING(255), field: 'warnings' }
