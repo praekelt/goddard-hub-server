@@ -117,7 +117,7 @@ module.exports = exports = (app) ->
 
 						serial: '',
 						groups: [],
-						server: process.env.TUNNEL_SERVER or 'goddard.io.co.za',
+						server: process.env.TUNNEL_SERVER or 'hub.goddard.unicore.io',
 						port: port,
 						mport: mport,
 						macaddr: param_mac_addr,
