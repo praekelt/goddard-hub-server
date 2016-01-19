@@ -18,7 +18,7 @@ The management console hosts dashboards that can be used to view information fro
 
 ### Node Handshake
 
-When a node first starts up it sets up the internal components to allow connection to the internet. Once that is working it contacts the Hub Server on the ``/setup.json`` endpoint. Which accepts the public key and mac address of the node. Returning the registered node info, after which the node saves this and locks the information.
+When a node first starts up it sets up the internal components to allow connection to the internet. Once that is working it contacts the Hub Server on the ``/setup.json`` endpoint. Which accepts the public key and mac address of the node. Returning the registered node info, after which the node saves this and locks the information. 
 
 So now it has a identification and keys that are returned from the server that will allow the hub server to login to the Node and vice versa.
 
@@ -28,7 +28,7 @@ The interface allows the configuration of nodes with groups and which applicatio
 
 The nodes are then provisioned according to this dataset.
 
-###
+### 
 
 ## Install / Develop
 
@@ -67,7 +67,3 @@ DB_URL=postgres://user:password@host/databasename node index.js --migrations [--
 ````
 
 This will run through the migrations and confirm when done. **--seed** is optional and tells the app to make sure the database is seeded with the default group "Default" and apps ("Captive Portal", "MAMA")
-
-
-[![Coverage Status](https://coveralls.io/repos/github/praekelt/goddard-hub-server/badge.svg?branch=develop)](https://coveralls.io/github/praekelt/goddard-hub-server?branch=develop)
-[![Build Status](https://travis-ci.org/praekelt/goddard-hub-server.svg)](https://github.com/praekelt/goddard-hub-server)
