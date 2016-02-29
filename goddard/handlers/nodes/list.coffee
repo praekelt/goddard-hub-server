@@ -39,7 +39,7 @@ module.exports = exports = (app) ->
 				offset: req.requesting_pagination_offset,
 				limit: req.requesting_pagination_limit,
 				where: filter_params,
-				order: 'id DESC',
+				order: 'id ASC',
 				include: app.get('models').groups
 
 			).then (result) ->
@@ -109,7 +109,7 @@ module.exports = exports = (app) ->
 							title: 'Nodes',
 							group_objs: group_objs,
 							items: public_node_objs,
-							limit: req.requesting_pagination_limit,
+							limit: 150,
 							offset: req.requesting_pagination_offset,
 							total_count: result.count,
 							current_page: req.requesting_pagination_page,
