@@ -36,6 +36,7 @@ module.exports = exports = (app) ->
 
 			# handle the item
 			item_obj.name = req.body.name
+			item_obj.groupId = 1 * req.body.group
 			item_obj.domain = req.body.domain
 			item_obj.save()
 			.then(->res.redirect '/whitelist')
