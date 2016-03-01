@@ -18,7 +18,7 @@ block content
               option(value=group_obj.id,selected=item_obj.groupId==group_obj.id) #{group_obj.name}
         .form-group
           label(for="") Domain
-          input.form-control(name="key",type="text",value=post_params.domain || item_obj.domain)
+          input.form-control(name="domain",type="text",value=post_params.domain || item_obj.domain)
 
         button.btn.btn-primary.btn-lg UPDATE
       br
